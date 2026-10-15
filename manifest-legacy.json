@@ -1,0 +1,2 @@
+{"id":"/pixel-lig/legacy","name":"Piksel Lig 26/27 Legacy","short_name":"Piksel Lig","description":"Eski PC'ler için hafif sürüm · by Catanadev","start_url":"./PikselLig_Legacy.html?pwa=1","scope":"./","display":"standalone","orientation":"landscape","background_color":"#0b1020","theme_color":"#0b1020","lang":"tr",
+ "icons":[{"src":"icon-192.png","sizes":"192x192","type":"image/png","purpose":"any"},{"src":"icon-512.png","sizes":"512x512","type":"image/png","purpose":"any"}]}
