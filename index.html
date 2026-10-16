@@ -53,11 +53,14 @@ tr.ucl td:first-child{box-shadow:inset 4px 0 0 #3b6cff}tr.uel td:first-child{box
 #cv{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);image-rendering:pixelated;image-rendering:crisp-edges}
 #mob{display:none}
 @media (pointer:coarse){#mob{display:block}}
-#joy{position:absolute;left:18px;bottom:18px;width:120px;height:120px;border-radius:50%;background:rgba(255,255,255,.12);border:2px solid rgba(255,255,255,.25)}
-#knob{position:absolute;left:38px;top:38px;width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,.45)}
-.mb{position:absolute;width:74px;height:74px;border-radius:50%;font-family:inherit;font-size:10px;color:#fff;border:3px solid rgba(255,255,255,.4);opacity:.85}
+#joyAlan{position:absolute;left:0;top:12%;width:46%;bottom:0}#joy{position:absolute;left:5vmin;bottom:5vmin;width:30vmin;height:30vmin;border-radius:50%;background:rgba(255,255,255,.10);border:2px solid rgba(255,255,255,.25);pointer-events:none;transition:opacity .2s}
+#knob{position:absolute;left:50%;top:50%;width:12vmin;height:12vmin;margin:-6vmin 0 0 -6vmin;border-radius:50%;background:rgba(255,255,255,.45)}
+.mb{position:absolute;width:18vmin;height:18vmin;border-radius:50%;font-family:inherit;font-size:2.6vmin;line-height:1.2;color:#fff;border:3px solid rgba(255,255,255,.4);opacity:.82;padding:0;touch-action:none}
 .mb.on{transform:scale(.92);opacity:1}
-#bPas{right:110px;bottom:26px;background:#2b6cd8}#bSut{right:22px;bottom:70px;background:#d8402b}.mb.k{width:56px;height:56px;font-size:8px}#bAra{right:120px;bottom:112px;background:#7b3fd1}#bOrta{right:40px;bottom:160px;background:#e08a12}#bKos{left:150px;bottom:30px;background:#2e9e4f}#bDeg{left:150px;bottom:96px;background:#555}
+#bSut{right:4vmin;bottom:5vmin;width:23vmin;height:23vmin;font-size:3.2vmin;background:#d8402b}#bPas{right:29vmin;bottom:2vmin;background:#2b6cd8}.mb.k{width:14vmin;height:14vmin;font-size:2.2vmin}#bAra{right:31vmin;bottom:22vmin;background:#7b3fd1}#bOrta{right:9vmin;bottom:30vmin;background:#e08a12}#bKos{right:49vmin;bottom:4vmin;background:#2e9e4f}#bDeg{right:49vmin;bottom:20vmin;background:#555}
+body.dik #oyun{inset:auto;left:0;top:0;width:100vh;height:100vw;transform-origin:top left;transform:rotate(90deg) translateY(-100%)}
+#cevir{display:none;position:absolute;left:50%;top:6px;transform:translateX(-50%);font-family:inherit;font-size:9px;padding:7px 10px;background:rgba(0,0,0,.6);color:#ffe14d;border:1px solid #555;border-radius:4px;z-index:5}
+@media (pointer:coarse){body.dik #cevir{display:block}}
 #bSes{position:absolute;right:52px;top:10px;font-family:inherit;font-size:9px;padding:8px;background:rgba(0,0,0,.5);color:#fff;border:1px solid #555;border-radius:3px}
 #bDur{position:absolute;right:10px;top:10px;font-family:inherit;font-size:9px;padding:8px;background:rgba(0,0,0,.5);color:#fff;border:1px solid #555;border-radius:3px}
 #durMenu{position:absolute;inset:0;background:rgba(0,0,0,.7);display:none;flex-direction:column;align-items:center;justify-content:center;gap:10px}
@@ -90,7 +93,7 @@ tr.ucl td:first-child{box-shadow:inset 4px 0 0 #3b6cff}tr.uel td:first-child{box
 <b>Telefon</b><br>Sol: joystick, KOŞ, DEĞ · Sağ: PAS · ŞUT · ARA · ORTA<br><br>
 <b>Kurallar</b><br>Top çizgiyi geçerse TAÇ, KORNER veya AUT.<br>Aut'ta topu kaleci oyuna sokar.<br>Kornerde ceza sahası dolar.</div><button class="btn gri" onclick="ekran('ana')">GERİ</button></div>
 <div id="oyun"><canvas id="cv" width="384" height="216"></canvas>
- <div id="mob"><div id="joy"><div id="knob"></div></div><button class="mb" id="bPas">PAS</button><button class="mb" id="bSut">ŞUT</button><button class="mb k" id="bAra">ARA</button><button class="mb k" id="bOrta">ORTA/KAY</button><button class="mb k" id="bKos">KOŞ</button><button class="mb k" id="bDeg">DEĞ</button></div>
+ <div id="mob"><div id="joyAlan"></div><div id="joy"><div id="knob"></div></div><button id="cevir">⤢ TAM EKRAN · YATAY</button><button class="mb" id="bPas">PAS</button><button class="mb" id="bSut">ŞUT</button><button class="mb k" id="bAra">ARA</button><button class="mb k" id="bOrta">ORTA/KAY</button><button class="mb k" id="bKos">KOŞ</button><button class="mb k" id="bDeg">DEĞ</button></div>
  <button id="bDur">II</button><button id="bSes" onclick="sesAcKapa()">SES</button>
  <div id="yt" style="position:absolute;inset:0;background:rgba(0,0,0,.72);display:none;flex-direction:column;align-items:center;justify-content:center;gap:12px"></div>
  <div id="durMenu"><div class="ligad">DURAKLATILDI</div><button class="btn" onclick="duraklat()">DEVAM</button><button class="btn" id="bSub" style="background:#1f6fb2" onclick="degPanel()">🔁 OYUNCU DEĞİŞİKLİĞİ</button><div id="degIc" style="display:none;max-height:62vh;overflow:auto;width:min(560px,96vw)"></div><button class="btn gri" onclick="macTerk()">MAÇTAN ÇIK</button></div>
@@ -914,16 +917,31 @@ addEventListener('keydown',e=>{if(KM[e.code]){IN[KM[e.code]]=1;e.preventDefault(
  if(e.code==='Escape'||e.code==='KeyP')duraklat();
  if(e.code==='KeyM')sesAcKapa();});
 addEventListener('keyup',e=>{if(KM[e.code])IN[KM[e.code]]=0;if(e.code==='KeyX')IN.pas=0;if(e.code==='KeyA'||e.code==='Space')IN.sut=0;if(e.code==='KeyE')IN.kos=0;});
+function dikMi(){return matchMedia('(pointer:coarse)').matches&&innerHeight>innerWidth;}
+function yonGuncelle(){document.body.classList.toggle('dik',dikMi());if(typeof boyut==='function')boyut();}
+addEventListener('resize',yonGuncelle);addEventListener('orientationchange',()=>setTimeout(yonGuncelle,200));
+function tamEkranYatay(){try{const d=document.documentElement,f=d.requestFullscreen||d.webkitRequestFullscreen;const p=f?f.call(d):null;const k=()=>{try{screen.orientation&&screen.orientation.lock&&screen.orientation.lock('landscape').catch(()=>{});}catch(e){}};if(p&&p.then)p.then(k).catch(k);else k();}catch(e){}}
 (function(){
- const joy=document.getElementById('joy'),knob=document.getElementById('knob');let jid=null,cxj=0,cyj=0;
- joy.addEventListener('touchstart',e=>{const tt=e.changedTouches[0];jid=tt.identifier;const r=joy.getBoundingClientRect();cxj=r.left+r.width/2;cyj=r.top+r.height/2;mv(tt);e.preventDefault();},{passive:false});
- function mv(tt){const dx=tt.clientX-cxj,dy=tt.clientY-cyj,d=Math.hypot(dx,dy),m=Math.min(d,40);const a=Math.atan2(dy,dx);knob.style.transform=`translate(${Math.cos(a)*m}px,${Math.sin(a)*m}px)`;
-  IN.l=IN.r=IN.u=IN.d=0;if(d>10){const nx=dx/d,ny=dy/d;if(nx>.38)IN.r=Math.min(1,nx*1.3);if(nx<-.38)IN.l=Math.min(1,-nx*1.3);if(ny>.38)IN.d=Math.min(1,ny*1.3);if(ny<-.38)IN.u=Math.min(1,-ny*1.3);}}
- joy.addEventListener('touchmove',e=>{for(const tt of e.changedTouches)if(tt.identifier===jid)mv(tt);e.preventDefault();},{passive:false});
- const bit=e=>{for(const tt of e.changedTouches)if(tt.identifier===jid){jid=null;knob.style.transform='';IN.l=IN.r=IN.u=IN.d=0;}};
- joy.addEventListener('touchend',bit);joy.addEventListener('touchcancel',bit);
+ const alan=document.getElementById('joyAlan'),joy=document.getElementById('joy'),knob=document.getElementById('knob');let jid=null,ox=0,oy=0;
+ // ekran koordinatını oyun kutusu koordinatına çevir (dik modda kutu 90° döner)
+ const kutu=(x,y)=>document.body.classList.contains('dik')?[y,innerWidth-x]:[x,y];
+ const R0=()=>Math.min(innerWidth,innerHeight)*.15;
+ alan.addEventListener('touchstart',e=>{const tt=e.changedTouches[0];jid=tt.identifier;const p=kutu(tt.clientX,tt.clientY);ox=p[0];oy=p[1];const r=R0(),H0=document.getElementById('oyun').clientHeight;joy.style.left=(ox-r)+'px';joy.style.bottom=(H0-oy-r)+'px';joy.style.opacity=1;mv(tt);e.preventDefault();},{passive:false});
+ function mv(tt){const p=kutu(tt.clientX,tt.clientY),dx=p[0]-ox,dy=p[1]-oy,d=Math.hypot(dx,dy),r=R0(),m=Math.min(d,r*.75);const a=Math.atan2(dy,dx);knob.style.transform=`translate(${Math.cos(a)*m}px,${Math.sin(a)*m}px)`;
+  IN.l=IN.r=IN.u=IN.d=0;if(d>r*.12){const g=Math.min(1,d/(r*.5)),nx=dx/d*g,ny=dy/d*g;if(nx>0)IN.r=nx;else IN.l=-nx;if(ny>0)IN.d=ny;else IN.u=-ny;}}
+ alan.addEventListener('touchmove',e=>{for(const tt of e.changedTouches)if(tt.identifier===jid)mv(tt);e.preventDefault();},{passive:false});
+ const bit=e=>{for(const tt of e.changedTouches)if(tt.identifier===jid){jid=null;knob.style.transform='';IN.l=IN.r=IN.u=IN.d=0;joy.style.left='';joy.style.bottom='';joy.style.opacity=.6;}};
+ alan.addEventListener('touchend',bit);alan.addEventListener('touchcancel',bit);
  const btn=(id,k,ke)=>{const b=document.getElementById(id);b.addEventListener('touchstart',e=>{IN[k]=1;IN[ke]=1;b.classList.add('on');e.preventDefault();},{passive:false});
-  b.addEventListener('touchend',e=>{IN[k]=0;b.classList.remove('on');e.preventDefault();},{passive:false});};
+  b.addEventListener('touchend',e=>{IN[k]=0;b.classList.remove('on');e.preventDefault();},{passive:false});b.addEventListener('touchcancel',()=>{IN[k]=0;b.classList.remove('on');});};
+ document.getElementById('cevir').addEventListener('click',tamEkranYatay);
+ // ilk dokunuşta tam ekran + yatay kilit dene
+ document.getElementById('oyun').addEventListener('touchstart',()=>{if(!window._yatayDendi){window._yatayDendi=1;tamEkranYatay();}},{passive:true});
+ // topa sahipken / savunmada düğme yazıları değişir
+ let son='';setInterval(()=>{if(!G||G.human<0)return;const t=G.top,bizde=t.sahip&&t.sahip.k===G.human,dur=G.restart&&G.restart.k===G.human;const m=bizde||dur?'h':'s';if(m===son)return;son=m;
+  const set=(id,tx,show)=>{const b=document.getElementById(id);if(!b)return;b.innerHTML=tx;b.style.display=show===false?'none':'';};
+  if(m==='h'){set('bPas','PAS');set('bSut','ŞUT');set('bAra','ARA<br>PAS');set('bOrta','ORTA');set('bDeg','',false);set('bKos','KOŞ');}
+  else{set('bPas','BASKI');set('bSut','TOPA<br>ÇIK');set('bAra','',false);set('bOrta','KAYARAK');set('bDeg','OYUNCU<br>DEĞİŞ');set('bKos','KOŞ');}},150);
  btn('bPas','pas','pasE');btn('bSut','sut','sutE');btn('bAra','_a','araE');btn('bOrta','_o','ortaE');btn('bKos','kos','_k');btn('bDeg','_d','degE');
  document.getElementById('bDur').addEventListener('click',duraklat);
 })();
@@ -1682,7 +1700,7 @@ function zorYaz(){grfYaz();const b=document.getElementById('bZor');if(b)b.textCo
 zorYaz();
 ekran('ana');
 
-function boyut(){const c=document.getElementById('cv');const s=Math.max(1,Math.min(innerWidth/VW,innerHeight/VH));c.style.width=VW*s+'px';c.style.height=VH*s+'px';}
-addEventListener('resize',boyut);boyut();
+function boyut(){const c=document.getElementById('cv');const dk=document.body.classList.contains('dik'),Wd=dk?innerHeight:innerWidth,Hd=dk?innerWidth:innerHeight;const s=Math.max(1,Math.min(Wd/VW,Hd/VH));c.style.width=VW*s+'px';c.style.height=VH*s+'px';}
+addEventListener('resize',boyut);yonGuncelle();boyut();
 </script>
 </body></html>
