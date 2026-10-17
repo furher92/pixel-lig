@@ -394,6 +394,7 @@ function macBaslat(ev, dep, opts) {
   G.hakem = { x: W / 2 + 8, y: H / 2 + 20, an: 0 };
   G.evT = T[0].t;
   G.st = { top: [0, 0], sut: [0, 0], isa: [0, 0], kor: [0, 0], faul: [0, 0], ofs: [0, 0] };
+  G.finalAd = opts && opts.finalAd || null;
   havaKur(opts);
   G.alt = [G.T[1].forma && G.T[1].forma !== "İç saha" ? G.T[1].t.kod + " " + G.T[1].forma.toLowerCase() + " formasıyla" : "", G.havaAd ? "Hava: " + G.havaAd.toLowerCase() : ""].filter(Boolean).join(" · ");
   if (G.derbi) {
@@ -682,6 +683,7 @@ function atakSuruyor() {
   return !(t.x > W * 0.36 && t.x < W * 0.64);
 }
 function oyuncuDegis(k, p, j) {
+  if (!p || p.kirBek || p.atildi) return;
   const y = G.yedek[k].splice(j, 1)[0];
   if (!y) return;
   {
@@ -696,6 +698,16 @@ function oyuncuDegis(k, p, j) {
     }
     if (G.kont === p) G.kont = null;
   }
+  const eskiP = p;
+  {
+    const i0 = G.P.indexOf(p);
+    if (i0 < 0) return;
+    p = Object.assign({}, p);
+    G.P[i0] = p;
+    eskiP.atildi = 1;
+    eskiP.cikti = 1;
+    if (G.itiraz) G.itiraz.L = G.itiraz.L.filter((x) => x !== eskiP);
+  }
   const eski = p.ad || "";
   (G.cikan = G.cikan || []).push({ hx: kulubeX(k), x: p.x, y: p.y, k, gk: p.rol === "GK", c1: G.T[k].c1, c2: G.T[k].c2, gkc: G.T[k].gk, t: 420, an: 0 });
   G.tabela = { t: 260, cik: p.no || 0, gir: y.no || 0 };
@@ -703,10 +715,23 @@ function oyuncuDegis(k, p, j) {
   const ox = p.x, oy = p.y;
   p.x = W / 2 - 14;
   p.y = MB + 5;
-  p.giris = 110;
-  if (G.restart && G.restart.taker === p) {
-    G.restart.taker = null;
-    restartKur();
+  p.giris = 90;
+  p.girdi = 1;
+  if (G.restart && G.restart.taker === eskiP) {
+    if (G.restart.tip === "baslama") {
+      G.restart.taker = p;
+      p.x = eskiP.x;
+      p.y = eskiP.y;
+      p.giris = 0;
+      G.top.sahip = p;
+    } else {
+      if (G.restart.x == null) {
+        G.restart.x = G.top.x;
+        G.restart.y = G.top.y;
+      }
+      G.restart.taker = null;
+      restartKur();
+    }
   }
   if (G.restart && G.restart.bek < 500) G.restart.bek = Math.max(G.restart.bek, 140);
   p.vx = p.vy = 0;
@@ -721,6 +746,7 @@ function oyuncuDegis(k, p, j) {
   p.sers = 0;
   G.degS[k]++;
   G.degT[k] = G.kare;
+  degDurdur();
   G.degB = { t: 300, txt: G.T[k].t.kod + " DEĞİŞİKLİK: GİREN " + y.ad.split(" ").slice(-1)[0] + " · ÇIKAN " + eski.split(" ").slice(-1)[0] };
 }
 function aiDegisim() {
@@ -797,6 +823,10 @@ function ofsKaydet(p) {
   if (S.size) G.ofs = { k, S, t: 150 };
 }
 function ofsaytVer(p) {
+  if (G.seri) {
+    G.ofs = null;
+    return;
+  }
   istSay("ofs", p.k);
   const t = G.top;
   sesDuduk(1);
@@ -818,7 +848,7 @@ function kavgaAday(k) {
   const K = G.kavga || { x: G.top.x, y: G.top.y };
   let b = null, bd = 1e9;
   G.P.forEach((p) => {
-    if (p.k !== k || p.rol === "GK" || p.atildi || p.kirBek || p.sari >= 1 && Math.random() < 0.6) return;
+    if (p.k !== k || p.rol === "GK" || p.atildi || p.kirBek || p.sari >= 1) return;
     const d = Math.hypot(p.x - K.x, p.y - K.y);
     if (d < bd) {
       bd = d;
@@ -913,6 +943,7 @@ function gorevli(x, y, hx, hy, is) {
   return { x, y, hx, hy, an: 0, is, ok: false };
 }
 function kesintiBasla(tip) {
+  if (G.seri) return;
   const t = G.top, k = t.sahip ? t.sahip.k : t.son;
   const x = clamp(t.x, ML + 24, MR - 24), y = clamp(t.y, MT + 14, MB - 14);
   t.sahip = null;
@@ -1417,7 +1448,7 @@ function macSonuBasla(pen) {
   let kaz = sk[0] > sk[1] ? 0 : sk[1] > sk[0] ? 1 : -1;
   if (kaz < 0 && G.seri) kaz = G.seri.g[0] > G.seri.g[1] ? 0 : 1;
   G.msKaz = kaz;
-  const sans = (G.derbi ? 0.32 : 0.05) + (Math.abs(sk[0] - sk[1]) <= 1 ? 0.04 : 0) + (G.kirmizi[0] + G.kirmizi[1]) * 0.05;
+  const sans = (G.derbi ? 0.28 : 0.02) + (Math.abs(sk[0] - sk[1]) <= 1 ? 0.04 : 0) + (G.kirmizi[0] + G.kirmizi[1]) * 0.05;
   G.msKavga = Math.random() < sans;
   G.msTok = 0;
   G.P.forEach((p) => {
@@ -1441,6 +1472,7 @@ function macSonuBitir() {
 }
 function macSonuGuncelle() {
   const e = ++G.msE;
+  const F = G.finalAd && G.msKaz >= 0 ? 420 : 0;
   if (G.hocaT != null && ++G.hocaT > 200) G.hocaT = null;
   if (e === 100 && !G.msKavga) G.hocaT = 0;
   if (G.hocaT === 72) G.degB = { t: 140, txt: "Teknik direktörler birbirini tebrik etti" };
@@ -1547,8 +1579,47 @@ function macSonuGuncelle() {
     }
     return;
   }
+  if (F && e < b0 + (G.msKavga ? 0 : 230) + F) {
+    const e0 = e - (b0 + (G.msKavga ? 0 : 230));
+    G.kavga = null;
+    G.banner = e0 < 60 ? "KUPA TÖRENİ" : "🏆 " + G.finalAd.toLocaleUpperCase("tr") + " ŞAMPİYONU";
+    G.alt = G.T[G.msKaz].t.ad;
+    const kz = G.P.filter((p) => p.k === G.msKaz), kb = G.P.filter((p) => p.k !== G.msKaz);
+    if (!G.kupaKap) G.kupaKap = kz.find((p) => p.rol === "MF") || kz[0];
+    kz.forEach((p, i) => {
+      p.yer = 0;
+      const sira = i - (kz.length - 1) / 2, tx = W / 2 + sira * 7, ty = H / 2 + (p === G.kupaKap ? -6 : 4);
+      if (yuru(p, tx, ty, 1.3)) {
+        p.dx = 0;
+        p.dy = 1;
+        if (e0 > 140) p.an += 0.4;
+      }
+    });
+    kb.forEach((p, i) => {
+      if (p.gizli) return;
+      if (e0 < 120) {
+        p.yer = 0;
+        if (yuru(p, W / 2 - 60 + i % 6 * 8, H / 2 + 40 + Math.floor(i / 6) * 8, 1)) {
+          p.dy = -1;
+          p.dx = 0;
+        }
+      } else if (yuru(p, W / 2 + (p.k ? 4 : -4), MB + 14, 1.2)) p.gizli = 1;
+    });
+    yuru(G.hakem, W / 2 + 50, H / 2 + 30, 1);
+    if (e0 === 140) {
+      sesGol();
+      G.kupaKalk = 1;
+    }
+    if (G.kupaKalk) {
+      G.konfeti = G.konfeti || [];
+      if (G.konfeti.length < (GRAFIK > 0 ? 120 : 40)) for (let i = 0; i < 4; i++) G.konfeti.push({ x: W / 2 + rnd(-90, 90), y: H / 2 - 90, vy: rnd(0.4, 1.2), vx: rnd(-0.3, 0.3), c: ["#ffd23f", "#ff4d4d", "#4aa3ff", "#fff", G.T[G.msKaz].c1][i % 5] });
+    }
+    return;
+  }
+  G.kupaKalk = 0;
+  G.kupaKap = null;
   const sel = G.msKaz >= 0 ? G.msKaz : evK;
-  if (e < b0 + 380) {
+  if (e < b0 + 380 + F) {
     G.banner = G.msKavga ? "" : "TARAFTAR SELAMLAMA";
     G.alt = G.msKavga ? "Oyuncular soyunma odasına götürülüyor" : G.T[sel].t.ad + " oyuncuları tribünleri selamlıyor";
     G.P.forEach((p, i) => {
@@ -1575,7 +1646,7 @@ function macSonuGuncelle() {
   yuru(G.hakem, W / 2, MB + 14, 1.2);
   G.banner = "";
   G.alt = "Takımlar soyunma odasına gidiyor";
-  if (!kalan || e > b0 + 640) macSonuBitir();
+  if (!kalan || e > b0 + 640 + F) macSonuBitir();
 }
 function sariVer(a) {
   if (!a || a.atildi || a.kirBek || G.P.indexOf(a) < 0) return;
@@ -1602,7 +1673,7 @@ function itirazBasla(k, sans, msg) {
   if (!L.length) return;
   G.itiraz = { k, L, t: 120, msg };
   G.fazT = Math.max(G.fazT, 115);
-  if (Math.random() < 0.12) {
+  if (Math.random() < 0.05) {
     const a = L[0];
     G.kuy.unshift({ b: "İTİRAZDAN SARI KART", t: 85, f: () => {
       sariVer(a);
@@ -2177,6 +2248,64 @@ function canliHazirla(s, hafta, ben) {
   });
   return L;
 }
+function degDurdur() {
+  if (G.faz === "oyun") {
+    const t = G.top;
+    if (!G.restart) {
+      const k2 = t.sahip ? t.sahip.k : t.son;
+      G.restart = { tip: "HAKEM TOPU", k: k2 == null ? 0 : k2, x: clamp(t.x, ML + 20, MR - 20), y: clamp(t.y, MT + 12, MB - 12) };
+    } else if (G.restart.tip === "baslama") {
+      G.restart = { tip: "SANTRA", k: G.restart.k };
+    } else if (G.restart.x == null) {
+      G.restart.x = t.x;
+      G.restart.y = t.y;
+    }
+    if (G.restart.tip !== "SANTRA") {
+      G.restart.taker = null;
+    }
+    t.sahip = null;
+    t.vx = t.vy = t.vz = 0;
+    G.faz = "dur";
+    G.fazT = 2;
+    G.kuy = G.kuy || [];
+  }
+  if (G.faz === "dur") {
+    G.banner = "OYUNCU DEĞİŞİKLİĞİ";
+  }
+}
+function degBekle() {
+  let bek = false;
+  G.P.forEach((p) => {
+    if (p.giris > 0) {
+      p.giris--;
+      p.an = 0;
+      bek = true;
+      return;
+    }
+    if (p.girdi) {
+      const h = formHedef(p), dx = h[0] - p.x, dy = h[1] - p.y, d = Math.hypot(dx, dy);
+      if (d > 5 && p.girdi < 260) {
+        p.girdi++;
+        p.x += dx / d * Math.min(1.6, d);
+        p.y += dy / d * Math.min(1.6, d);
+        p.dx = dx / d;
+        p.dy = dy / d;
+        p.an += 0.3;
+        bek = true;
+      } else p.girdi = 0;
+    }
+  });
+  if (G.cikan && G.cikan.some((c) => c.t > 60)) bek = true;
+  if (bek && G.banner !== "OYUNCU DEĞİŞİKLİĞİ" && !G._degBan) {
+    G._degBan = G.banner;
+    G.banner = "OYUNCU DEĞİŞİKLİĞİ";
+  }
+  if (!bek && G._degBan) {
+    G.banner = G._degBan;
+    G._degBan = null;
+  }
+  return bek;
+}
 function kulubeX(k) {
   const ko = G.takas ? 1 - k : k;
   return ko === 0 ? W / 2 - 84 : W / 2 + 84;
@@ -2657,6 +2786,11 @@ function kartGoster(renk, p) {
   G.alt = (p.ad ? p.ad + " · " : "") + G.T[p.k].t.kod;
 }
 function faulVer(p, sh, arkadan) {
+  if (G.seri) {
+    p.kay = 0;
+    p.kayK = false;
+    return;
+  }
   {
     const gx2 = p.k ? MR : ML, kutu2 = Math.abs(sh.x - gx2) < 80 && Math.abs(sh.y - H / 2) < 70, hucum = Math.abs(sh.x - gx2) < W * 0.4;
     const ark = G.P.some((q) => q.k === sh.k && q !== sh && Math.hypot(q.x - sh.x, q.y - sh.y) < 45);
@@ -2685,12 +2819,13 @@ function faulVer(p, sh, arkadan) {
   let kart = null;
   const r = Math.random();
   if (p.kayK && arkadan) {
-    kart = r < 0.05 ? "K" : r < 0.45 ? "S" : null;
+    kart = r < 0.012 ? "K" : r < 0.28 ? "S" : null;
   } else if (p.kayK) {
-    kart = r < 0.15 ? "S" : null;
-  } else kart = r < 0.04 ? "S" : null;
-  if (kutu && !kart && Math.random() < 0.2) kart = "S";
-  const kavgaVar = (kart === "K" || p.kayK && arkadan && Math.random() < 0.3 || Math.random() < 0.02) && Math.random() < 0.5;
+    kart = r < 0.1 ? "S" : null;
+  } else kart = r < 0.035 ? "S" : null;
+  if (kutu && !kart && p.kayK && Math.random() < 0.1) kart = "S";
+  if (kart === "S" && p.sari >= 1 && Math.random() < 0.55) kart = null;
+  const kavgaVar = (kart === "K" || p.kayK && arkadan && Math.random() < 0.2 || Math.random() < 0.01) && Math.random() < 0.4;
   p.kayK = false;
   G.faz = "dur";
   G.fazT = 60;
@@ -2704,7 +2839,7 @@ function faulVer(p, sh, arkadan) {
       sariVer(p);
     } });
   }
-  if (kart === "S" && arkadan && Math.random() < 0.12) {
+  if (kart === "S" && arkadan && Math.random() < 0.015) {
     G.kuy.push({ b: "VAR KONTROLÜ", t: 110, f: () => {
       G.kulak = 110;
       G.alt = "Sarı kart: olası kırmızı";
@@ -2768,15 +2903,15 @@ function faulVer(p, sh, arkadan) {
     const kx = sh.x, ky = sh.y, kp = p.k;
     const kart1 = () => {
       const a = kavgaAday(1 - kp);
-      if (a) {
+      if (a && Math.random() < 0.5) {
         sariVer(a);
-      }
+      } else G.alt = "Hakem sözlü uyarı yaptı";
     };
     const kart2 = () => {
       const a = kavgaAday(kp);
-      if (a) {
+      if (a && Math.random() < 0.6) {
         sariVer(a);
-      }
+      } else G.alt = "Hakem sözlü uyarı yaptı";
     };
     G.kuy.unshift({ b: "ARBEDE!", t: 200, f: () => {
       G.kavga = { x: kx, y: ky, t: 200 };
@@ -2955,14 +3090,40 @@ function restartKur() {
     t.y = r.y;
   }
   G.P.forEach((p) => {
-    if (p !== taker && r.tip !== "KORNER" && r.tip !== "PENALTI" && !p.duvar && r.tip !== "FRİKİK") {
+    if (p !== taker && r.tip !== "KORNER" && r.tip !== "PENALTI" && !p.duvar) {
       const h = formHedef(p);
-      p.x += (h[0] - p.x) * 0.6;
-      p.y += (h[1] - p.y) * 0.6;
+      const w = r.tip === "FRİKİK" ? 0.85 : 0.6;
+      p.x += (h[0] - p.x) * w;
+      p.y += (h[1] - p.y) * w;
+      p.yer = 0;
     }
   });
+  if (r.tip === "FRİKİK") {
+    const sik = G.P.filter((p) => p !== taker && !p.duvar);
+    sik.forEach((p, i) => {
+      sik.forEach((q) => {
+        if (q === p) return;
+        const dx = p.x - q.x, dy = p.y - q.y, d = Math.hypot(dx, dy);
+        if (d < 7) {
+          const a = d ? Math.atan2(dy, dx) : i;
+          p.x = clamp(p.x + Math.cos(a) * (7 - d), ML + 4, MR - 4);
+          p.y = clamp(p.y + Math.sin(a) * (7 - d), MT + 4, MB - 4);
+        }
+      });
+    });
+    G.P.forEach((p) => {
+      if (p.k !== r.k && !p.duvar && p.rol !== "GK") {
+        const dx = p.x - r.x, dy = p.y - r.y, d = Math.hypot(dx, dy) || 1;
+        if (d < 46) {
+          p.x = clamp(r.x + dx / d * 48, ML + 4, MR - 4);
+          p.y = clamp(r.y + dy / d * 48, MT + 4, MB - 4);
+        }
+      }
+    });
+  }
 }
-function restartAt(p, sut) {
+function restartAt(p, sut, ortaMi) {
+  G.restKilit = 30;
   const r = G.restart;
   if (!r) return;
   if (r.tip === "KORNER") {
@@ -3011,6 +3172,11 @@ function restartAt(p, sut) {
   if (r.tip === "FRİKİK") {
     G.duvarTop = { P: G.P.filter((q) => q.duvar && q.k !== p.k), t: 50, sans: 0.62 };
     G.P.forEach((q) => q.duvar = 0);
+    if (ortaMi) {
+      G.restart = null;
+      orta(p);
+      return;
+    }
     const gx = p.k ? ML : MR;
     const d = Math.hypot(gx - p.x, H / 2 - p.y);
     if (sut || p.k !== G.human && d < 170 && Math.random() < 0.55) {
@@ -3048,6 +3214,7 @@ function guncelle() {
       if ((IN.pasE || IN.sutE) && G.tekrarUz && G.fazT <= G.tekrarUz) G.fazT = 1;
     }
     yerHepsi();
+    if (G.faz === "dur" && degBekle()) G.fazT = Math.max(G.fazT, 2);
     if (G.faz === "dur" && G.itiraz) itirazGuncelle();
     if (G.hakemIs && --G.hakemIs.t <= 0) G.hakemIs = null;
     if (G.faz === "dur" && G.kavga) kavgaGuncelle();
@@ -3193,7 +3360,8 @@ function guncelle() {
     const r = G.restart;
     r.bek--;
     if (r.k === G.human && (!G.tek || r.taker.oid === G.tek)) {
-      if (IN.pasE || IN.araE || IN.ortaE) restartAt(r.taker, false);
+      if (IN.ortaE && (r.tip === "FRİKİK" || r.tip === "TAÇ")) restartAt(r.taker, false, true);
+      else if (IN.pasE || IN.araE || IN.ortaE) restartAt(r.taker, false);
       else if (IN.sutE) restartAt(r.taker, true);
       else if (r.tip === "TAÇ" || r.tip === "KORNER" || r.tip === "FRİKİK") {
         const ix = IN.r - IN.l, iy = IN.d - IN.u;
@@ -3270,7 +3438,7 @@ function guncelle() {
         }
       } else {
         G.sarj = 0;
-        if (IN.ortaE && p.kay <= 0 && !(p.kayB > 0)) {
+        if (IN.ortaE && p.kay <= 0 && !(p.kayB > 0) && !(G.restKilit > 0)) {
           p.kay = 9;
         }
       }
@@ -3462,6 +3630,7 @@ function guncelle() {
       }
     }
   });
+  if (G.restKilit > 0) G.restKilit--;
   if (G.ofs && --G.ofs.t <= 0) G.ofs = null;
   if (G.top.sahip) istSay("top", G.top.sahip.k);
   if (G.penKontrol && --G.penKontrol.t <= 0) G.penKontrol = null;
@@ -3964,7 +4133,7 @@ function cizIc() {
   cozunurluk();
   if (!saha) saha = sahaCiz();
   const t = G.top;
-  const odak = G.isinma && G.faz === "devre" && G.fazT < 450 && G.fazT > 150 ? { x: W / 2, y: H / 2 + 20 } : G.hocaT != null && G.hocaT < 200 && (G.faz === "toren" || G.faz === "macsonu") ? { x: W / 2, y: MB - 60 } : G.faz === "basla" && G.ikinciCikis || G.faz === "devre" && G.devreYuru ? { x: W / 2, y: (G.cikisOy || MB) - 20 } : G.faz === "toren" && G.toren ? { x: W / 2, y: G.toren.oy - 10 } : G.kesinti && G.mesale ? G.mesale : varda() && G.hakem ? { x: VAR_X, y: VAR_Y - 20 } : G.faz === "gol" && G.golP && G.P.indexOf(G.golP) >= 0 ? G.golP : (G.faz === "dur" || G.faz === "macsonu") && G.kavga ? G.kavga : G.faz === "macsonu" ? { x: W / 2, y: H / 2 + 40 } : t;
+  const odak = G.isinma && G.faz === "devre" && G.fazT < 450 && G.fazT > 150 ? { x: W / 2, y: H / 2 + 20 } : G.hocaT != null && G.hocaT < 200 && (G.faz === "toren" || G.faz === "macsonu") ? { x: W / 2, y: MB - 60 } : G.faz === "basla" && G.ikinciCikis || G.faz === "devre" && G.devreYuru ? { x: W / 2, y: (G.cikisOy || MB) - 20 } : G.faz === "toren" && G.toren ? { x: W / 2, y: G.toren.oy - 10 } : G.kesinti && G.mesale ? G.mesale : varda() && G.hakem ? { x: VAR_X, y: VAR_Y - 20 } : G.faz === "gol" && G.golP && G.P.indexOf(G.golP) >= 0 ? G.golP : (G.faz === "dur" || G.faz === "macsonu") && G.kavga ? G.kavga : G.faz === "macsonu" && G.kupaKap ? { x: W / 2, y: H / 2 + 40 } : G.faz === "macsonu" ? { x: W / 2, y: H / 2 + 40 } : t;
   let camX = clamp(odak.x - VW / 2, 0, W - VW), camY = clamp(odak.y - VH / 2, 0, H - VH);
   if (G.sallan > 0) {
     G.sallan--;
@@ -4474,6 +4643,37 @@ function cizIc() {
     cx.fillRect(VW / 2 - w / 2, 36, w, 10);
     cx.fillStyle = "#2ecc71";
     cx.fillText(G.degB.txt, VW / 2 - w / 2 + 5, 38);
+  }
+  if (G.faz === "macsonu" && (G.kupaKap || G.konfeti)) {
+    const odx = Math.round(Math.max(0, Math.min(W - VW, W / 2 - VW / 2))), ody = Math.round(Math.max(0, Math.min(H - VH, H / 2 + 40 - VH / 2)));
+    cx.save();
+    cx.translate(-odx, -ody);
+    if (G.konfeti) G.konfeti = G.konfeti.filter((c) => {
+      c.y += c.vy;
+      c.x += c.vx + Math.sin((G.kare + c.y) * 0.1) * 0.3;
+      cx.fillStyle = c.c;
+      cx.fillRect(Math.round(c.x), Math.round(c.y), 2, 1);
+      return c.y < H / 2 + 60;
+    });
+    const K = G.kupaKap;
+    if (K && G.P.indexOf(K) >= 0) {
+      const [tur, rk] = kupaTur(G.finalAd), h = KUPA_HAR[tur] || KUPA_HAR.kupa, C = { A: rk[0], B: rk[1], C: "#5a3d1e" }, up = G.kupaKalk ? Math.floor(G.kare / 12) % 2 ? 4 : 0 : -4, x0 = Math.round(K.x) - 5, y0 = Math.round(K.y) - 24 - up;
+      if (G.kupaKalk) {
+        cx.fillStyle = "#f1c27d";
+        cx.fillRect(x0 + 1, y0 + h.length, 1, 4);
+        cx.fillRect(x0 + 8, y0 + h.length, 1, 4);
+      }
+      h.forEach((row, y) => {
+        for (let x = 0; x < row.length; x++) {
+          const c = C[row[x]];
+          if (c) {
+            cx.fillStyle = c;
+            cx.fillRect(x0 + x, y0 + y, 1, 1);
+          }
+        }
+      });
+    }
+    cx.restore();
   }
   if (G.kosan) cx.save(), cx.translate(-Math.round(Math.max(0, Math.min(W - VW, (G.golP || G.top).x - VW / 2))), -Math.round(Math.max(0, Math.min(H - VH, (G.golP || G.top).y - VH / 2)))), cizKosan(), cx.restore();
   if (G.faz === "macsonu") {
@@ -5073,7 +5273,7 @@ function koTur(sim) {
     return;
   }
   let opts = null;
-  if (final) opts = { eleme: { ilk: [0, 0] } };
+  if (final) opts = { eleme: { ilk: [0, 0] }, finalAd: ["Şampiyonlar Ligi", "Avrupa Ligi", "Konferans Ligi"][s.ki] };
   else if (ko.ayak === 2 && e[2]) opts = { eleme: { ilk: s.ben === e[0] ? [e[2][1], e[2][0]] : [e[2][0], e[2][1]] } };
   benimMac(e[0], e[1], s.ben, (sk, pw) => {
     if (!sk) {
@@ -6668,7 +6868,7 @@ function olayOyna(sim) {
     }
     sonucGoster(TT(m[0]), TT(m[1]), son2, () => bitir(son2, olay || []), pen && m[0] !== ben ? [pen[1], pen[0]] : pen, olay);
   };
-  macBaslat(TT(ben), TT(rak), { sure: 60 * 150, yt: true, eleme, dep: m[0] !== ben, tema: c.milli ? "MILLI" : ["UCL", "UEL", "UECL"].includes(c.kod) ? c.kod : c.kod === "USK" ? "UCL" : s.lig, kadro: [kadroOf(s, ben), kadroOf(s, rak)] });
+  macBaslat(TT(ben), TT(rak), { sure: 60 * 150, yt: true, eleme, finalAd: a.tur === "Final" ? c.ad : null, dep: m[0] !== ben, tema: c.milli ? "MILLI" : ["UCL", "UEL", "UECL"].includes(c.kod) ? c.kod : c.kod === "USK" ? "UCL" : s.lig, kadro: [kadroOf(s, ben), kadroOf(s, rak)] });
 }
 function menajerFormu() {
   ekran("kar");
