@@ -377,7 +377,7 @@ function macBaslat(ev, dep, opts) {
       if (t.i >= 1e4 && typeof milliKadro === "function") tam = milliKadro(t.i - 1e4);
       else if (ALL[t.i] === t) {
         const s0 = typeof KRY === "function" ? KRY() : null;
-        tam = s0 && s0.ti === t.i && s0.tr ? takimKadro(t.i, s0) : takimKadro(t.i, { tr: {} });
+        tam = s0 && s0.tr ? takimKadro(t.i, s0) : takimKadro(t.i, { tr: {} });
       }
     } catch (e) {
     }
@@ -698,6 +698,7 @@ function oyuncuDegis(k, p, j) {
     }
     if (G.kont === p) G.kont = null;
   }
+  G.olay.push({ tip: "giris", oid: y.id, ad: y.ad, k: oi(k), dk: Math.min(120, Math.floor(G.kare / G.top_kare * 90) + 1) });
   const eskiP = p;
   {
     const i0 = G.P.indexOf(p);
@@ -3280,7 +3281,7 @@ function guncelle() {
   }
   if (G.faz === "bitti") return;
   if (varPenaltiBekle()) return;
-  if (G.olayPlan && G.olayPlan.length && G.faz === "oyun" && !G.restart && !G.seri && G.devre <= 2) {
+  if (G.olayPlan && G.olayPlan.length && G.faz === "oyun" && !G.restart && !G.seri && G.devre <= 2 && !G.penKontrol && !(G.restKilit > 0) && G.top.x > W * 0.33 && G.top.x < W * 0.67 && Math.hypot(G.top.vx, G.top.vy) < 2.5 && G.top.z < 2) {
     const dk = Math.floor(G.kare / G.top_kare * 90);
     G.olayPlan = G.olayPlan.filter((o) => !(o.dk < 45 && G.devre >= 2));
     const i = G.olayPlan.findIndex((o) => dk >= o.dk && (o.dk < 45 ? G.devre === 1 : G.devre === 2));
@@ -5331,6 +5332,18 @@ function KRY() {
 function krKaydet(s) {
   kayit("kariyer", s);
 }
+function adTekil(L) {
+  const g = {};
+  L.forEach((p) => {
+    if (g[p.ad]) {
+      const ad = p.ad.split(" ");
+      const harf = "ABCDEFGHİKMNRST"[p.id % 15];
+      p.ad = ad.length > 1 ? ad[0] + " " + harf + ". " + ad.slice(1).join(" ") : p.ad + " " + harf + ".";
+    }
+    g[p.ad] = 1;
+  });
+  return L;
+}
 function takimKadro(ti, s) {
   s = s || KRY();
   const baz = bazKadro(ti).filter((p) => !(s && s.tr && s.tr[p.id] !== void 0 && s.tr[p.id] !== ti));
@@ -5338,7 +5351,7 @@ function takimKadro(ti, s) {
     const p = bazKadro(Math.floor(id / 100)).find((x) => x.id == id);
     return p;
   }).filter(Boolean) : [];
-  return baz.concat(gelen);
+  return adTekil(baz.concat(gelen));
 }
 function ilk11(kadro) {
   const al = (m, n) => kadro.filter((p) => p.mv === m).sort((a, b) => b.g - a.g).slice(0, n);
@@ -5378,7 +5391,24 @@ function istEkle(s, oid, alan, n) {
 function benimIlk11(s) {
   const u = kadroUygun(s, s.ti);
   if (s.kadroSec && s.kadroSec.length) {
-    const sel = s.kadroSec.map((id) => u.find((p) => p.id == id)).filter(Boolean);
+    let sel = s.kadroSec.map((id) => u.find((p) => p.id == id)).filter((p, i, a) => p && a.indexOf(p) === i);
+    if (!sel.some((p) => p.mv === "KL")) {
+      const kl = u.filter((p) => p.mv === "KL" && !sel.includes(p)).sort((a, b) => b.g - a.g)[0];
+      if (kl) {
+        if (sel.length >= 11) sel.pop();
+        sel.unshift(kl);
+      }
+    }
+    const kls = sel.filter((p) => p.mv === "KL");
+    if (kls.length > 1) sel = sel.filter((p) => p.mv !== "KL" || p === kls[0]);
+    if (sel.length < 11) {
+      const oto = ilk11(u);
+      for (const p of oto) {
+        if (sel.length >= 11) break;
+        if (!sel.includes(p) && p.mv !== "KL") sel.push(p);
+      }
+    }
+    sel = sel.slice(0, 11);
     if (sel.length === 11) return ilk11(sel);
   }
   return ilk11(u);
@@ -5390,7 +5420,16 @@ function ilk11Sec(id) {
     alert("Bu oyuncu cezalı ya da sakat, oynayamaz.");
     return;
   }
-  let L = s.kadroSec && s.kadroSec.length ? s.kadroSec.filter((x) => u.some((p) => p.id == x)) : benimIlk11(s).map((p) => p.id);
+  let L = s.kadroSec && s.kadroSec.length ? s.kadroSec.filter((x, i, a) => u.some((p) => p.id == x) && a.indexOf(x) === i) : benimIlk11(s).map((p) => p.id);
+  {
+    const yeni = u.find((p) => p.id == id);
+    if (yeni && yeni.mv === "KL" && !L.some((x) => x == id)) {
+      L = L.filter((x) => {
+        const q = u.find((p) => p.id == x);
+        return !q || q.mv !== "KL";
+      });
+    }
+  }
   if (L.some((x) => x == id)) L = L.filter((x) => x != id);
   else {
     if (L.length >= 11) {
@@ -5722,10 +5761,10 @@ function kariyerEkran(sekme) {
     h += `<div class="gec" style="max-width:560px">${s.haber.slice(-10).reverse().join("<br>")}</div><button class="btn gri" onclick="if(confirm('Kariyer silinsin mi?')){kayit('kariyer',{});kariyerBasla();}">KARİYERİ SIFIRLA</button>`;
   }
   if (sekme === "kadro") {
-    const k = takimKadro(s.ti, s), x = benimIlk11(s);
+    const k = takimKadro(s.ti, s), uy = kadroUygun(s, s.ti), x = s.kadroSec && s.kadroSec.length ? s.kadroSec.map((id) => uy.find((p) => p.id == id)).filter(Boolean) : benimIlk11(s);
     {
       const sec = s.kadroSec && s.kadroSec.length ? s.kadroSec.filter((id) => kadroUygun(s, s.ti).some((p) => p.id == id)).length : 0;
-      h += `<div class="sonra" style="font-size:9px">İLK 11: ${s.kadroSec && s.kadroSec.length ? sec === 11 ? "✅ Senin seçimin" : "✏️ Seçim yapılıyor " + sec + "/11 (11 olunca geçerli, şimdilik otomatik)" : "🤖 Otomatik (en güçlüler)"} <button class="tab" onclick="ilk11Oto()">OTOMATİK</button></div>`;
+      h += `<div class="sonra" style="font-size:9px">İLK 11: ${s.kadroSec && s.kadroSec.length ? sec === 11 ? "✅ Senin seçimin" : "✏️ Seçim yapılıyor " + sec + "/11 (eksik yerleri maçta oyun en iyilerle doldurur)" : "🤖 Otomatik (en güçlüler)"} <button class="tab" onclick="ilk11Oto()">OTOMATİK</button></div>`;
     }
     h += `<div class="sonra" style="font-size:8px">Takım gücü: ${takimGucu(s.ti, s)} · Vurgulu = ilk 11 · (K) = kiralık · M maç, G gol, A asist</div><table><tr><th>Mv</th><th style="text-align:left">Oyuncu</th><th>Yaş</th><th>Güç</th><th>M</th><th>G</th><th>A</th><th>🟨</th><th>🟥</th><th>Değer</th><th></th></tr>` + k.sort((a, b) => MVK.indexOf(a.mv) - MVK.indexOf(b.mv) || b.g - a.g).map((p) => {
       const r = s.ist[p.id] || { m: 0, g: 0, a: 0, s: 0, k: 0 }, kr = s.kira[p.id] !== void 0;
@@ -5892,7 +5931,7 @@ function kariyerMac(sim) {
     });
     if (olay) {
       ilk11(takimKadro(m[0], s)).concat(ilk11(takimKadro(m[1], s))).forEach((p) => istEkle(s, p.id, "m"));
-      olay.forEach((o) => istEkle(s, o.oid, { gol: "g", asist: "a", sari: "s", kirmizi: "k" }[o.tip]));
+      olay.forEach((o) => istEkle(s, o.oid, { gol: "g", asist: "a", sari: "s", kirmizi: "k", giris: "m" }[o.tip]));
     }
     const benSk = m[0] === ben ? sk : [sk[1], sk[0]];
     guvenGuncelle(s, benSk, rak, dr);
@@ -6821,7 +6860,7 @@ function olayOyna(sim) {
       if (olay) {
         kadroOf(s, ben).forEach((p) => istEkle(s, p.id, "m"));
         olay.forEach((o) => {
-          if (o.oid != null && o.oid < 9e5) istEkle(s, o.oid, { gol: "g", asist: "a", sari: "s", kirmizi: "k" }[o.tip]);
+          if (o.oid != null && o.oid < 9e5) istEkle(s, o.oid, { gol: "g", asist: "a", sari: "s", kirmizi: "k", giris: "m" }[o.tip]);
         });
       } else simOlaylar(s, ben, m[0] === ben ? sk[0] : sk[1]);
       const bs = m[0] === ben ? sk : [sk[1], sk[0]];
@@ -6903,7 +6942,9 @@ function teklifUret(s, sira) {
   s.teklif = [];
   const it = s.men.itibar;
   const hedef = 58 + it * 0.32;
-  const kl = ALL.filter((t) => t.lig !== "DIG" && t.i !== s.ti && Math.abs(t.rt - hedef) < 4).sort(() => Math.random() - 0.5).slice(0, Math.random() < 0.7 ? 2 : 1);
+  const kar = (a) => a.sort(() => Math.random() - 0.5);
+  const ust = kar(ALL.filter((t) => t.lig !== "DIG" && t.i !== s.ti && Math.abs(t.rt - hedef) < 4)), orta2 = kar(ALL.filter((t) => t.lig !== "DIG" && t.i !== s.ti && t.rt < hedef - 4 && t.rt >= hedef - 14)), proje = kar(ALL.filter((t) => t.lig !== "DIG" && t.i !== s.ti && t.rt < hedef - 14 && t.rt >= hedef - 24));
+  const kl = [ust[0], orta2[0], Math.random() < 0.5 ? proje[0] : orta2[1]].filter(Boolean).slice(0, Math.random() < 0.3 ? 2 : 3);
   kl.forEach((t) => s.teklif.push({ tip: "k", i: t.i }));
   if (!s.milli && Math.random() < 0.35 + it / 200) {
     const ml = MILLI.filter((m) => YONETILIR(m) && m.rt <= 60 + it * 0.32 && m.rt >= 48 + it * 0.25).sort(() => Math.random() - 0.5).slice(0, Math.random() < 0.5 ? 2 : 1);
