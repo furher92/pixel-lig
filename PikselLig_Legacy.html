@@ -632,12 +632,13 @@ function sutCek(p, guc2, power) {
   istSay("sut", p.k);
   const gx = p.k ? ML - 4 : MR + 4;
   const gk = G.P.find((q) => q.k !== p.k && q.rol === "GK");
-  const yon = Math.abs(p.dy) > 0.2 ? Math.sign(p.dy) : gk && gk.y > H / 2 ? -1 : 1;
-  const uz = Math.abs(gx - p.x), hata = uz / 140 * (1.15 - p.rt / 100) * 14;
+  const yi = p.k === G.human && (IN.u || IN.d) ? Math.sign((IN.d || 0) - (IN.u || 0)) : 0;
+  const yon = yi || (Math.abs(p.dy) > 0.35 ? Math.sign(p.dy) : gk && gk.y > H / 2 ? -1 : 1);
+  const uz = Math.abs(gx - p.x), hata = uz / 150 * (1.12 - p.rt / 100) * 9;
   const hedefY = H / 2 + yon * (GW / 2 - 5) * rnd(0.35, 1) + rnd(-hata, hata);
   if ((power ? hedefY : hedefY) > GY1 + 1 && hedefY < GY2 - 1) istSay("isa", p.k);
   if (power) {
-    const hy = hedefY + rnd(-6, 6) * (uz > 140 ? 1.8 : 1);
+    const hy = hedefY + rnd(-4, 4) * (uz > 140 ? 1.5 : 1);
     vurus(p, gx, hy, 9.6, false);
     G.top.vz = rnd(0.4, 1.6);
     G.top.guclu = 50;
@@ -3100,6 +3101,32 @@ function restartKur() {
     }
   });
   if (r.tip === "FRİKİK") {
+    const gx = r.k ? ML : MR, dir = r.k ? -1 : 1, dg = Math.hypot(gx - r.x, H / 2 - r.y);
+    if (dg < 280) {
+      const atk = G.P.filter((p) => p.k === r.k && p !== taker && p.rol !== "GK").sort((a, b) => Math.abs(b.x - (r.k ? MR : ML)) - Math.abs(a.x - (r.k ? MR : ML)));
+      const kal = atk.slice(-2);
+      atk.filter((p) => !kal.includes(p)).slice(0, 6).forEach((p, i) => {
+        p.x = gx - dir * (22 + i % 3 * 16 + rnd(0, 6));
+        p.y = H / 2 + (i < 3 ? -1 : 1) * (10 + i % 3 * 14) + rnd(-4, 4);
+        p.dx = dir;
+        p.dy = 0;
+      });
+      G.P.filter((q) => q.k !== r.k && q.rol !== "GK" && !q.duvar).forEach((q) => {
+        let m = null, md = 1e9;
+        G.P.forEach((a) => {
+          if (a.k !== r.k || a === taker || a.rol === "GK") return;
+          const d = Math.hypot(a.x - q.x, a.y - q.y);
+          if (d < md && Math.abs(a.x - gx) < 75) {
+            md = d;
+            m = a;
+          }
+        });
+        if (m && md < 140) {
+          q.x = m.x + dir * 6;
+          q.y = m.y + rnd(-3, 3);
+        }
+      });
+    }
     const sik = G.P.filter((p) => p !== taker && !p.duvar);
     sik.forEach((p, i) => {
       sik.forEach((q) => {
@@ -3129,6 +3156,8 @@ function restartAt(p, sut, ortaMi) {
   if (!r) return;
   if (r.tip === "KORNER") {
     vurus(p, (r.x < W / 2 ? ML + 28 : MR - 28) + rnd(-6, 6), H / 2 + rnd(-20, 20), 4.2, true);
+    const rr = Math.random();
+    if (rr < 0.08) G.kornerOlay = { t: 26, tip: rr < 0.035 ? "cek" : rr < 0.05 ? "el" : "hucum", k: p.k };
     return;
   }
   if (r.tip === "TAÇ") {
@@ -3540,6 +3569,19 @@ function guncelle() {
       if (p.cool <= 0 && t.z < (p.rol === "GK" ? 14 : 5) && d < (p.rol === "GK" ? 8 : 5)) {
         const s = Math.hypot(t.vx, t.vy);
         let al = false;
+        if (p.rol === "GK" && s >= 1.9 && t.son !== p.k && !G.seri && !t.penKurt && Math.abs(t.x - (p.k ? MR : ML)) < 70 && Math.random() < (s >= 3 ? 0.13 : 0.06)) {
+          t.vx = (p.k ? 1 : -1) * 1.2;
+          t.vy = (t.y < H / 2 ? -1 : 1) * rnd(1, 2);
+          t.vz = 4.2;
+          t.z = Math.max(t.z, 3);
+          t.son = p.k;
+          t.gkDene = p.id;
+          p.cool = 40;
+          p.mp = (p.mp || 0) + 1;
+          sesVurus(3);
+          G.degB = { t: 70, txt: "KALECİ KORNERE ÇELDİ!" };
+          return;
+        }
         if (s < 3.5) al = true;
         else if (p.rol === "GK" && t.penKurt) {
           const pk = G.penKontrol;
@@ -3554,6 +3596,19 @@ function guncelle() {
             const kose = Math.min(0.55, Math.abs(t.y - H / 2) / (GW / 2) * 0.55);
             const sav = (t.guclu > 0 ? 0.34 : 0.58) * (1 - kose * 0.8) + (p.rt - 75) / 200;
             if (Math.random() < sav) {
+              if (s >= 4.5 && Math.random() < 0.32 && !G.seri && !t.penKurt) {
+                t.vx = (p.k ? 1 : -1) * 1.2;
+                t.vy = (t.y < H / 2 ? -1 : 1) * rnd(1, 2);
+                t.vz = 4.2;
+                t.z = Math.max(t.z, 3);
+                t.son = p.k;
+                t.sonV = p;
+                t.gkDene = p.id;
+                p.mp = (p.mp || 0) + 1;
+                sesVurus(3);
+                G.degB = { t: 70, txt: "KALECİ KORNERE ÇELDİ!" };
+                return;
+              }
               al = true;
             } else if (Math.random() < 0.4) {
               t.vx = -t.vx * 0.35;
@@ -3632,6 +3687,27 @@ function guncelle() {
     }
   });
   if (G.restKilit > 0) G.restKilit--;
+  if (G.kornerOlay && G.faz === "oyun" && --G.kornerOlay.t <= 0) {
+    const KO = G.kornerOlay;
+    G.kornerOlay = null;
+    const t2 = G.top, gx2 = KO.k ? ML : MR;
+    if (Math.abs(t2.x - gx2) < 90) {
+      const def = G.P.filter((q) => q.k !== KO.k && q.rol !== "GK").sort((a, b) => Math.hypot(a.x - t2.x, a.y - t2.y) - Math.hypot(b.x - t2.x, b.y - t2.y))[0], atk = G.P.filter((q) => q.k === KO.k && q.rol !== "GK").sort((a, b) => Math.hypot(a.x - t2.x, a.y - t2.y) - Math.hypot(b.x - t2.x, b.y - t2.y))[0];
+      if (def && atk) {
+        if (KO.tip === "el") elPenalti(def);
+        else if (KO.tip === "cek") {
+          atk.x = clamp(atk.x, gx2 === MR ? MR - 70 : ML + 10, gx2 === MR ? MR - 10 : ML + 70);
+          atk.y = clamp(atk.y, H / 2 - 60, H / 2 + 60);
+          def.kayK = false;
+          faulVer(def, atk, false);
+          if (G.faz === "dur") G.alt = "Ceza sahasında formadan çekti!";
+        } else {
+          faulVer(atk, def, false);
+          if (G.faz === "dur") G.alt = "Hücum faulü: savunmacıyı itti";
+        }
+      }
+    }
+  }
   if (G.ofs && --G.ofs.t <= 0) G.ofs = null;
   if (G.top.sahip) istSay("top", G.top.sahip.k);
   if (G.penKontrol && --G.penKontrol.t <= 0) G.penKontrol = null;
@@ -3768,6 +3844,14 @@ function ai(p, set) {
       pasVer(p, false);
       return;
     }
+    {
+      const dir = k ? -1 : 1;
+      const kos = G.P.find((q) => q.k === k && q.rol === "FW" && q !== p && (q.x - p.x) * dir > 35 && Math.hypot(q.x - p.x, q.y - p.y) < 170);
+      if (kos && Math.random() < (Math.abs(kos.x - ofsHat(k)) < 12 ? 0.045 : 0.02)) {
+        araPas(p);
+        return;
+      }
+    }
     const wy = Math.sin(G.kare / 30 + p.id) * 0.4;
     set(goalX - p.x, (H / 2 - p.y) * 0.35 + wy * 20);
     return;
@@ -3899,7 +3983,12 @@ function ai(p, set) {
   }
   let h = formHedef(p);
   if (takimTopta && p.rol === "FW") {
-    h = [clamp(h[0] + (k ? -40 : 40), ML + 10, MR - 10), h[1]];
+    const dir = k ? -1 : 1, hat = ofsHat(k), faz = (G.kare + p.id * 97) % 360 / 360;
+    let x = h[0] + dir * 40;
+    if (Math.abs(t.x - (k ? ML : MR)) < W * 0.6) {
+      x = hat + dir * (faz < 0.55 ? rnd(2, 16) : -rnd(4, 12));
+    }
+    h = [clamp(x, ML + 10, MR - 10), h[1]];
   }
   const dx = h[0] - p.x, dy = h[1] - p.y;
   if (Math.hypot(dx, dy) < 3) set(0, 0);
