@@ -597,15 +597,21 @@ function golVar(gk,d){const penGol=!!(G.penKontrol&&!G.penKontrol.seri&&G.penKon
   G.kuy.push({b:'GOL GEÇERLİ!',t:80,f:()=>{golItiraz();varKarar();G.alt='✓ Faul yok · ✓ Ofsayt yok · ✓ Elle oynama yok';sesKalabalik(.45,2.5);G.restart={tip:'SANTRA',k:d};}});}
  else{G.kuy.push({b:'VAR KONTROLÜ',t:55,f:()=>{G.kulak=55;G.alt='Gol kontrol ediliyor';}});G.kuy.push({b:'GOL GEÇERLİ',t:40,f:()=>{G.alt='';G.restart={tip:'SANTRA',k:d};}});}}
 function elPenalti(def){const t=G.top,fk=1-def.k;t.sahip=null;t.vx=t.vy=t.vz=0;sesDuduk(1);G.faz='dur';G.fazT=40;G.banner='TOP ELE Mİ ÇARPTI?';G.alt='';G.kuy=[];G.varKayit=(G.kay||[]).slice(-90);
- G.kuy.push({b:'VAR KONTROLÜ',t:120,f:()=>{G.kulak=120;G.alt='Ceza sahasında olası elle oynama';}});
- if(Math.random()<.6){G.kuy.push({b:'HAKEM MONİTÖRE GİDİYOR',t:220,f:()=>{G.alt='Kol doğal olmayan pozisyonda mı?';}});
+ G.kuy.push({b:'VAR KONTROLÜ',t:230,f:()=>{G.kulak=230;G.alt='Herkes bekliyor · ceza sahasında olası elle oynama';}});
+ if(Math.random()<.6){G.kuy.push({b:'HAKEM MONİTÖRE GİDİYOR',t:400,f:()=>{G.alt='Kol doğal olmayan pozisyonda mı?';}});
   G.kuy.push({b:'ELLE OYNAMA: PENALTI!',t:100,f:()=>{varKarar();G.penFaul=(G.varKayit||[]).slice(-36);G.alt=(def.ad||'')+' kolla oynadı';if(Math.random()<.4){sariVer(def);}sesKalabalik(.4,2);G.restart={tip:'PENALTI',k:fk,x:fk?ML+55:MR-55,y:H/2};}});}
  else G.kuy.push({b:'KONTROL TAMAM: ELLE OYNAMA YOK',t:90,f:()=>{G.alt='Kol vücuda yakındı';G.restart={tip:'KORNER',k:fk,x:def.k?MR-2:ML+2,y:t.y<H/2?MT+2:MB-2};}});}
-function varPenaltiBekle(){const V=G.varBek;if(!V||G.faz!=='oyun')return false;if(--V.t>0)return false;G.varBek=null;const t=G.top;
- t.sahip=null;t.vx=t.vy=t.vz=0;sesDuduk(2);G.faz='dur';G.fazT=40;G.banner='VAR: OYUN DURDURULDU';G.alt='Ceza sahasındaki pozisyon inceleniyor';G.kuy=[];G.varKayit=V.kay;
- G.kuy.push({b:'HAKEM MONİTÖRE GİDİYOR',t:220,f:()=>{G.alt='Olası penaltı: saha kenarı incelemesi';}});
- if(Math.random()<.55)G.kuy.push({b:'KARAR: PENALTI!',t:100,f:()=>{varKarar();G.alt='Müdahale topa değil ayağa';sesKalabalik(.4,2);G.restart={tip:'PENALTI',k:V.k,x:V.k?ML+55:MR-55,y:H/2};}});
- else G.kuy.push({b:'KARAR: PENALTI YOK',t:90,f:()=>{varKarar();G.alt='Temiz müdahale, oyun hakem topuyla sürüyor';G.restart={tip:'HAKEM TOPU',k:1-V.k,x:V.k?MR-40:ML+40,y:H/2};}});return true;}
+function varPenaltiBekle(){const V=G.varBek;if(!V||G.faz!=='oyun')return false;if(--V.t>0)return false;varPenIncele(null,'');return true;}
+function varPenDur(){const V=G.varBek;if(!V||G.faz!=='dur'||!G.restart||V.dur)return false;const r=G.restart;if(!['KORNER','AUT','TAÇ','FRİKİK'].includes(r.tip))return false;varPenIncele(Object.assign({},r),G.banner||r.tip);return true;}
+function varPenIncele(sonra,ad){const V=G.varBek;G.varBek=null;if(!V)return;V.dur=1;const t=G.top;t.sahip=null;t.vx=t.vy=t.vz=0;if(!sonra)sesDuduk(2);
+ G.faz='dur';G.fazT=40;G.banner='VAR KONTROLÜ';G.restart=null;G.kuy=[];G.varKayit=V.kay;G.alt='Hakem oyunu başlatmıyor · ceza sahasındaki temas kontrol ediliyor';
+ G.kuy.push({b:'VAR KONTROLÜ',t:240,f:()=>{G.kulak=240;sesKalabalik(.06,3);G.alt='Herkes bekliyor · VAR olası penaltıyı inceliyor';}});
+ if(Math.random()<.5){G.kuy.push({b:'HAKEM MONİTÖRE GİDİYOR',t:420,f:()=>{G.varKayit=V.kay;G.alt='Hakem pozisyonu farklı açılardan uzun uzun izliyor';}});
+  if(Math.random()<.75)G.kuy.push({b:'KARAR: PENALTI!',t:100,f:()=>{varKarar();G.alt='Müdahale topa değil ayağa';sesKalabalik(.4,2);itirazBasla(1-V.k,.8);G.restart={tip:'PENALTI',k:V.k,x:V.k?ML+55:MR-55,y:H/2};}});
+  else G.kuy.push({b:'KARAR DEĞİŞMEDİ',t:90,f:()=>{varKarar();devamEt();}});}
+ else G.kuy.push({b:'KONTROL TAMAM: PENALTI YOK',t:90,f:()=>devamEt()});
+ function devamEt(){const tx={KORNER:'Penaltı yok · oyun kornerle devam ediyor',AUT:'Penaltı yok · aut atışı',TAÇ:'Penaltı yok · taç atışı',FRİKİK:/OFSAYT/.test(ad)?'Penaltı yok · ofsayt kararı geçerli':'Penaltı yok · serbest vuruş'};
+  if(sonra){G.restart=sonra;G.alt=tx[sonra.tip]||'Penaltı yok';}else{G.alt='Temiz müdahale, oyun hakem topuyla sürüyor';G.restart={tip:'HAKEM TOPU',k:1-V.k,x:V.k?MR-40:ML+40,y:H/2};}}}
 function macSonuBasla(pen){if(G.faz==='macsonu'||G.faz==='bitti')return;const t=G.top;t.sahip=null;t.vx=t.vy=t.vz=0;
  G.faz='macsonu';G.msPen=pen;G.msE=0;G.banner='MAÇ SONU';G.alt='';G.restart=null;G.kuy=[];G.kavga=null;G.gorevli=[];G.uzT=null;sesDuduk(3);
  const sk=G.skor;let kaz=sk[0]>sk[1]?0:sk[1]>sk[0]?1:-1;if(kaz<0&&G.seri)kaz=G.seri.g[0]>G.seri.g[1]?0:1;G.msKaz=kaz;
@@ -1428,9 +1434,9 @@ function faulVer(p,sh,arkadan){if(G.seri){p.kay=0;p.kayK=false;return;}{const gx
  if(kutu){G.penFaul=(G.kay||[]).slice(-36);G.kuy.push({b:'PENALTI!',t:70,f:()=>{G.alt='Hakem penaltı noktasını gösterdi';}});
   const pAt=()=>{G.alt='';sesKalabalik(.35,2);G.restart={tip:'PENALTI',k:fk,x:fk?ML+55:MR-55,y:H/2};},pIptal=(ac,dal)=>{varKarar();G.alt=ac;G.penFaul=null;if(dal&&!sh.disari)sariVer(sh);G.restart={tip:'AUT',k:p.k,x:p.k?MR-16:ML+16,y:H/2};};
   const hs=G.hk&&G.hk.km>1?.06:0,vr=Math.random();
-  if(vr<.45)G.kuy.push({b:'PENALTI ATILACAK',t:60,f:pAt});
-  else{G.kuy.push({b:'VAR KONTROLÜ',t:110,f:()=>{G.kulak=110;G.varKayit=G.penFaul;G.alt='Penaltı pozisyonu kontrol ediliyor';}});
-   G.kuy.push({b:'HAKEM MONİTÖRE GİDİYOR',t:240,f:()=>{G.varKayit=G.penFaul;G.alt='Temas var mı, oyuncu kendini mi attı?';}});
+  if(vr<.45){G.kuy.push({b:'VAR KONTROLÜ',t:230,f:()=>{G.kulak=230;G.alt='Herkes bekliyor · VAR penaltı kararını kontrol ediyor';}});G.kuy.push({b:'KONTROL TAMAM: PENALTI',t:70,f:()=>{G.alt='VAR hakemin kararını onayladı';}});G.kuy.push({b:'PENALTI ATILACAK',t:60,f:pAt});}
+  else{G.kuy.push({b:'VAR KONTROLÜ',t:230,f:()=>{G.kulak=230;G.varKayit=G.penFaul;G.alt='Herkes bekliyor · penaltı pozisyonu kontrol ediliyor';}});
+   G.kuy.push({b:'HAKEM MONİTÖRE GİDİYOR',t:420,f:()=>{G.varKayit=G.penFaul;G.alt='Temas var mı, oyuncu kendini mi attı?';}});
    if(vr<.78-hs)G.kuy.push({b:'VAR: PENALTI ONAYLANDI',t:80,f:()=>{varKarar();pAt();G.alt='Temas net, karar doğru';}});
    else if(vr<.91-hs/2)G.kuy.push({b:'VAR: SİMÜLASYON!',t:100,f:()=>pIptal(sh.ad+' kendini yere attı — sarı kart',true)});
    else G.kuy.push({b:'VAR: PENALTI İPTAL',t:90,f:()=>pIptal('Teması başlatan hücum oyuncusu',false)});}}
@@ -1501,6 +1507,7 @@ function guncelle(){if(G.faz==='ozet'){ozetAdim();return;}
  if(G.faz==='onIsinma'){onIsinmaGuncelle();return;}
  if(G.faz==='toren'){torenGuncelle();return;}
  if(G.faz==='yazitura'){if(G.hakem)ytDizil(true);return;}
+ if(varPenDur())return;
  if(G.faz==='basla'||G.faz==='dur'||G.faz==='gol'||G.faz==='devre'){
   G.fazT--;if(G.faz==='dur'||G.faz==='devre')degKuyUygula();if(G.saglik&&G.faz==='dur')G.saglik.t++;if(G.faz==='gol'){fizik();golSevinc();if((IN.pasE||IN.sutE)&&G.tekrarUz&&G.fazT<=G.tekrarUz)G.fazT=1;}yerHepsi();if(G.faz==='dur'&&degBekle())G.fazT=Math.max(G.fazT,2);if(G.faz==='dur'&&G.itiraz)itirazGuncelle();if(G.hakemIs&&--G.hakemIs.t<=0)G.hakemIs=null;if(G.faz==='dur'&&G.kavga)kavgaGuncelle();if(G.faz==='dur'&&G.kesinti)kesintiGuncelle();if(G.faz==='devre'&&G.devreYuru)devreYuruGuncelle();if(G.faz==='basla'&&G.ikinciCikis)ikinciCikisGuncelle();if(G.hakem)hakemGuncelle();
   if(G.fazT<=0){
