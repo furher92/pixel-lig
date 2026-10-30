@@ -56,7 +56,7 @@ h1{font-size:20px;color:var(--sar);text-shadow:3px 3px 0 #c0392b;margin:18px 0 2
 .btn.gri{background:#3a4466}
 .row{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
 .row .btn{min-width:150px}
-.tabs{display:flex;flex-wrap:wrap;gap:4px;justify-content:center}
+.tabs{display:flex;flex-wrap:nowrap;gap:4px;justify-content:flex-start;overflow-x:auto;max-width:100%;padding:4px 2px 6px;-webkit-overflow-scrolling:touch;scrollbar-width:thin}.tabs>*{flex:0 0 auto;white-space:nowrap}
 .tab{font-family:inherit;font-size:9px;padding:8px 9px;background:#26304f;color:#fff;border:0;border-radius:3px}
 .tab.akt{background:var(--sar);color:#000}
 .liste{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:6px;width:100%;max-width:880px}
@@ -96,7 +96,7 @@ body>div[style*="position:fixed"][style*="justify-content:center"]{justify-conte
 #knob{position:absolute;left:50%;top:50%;width:12vmin;height:12vmin;margin:-6vmin 0 0 -6vmin;border-radius:50%;background:rgba(255,255,255,.45)}
 .mb{position:absolute;width:18vmin;height:18vmin;border-radius:50%;font-family:inherit;font-size:2.6vmin;line-height:1.2;color:#fff;border:3px solid rgba(255,255,255,.4);opacity:.82;padding:0;touch-action:none}
 .mb.on{transform:scale(.92);opacity:1}
-#bSut{right:4vmin;bottom:5vmin;width:23vmin;height:23vmin;font-size:3.2vmin;background:#d8402b}#bPas{right:29vmin;bottom:2vmin;background:#2b6cd8}.mb.k{width:14vmin;height:14vmin;font-size:2.2vmin}#bAra{right:31vmin;bottom:22vmin;background:#7b3fd1}#bOrta{right:9vmin;bottom:30vmin;background:#e08a12}#bKos{right:49vmin;bottom:4vmin;background:#2e9e4f}#bDeg{right:49vmin;bottom:20vmin;background:#555}
+#bSut{right:4vmin;bottom:5vmin;width:23vmin;height:23vmin;font-size:3.2vmin;background:#d8402b}#bPas{right:30vmin;bottom:3vmin;background:#2b6cd8}.mb.k{width:14vmin;height:14vmin;font-size:2.2vmin}#bAra{right:29vmin;bottom:23vmin;background:#7b3fd1}#bOrta{right:6vmin;bottom:31vmin;background:#e08a12}#bKos{right:20vmin;bottom:44vmin;background:#2e9e4f}#bDeg{right:29vmin;bottom:23vmin;background:#555}#mob .mb{transition:opacity .25s}#mob.sus .mb{opacity:.18}
 body.dik #oyun{top:auto;right:auto;bottom:auto;left:auto;left:0;top:0;width:100vh;height:100vw;transform-origin:top left;transform:rotate(90deg) translateY(-100%)}
 #cevir{display:none;position:absolute;left:50%;top:6px;transform:translateX(-50%);font-family:inherit;font-size:9px;padding:7px 10px;background:rgba(0,0,0,.6);color:#ffe14d;border:1px solid #555;border-radius:4px;z-index:5}
 @media (pointer:coarse){body.dik #cevir{display:block}}
@@ -117,7 +117,6 @@ body.dik #oyun{top:auto;right:auto;bottom:auto;left:auto;left:0;top:0;width:100v
  <button class="btn" style="background:#1f6fb2" onclick="oyuncuBasla()">OYUNCU KARİYERİ</button>
  <button class="btn" onclick="kupaMenu()">AVRUPA KUPALARI</button>
  <button class="btn" style="background:#8e44ad" onclick="ikiOyuncu()">👥 2 OYUNCU</button>
- <button class="btn gri" onclick="taktikModal()">📋 TAKTİK</button>
  <button class="btn gri" onclick="basarimEkran()">🏅 BAŞARIMLAR</button>
  <button class="btn gri" id="bZor" onclick="zorDegis()">ZORLUK: ORTA</button>
  <button class="btn gri" id="bGrf" onclick="grfDegis()">GRAFİK</button>
@@ -137,7 +136,7 @@ body.dik #oyun{top:auto;right:auto;bottom:auto;left:auto;left:0;top:0;width:100v
 <div id="oyun"><canvas id="cv" width="384" height="216"></canvas>
  <div id="mob"><div id="joyAlan"></div><div id="joy"><div id="knob"></div></div><button id="cevir">⤢ TAM EKRAN · YATAY</button><button class="mb" id="bPas">PAS</button><button class="mb" id="bSut">ŞUT</button><button class="mb k" id="bAra">ARA</button><button class="mb k" id="bOrta">ORTA/KAY</button><button class="mb k" id="bKos">KOŞ</button><button class="mb k" id="bDeg">DEĞ</button></div>
  <button id="bDur">II</button><button id="bSes" onclick="sesAcKapa()">SES</button>
- <div id="yt" style="position:absolute;top:0;right:0;bottom:0;left:0;background:rgba(0,0,0,.72);display:none;flex-direction:column;align-items:center;justify-content:center;gap:12px"></div>
+ <div id="yt" style="position:absolute;left:0;right:0;bottom:0;padding:8px 6px 10px;background:linear-gradient(transparent,rgba(0,0,0,.85) 30%);display:none;flex-direction:column;align-items:center;justify-content:flex-end;gap:6px"></div>
  <div id="durMenu"><div class="ligad">DURAKLATILDI</div><button class="btn" onclick="duraklat()">DEVAM</button><button class="btn" id="bSub" style="background:#1f6fb2" onclick="degPanel()">🔁 OYUNCU DEĞİŞİKLİĞİ</button><button class="btn" id="bTak" style="background:#2c7a3f" onclick="macTaktik()">📋 TAKTİK / TALİMAT</button><div id="degIc" style="display:none;max-height:62vh;overflow:auto;width:min(560px,96vw)"></div><button class="btn gri" onclick="macTerk()">MAÇTAN ÇIK</button></div>
 </div>
 <script>var __defProp = Object.defineProperty;
@@ -773,6 +772,381 @@ function ytBitir(santraRakip, sola) {
   G.fazT = 60;
   G.banner = "BAŞLAMA";
   sesDuduk(1);
+}
+const SOS_KUL = ["taraftar_1905x", "tribundeki_ses", "kuzeykale34", "golcu_dede", "pikselfan", "gece_vardiyasi", "eski_kaptan66", "maraton_mehmet", "ucuncu_yari", "kirmizi_sari_rh", "lacivert_ruh", "tribun_bebesi", "deplasman_kurdu", "son_dakika_fan", "ofsayt_degil", "kale_arkasi_07"];
+const SOS = {
+  ofl: ["GOOOOL! {dk}' {g}! {S}", "{g} ağları sarstı! {S}", "{dk}. dakikada {g}! {S}", "Ve top ağlarda! {g}! {S}"],
+  oflDerbi: ["DERBİDE GOL! {dk}' {g}! {S}", "Derbinin golü {g}'den! {S}", "{g} derbiye imzasını attı! {S}"],
+  bizim: ["{g} adam değil makine", "Bu takım bizim gururumuz", "Tribün yıkılıyor şu an!!", "Hocam bu oyunu bozma", "{g}'yi satan kulübü ayakta alkışlarım :)", "Ben demiştim bu maç bizim", "Formasını alıyorum yarın", "Komşuyu uyandırdım, değdi"],
+  bizimEsit: ["Geri döndük!! Daha bitmedi", "Bu takım pes etmez", "Hadi şimdi öne geç!"],
+  bizimGec: ["Son dakika golleri bizim işimiz", "Kalbim duracaktı", "Pes etmeyen kazanır!"],
+  onlar: ["Savunma yine uyuyor", "Hoca bu ne dizilim?", "Kaleci o topu çıkarmalıydı", "Daha çok vakit var, sakin olun", "Bu takımla şampiyonluk mu konuşuyoruz?", "Orta saha yok ki, top nasıl tutulsun", "Ben kapattım televizyonu"],
+  derbiBizim: ["Derbi bizim, şehir bizim!", "{R} taraftarı şu an kanal değiştiriyor :)", "Maç önü konuşanlar nerede?", "Bu derbi de bizden, alışın artık", "{R} kalecisine geçmiş olsun", "Şehrin rengi belli oldu!"],
+  derbiBizimDep: ["Kendi evlerinde sus pus oldular :)", "Deplasmanda tribünleri susturduk", "{R} stadı kütüphaneye döndü", "Ev sahibi olmak yetmiyor, futbol lazım"],
+  derbiOnlar: ["Hakem yine onlardan yana, ofsayt değil mi o??", "Derbiyi kaybedersek bu sezon biter", "Bu savunmayla derbi mi oynanır?", "Daha 90 dakika bitmedi, rövanşı biz alırız", "Sakin olun, derbi burada bitmez", "Gol öncesi faul var, VAR ne yapıyor?"],
+  notr: ["Maç çok güzel gidiyor", "Bu lig başka", "Kahvemi aldım, devam"]
+};
+function sosDoldur(t, o) {
+  return t.replace(/\{g\}/g, o.g).replace(/\{dk\}/g, o.dk).replace(/\{S\}/g, o.S).replace(/\{R\}/g, o.R);
+}
+function sosyalKur() {
+  if (!G || !G.T) return;
+  const go = G.olay.filter((o2) => o2.tip === "gol").slice(-1)[0];
+  if (!go) return;
+  const ok = go.k, kT = G.T[G.takas ? 1 - ok : ok], rT = G.T[G.takas ? ok : 1 - ok];
+  if (!kT || !rT) return;
+  const sk = sonSkor(), eT = G.T[G.takas ? 1 : 0], dT = G.T[G.takas ? 0 : 1];
+  const o = { g: (go.ad || "").split(" ").slice(-1)[0] || kT.t.kod, dk: go.dk || "", S: eT.t.kod + " " + sk[0] + "-" + sk[1] + " " + dT.t.kod, R: rT.t.ad };
+  const ev = ok === 0, fark = sk[ok] - sk[1 - ok], gec = (go.dk || 0) >= 85, d = !!G.derbi;
+  const kul = () => SOS_KUL[Math.random() * SOS_KUL.length | 0] + (Math.random() < 0.5 ? "" : Math.random() * 90 | 0);
+  const R = [];
+  const ekle = (k, a) => R.push({ k, ad: kul(), tx: sosDoldur(rs(a), o) });
+  ekle(ok, fark === 0 ? SOS.bizimEsit : gec ? SOS.bizimGec : SOS.bizim);
+  if (d) ekle(ok, ev ? SOS.derbiBizim : SOS.derbiBizimDep.concat(SOS.derbiBizim));
+  else ekle(ok, SOS.bizim);
+  ekle(1 - ok, d ? SOS.derbiOnlar : SOS.onlar);
+  if (Math.random() < 0.5) ekle(-1, SOS.notr);
+  else if (d) ekle(ok, SOS.derbiBizim);
+  G.sos = { t: 0, T: kT, kod: kT.t.kod, ofl: sosDoldur(rs(d ? SOS.oflDerbi : SOS.ofl), o), R, bg: 1200 + Math.random() * 4e3 | 0, rt: 300 + Math.random() * 1500 | 0, okT: G.T };
+}
+function sosSar(tx, w) {
+  const out = [];
+  let l = "";
+  tx.split(" ").forEach((s) => {
+    const n = l ? l + " " + s : s;
+    if (cx.measureText(n).width > w && l) {
+      out.push(l);
+      l = s;
+    } else l = n;
+  });
+  if (l) out.push(l);
+  return out;
+}
+function sosyalCiz() {
+  if (!G || !G.T) return;
+  if (G.faz === "oyun") {
+    const tot = G.skor[0] + G.skor[1];
+    if (G.sosN == null) G.sosN = tot;
+    if (tot > G.sosN) {
+      G.sosN = tot;
+      sosyalKur();
+    } else if (tot < G.sosN) G.sosN = tot;
+  }
+  const S = G.sos;
+  if (!S) return;
+  S.t++;
+  if (S.t > 620) {
+    G.sos = null;
+    return;
+  }
+  const a = Math.min(1, S.t / 12, (620 - S.t) / 20);
+  const W2 = 124, mob = matchMedia("(pointer:coarse)").matches, x = mob ? 4 : VW - W2 - 4;
+  let y = 40;
+  cx.save();
+  cx.globalAlpha = a * 0.95;
+  cx.textBaseline = "top";
+  cx.font = "5px monospace";
+  const kart = (h, ust, c1, ad, satir, alt) => {
+    cx.fillStyle = ust ? "rgba(250,250,252,.96)" : "rgba(236,238,244,.94)";
+    cx.fillRect(x, y, W2, h);
+    cx.fillStyle = c1;
+    cx.fillRect(x + 3, y + 3, 8, 8);
+    cx.fillStyle = "#111";
+    cx.fillText(ad, x + 14, y + 3);
+    cx.fillStyle = "#222";
+    satir.forEach((s, i) => cx.fillText(s, x + 14, y + 10 + i * 6));
+    if (alt) {
+      cx.fillStyle = "#667";
+      cx.fillText(alt, x + 14, y + h - 7);
+    }
+    y += h + 2;
+  };
+  cx.fillStyle = "rgba(25,120,230,.95)";
+  cx.fillRect(x, y, W2, 9);
+  cx.fillStyle = "#fff";
+  cx.fillText("Cıvıl · gündemde", x + 4, y + 2);
+  cx.fillText("#" + S.T.t.kod + "gol", x + W2 - cx.measureText("#" + S.T.t.kod + "gol").width - 4, y + 2);
+  y += 10;
+  const L = sosSar(S.ofl, W2 - 18), bg = Math.floor(S.bg * Math.min(1, S.t / 200)), rt = Math.floor(S.rt * Math.min(1, S.t / 220));
+  kart(19 + L.length * 6, 1, S.T.c1, "@" + S.T.t.kod.toLowerCase() + "_resmi", L, bg + " beğeni · " + rt + " paylaşım");
+  S.R.forEach((r, i) => {
+    if (S.t < 60 + i * 70) return;
+    const T = r.k < 0 ? null : S.okT[G.takas ? 1 - r.k : r.k], l = sosSar(r.tx, W2 - 18).slice(0, 3);
+    kart(9 + l.length * 6, 0, T ? T.c1 : "#888", "@" + r.ad, l, null);
+  });
+  cx.restore();
+}
+function yerdeKontrol() {
+  if (G.faz !== "oyun" || G.seri || G.restart || G.saglik) return false;
+  const t = G.top;
+  if (!G.yerKal && G.kare > 200 && Math.random() < 1 / 5200) {
+    const c = G.P.filter((p2) => p2.rol !== "GK" && p2 !== t.sahip && !p2.yer && !(p2.disari > 0) && !p2.sedye && Math.hypot(p2.x - t.x, p2.y - t.y) < 70 && Math.hypot(p2.x - t.x, p2.y - t.y) > 14);
+    if (c.length) {
+      const p2 = rs(c);
+      yereDus(p2, 0, 0, 2e3);
+      G.yerKal = { p: p2, t: 0 };
+      yorum((p2.ad || "Bir oyuncu") + " ikili mücadelede yerde kaldı", 1);
+    }
+  }
+  const Y = G.yerKal;
+  if (!Y) return false;
+  const p = Y.p;
+  if (G.P.indexOf(p) < 0 || !(p.yer > 0)) {
+    G.yerKal = null;
+    return false;
+  }
+  Y.t++;
+  const tehlike = Math.abs(t.x - (t.sahip ? t.sahip.k ? ML : MR : W / 2)) < 90;
+  if (Y.t < 150 || tehlike && Y.t < 330) return false;
+  G.yerKal = null;
+  const k2 = t.sahip ? t.sahip.k : t.son == null ? 0 : t.son;
+  t.sahip = null;
+  t.vx = t.vy = t.vz = 0;
+  sesDuduk(1);
+  G.faz = "dur";
+  G.fazT = 60;
+  G.banner = "OYUN DURDU";
+  G.alt = "Hakem, yerde kalan " + (p.ad || "oyuncu") + " için oyunu durdurdu";
+  G.kuy = [];
+  hakemIsaret("yon", 0);
+  G.restart = { tip: "HAKEM TOPU", k: k2, x: clamp(t.x, ML + 20, MR - 20), y: clamp(t.y, MT + 12, MB - 12) };
+  if (Math.random() < 0.45) sakatlikBasla(p);
+  else {
+    G.kuy.push({ b: "OYUNCU KALKTI", t: 90, f: () => {
+      p.yer = 0;
+      G.alt = (p.ad || "Oyuncu") + " ayağa kalktı, oyun hakem topuyla başlayacak";
+    } });
+  }
+  return true;
+}
+function tabletCiz() {
+  if (!G || G.human < 0 || G.faz !== "oyun" && G.faz !== "dur") return;
+  const dk = Math.floor(G.kare / G.top_kare * 90), pen = [18, 36, 58, 76];
+  const i = pen.findIndex((m) => dk >= m && dk < m + 3);
+  if (i < 0) {
+    G.tab = null;
+    return;
+  }
+  if (!G.tab || G.tab.i !== i) {
+    G.tab = { i, t: 0, mod: Math.random() < 0.4 ? "civil" : "analiz" };
+  }
+  const T = G.tab;
+  T.t++;
+  const a = Math.min(1, T.t / 15);
+  const mob = matchMedia("(pointer:coarse)").matches, w = 116, h = 64, x = mob ? VW - w - 4 : 4, y = 44;
+  cx.save();
+  cx.globalAlpha = a * 0.96;
+  cx.textBaseline = "top";
+  cx.fillStyle = "#16181f";
+  cx.fillRect(x, y, w, h);
+  cx.fillStyle = "#2a2e3a";
+  cx.fillRect(x + 2, y + 2, w - 4, h - 4);
+  cx.fillStyle = "#0d0f14";
+  cx.fillRect(x + 4, y + 9, w - 8, h - 13);
+  cx.font = "5px monospace";
+  cx.fillStyle = "#9fb3d1";
+  cx.fillText("TABLET · YARDIMCI ANTRENÖR", x + 5, y + 3);
+  const me = G.human, op = 1 - me, st = G.st, oM = G.takas ? 1 - me : me, oO = 1 - oM;
+  if (T.mod === "analiz") {
+    const tp = st.top[oM] + st.top[oO] || 1, yz = Math.round(st.top[oM] / tp * 100);
+    cx.fillStyle = "#fff";
+    const L = [["Topla oynama", "%" + yz + " - %" + (100 - yz)], ["Şut (isabet)", st.sut[oM] + "(" + st.isa[oM] + ") - " + st.sut[oO] + "(" + st.isa[oO] + ")"], ["xG", (st.xg[oM] || 0).toFixed(1) + " - " + (st.xg[oO] || 0).toFixed(1)], ["Korner", st.kor[oM] + " - " + st.kor[oO]]];
+    L.forEach((r, j) => {
+      cx.fillStyle = "#c8d2e0";
+      cx.fillText(r[0], x + 7, y + 12 + j * 8);
+      cx.fillStyle = "#ffe14d";
+      cx.fillText(r[1], x + w - 7 - cx.measureText(r[1]).width, y + 12 + j * 8);
+    });
+    cx.fillStyle = "#2ecc71";
+    cx.fillRect(x + 7, y + 46, (w - 14) * yz / 100, 2);
+    cx.fillStyle = "#e74c3c";
+    cx.fillRect(x + 7 + (w - 14) * yz / 100, y + 46, (w - 14) * (100 - yz) / 100, 2);
+    if (!T.ip) T.ip = yz < 45 ? "Öneri: orta sahada sayı az, pres yap" : st.sut[oO] > st.sut[oM] ? "Öneri: rakip kanatlardan etkili" : "Öneri: tempo iyi, böyle devam";
+    cx.fillStyle = "#8ab4ff";
+    cx.fillText(T.ip, x + 7, y + 52);
+  } else {
+    cx.fillStyle = "rgba(25,120,230,.95)";
+    cx.fillRect(x + 4, y + 9, w - 8, 7);
+    cx.fillStyle = "#fff";
+    cx.fillText("Cıvıl · diğer maçlar", x + 7, y + 10);
+    if (!T.L) {
+      const D = (G.diger || []).slice(0, 2).map((m) => {
+        const sa = m.ga.filter((z) => z <= dk).length, sb = m.gb.filter((z) => z <= dk).length;
+        return m.a + " " + sa + "-" + sb + " " + m.b + (sa + sb ? " · gol var!" : " · 0-0 sürüyor");
+      });
+      const me2 = G.T[me].t.kod, sk = sonSkor();
+      T.L = D.concat(["@" + rs(SOS_KUL) + ": " + me2 + " " + rs(["hocası tabletten ne bakıyor acaba", "bugün iyi oynuyor", "maçı koparmalı"])]).slice(0, 3);
+    }
+    T.L.forEach((s, j) => {
+      cx.fillStyle = j % 2 ? "#c8d2e0" : "#fff";
+      cx.fillText(s.slice(0, 30), x + 7, y + 19 + j * 13);
+      if (s.length > 30) cx.fillText(s.slice(30, 60), x + 7, y + 25 + j * 13);
+    });
+  }
+  cx.restore();
+}
+function sosTak(t) {
+  let f = 4e4 * Math.pow(10, 0.075 * (t.rt - 50));
+  try {
+    const s = KRY();
+    if (s && s.ti === t.i && s.form && s.form[t.i]) f *= 1 + s.form[t.i].filter((x) => x.r === "G").length * 4e-3;
+  } catch (e) {
+  }
+  return Math.round(f);
+}
+function sosSay(n) {
+  return n >= 1e6 ? (n / 1e6).toFixed(1).replace(".", ",") + " Mn" : n >= 1e3 ? (n / 1e3).toFixed(1).replace(".", ",") + " B" : String(n);
+}
+function sosEkran(ti, sek) {
+  const s = (() => {
+    try {
+      return KRY();
+    } catch (e) {
+      return null;
+    }
+  })();
+  if (ti == null) ti = s && s.ti != null ? s.ti : (ALL.find((t2) => t2.kod === "ASL") || ALL[0]).i;
+  const t = ALL[ti];
+  sek = sek || "gram";
+  const F = (s && s.form && s.form[ti] || []).slice(-9).reverse(), tak = sosTak(t), gon = 1800 + t.rt * 40 + ti * 37 % 900 + F.length, kod = t.kod.toLowerCase();
+  const sec = `<select onchange="sosEkran(+this.value,'${sek}')" style="font-family:inherit;font-size:9px;padding:4px;margin:4px">` + ALL.filter((x) => KADEME(x.lig) <= 1 || x.i === ti).map((x) => `<option value="${x.i}"${x.i === ti ? " selected" : ""}>${x.ad}</option>`).join("") + `</select>`;
+  const tab = (k, ad) => `<button class="btn${sek === k ? "" : " gri"}" style="font-size:9px;padding:6px 12px;min-width:0" onclick="sosEkran(${ti},'${k}')">${ad}</button>`;
+  const c1 = t.renk && t.renk[0] || t.c1 || "#1f6fb2";
+  let h = `<div style="display:flex;gap:6px;justify-content:center;flex-wrap:wrap">${tab("gram", "📷 Pikselgram")}${tab("civil", "🐦 Cıvıl")}</div>${sec}`;
+  const gonder = F.length ? F.map((x) => ({ ust: x.r === "G" ? "KAZANDIK" : x.r === "B" ? "BERABERE" : "MAĞLUBİYET", alt: "vs " + (ALL[x.rk] ? ALL[x.rk].kod : "") + " · " + x.sk, bg: x.r === "G" ? "#1e8449" : x.r === "B" ? "#b7950b" : "#922b21" })) : [["MAÇ GÜNÜ", "Hazırız", "#1f3a93"], ["ANTRENMAN", "Tesisler", "#2c3e50"], ["YENİ FORMA", "26/27", "#6c3483"], ["TARAFTAR", "Teşekkürler", "#a04000"], ["GOL", "Haftanın golü", "#1e8449"], ["ALTYAPI", "Geleceğimiz", "#117a65"]].map((a) => ({ ust: a[0], alt: a[1], bg: a[2] }));
+  if (sek === "gram") {
+    h += `<div style="max-width:420px;margin:6px auto;text-align:left"><div style="display:flex;align-items:center;gap:12px"><div style="width:56px;height:56px;border-radius:50%;background:${c1};border:3px solid #e1306c;display:flex;align-items:center;justify-content:center;font-size:10px;color:#fff">${t.kod}</div>
+  <div style="display:flex;gap:14px;font-size:9px;text-align:center"><div><b>${sosSay(gon)}</b><br>gönderi</div><div><b>${sosSay(tak)}</b><br>takipçi</div><div><b>${80 + ti * 13 % 220}</b><br>takip</div></div></div>
+  <div style="font-size:9px;margin:6px 0"><b>${kod}_resmi</b> ✔<br>${t.ad} resmi hesabı · ${ULKE && ULKE[ULK(t.lig)] || ""}</div>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:3px">` + gonder.map((g) => `<div style="aspect-ratio:1;background:${g.bg};display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:8px;color:#fff;text-align:center;padding:2px"><b>${g.ust}</b><span style="font-size:7px;opacity:.85">${g.alt}</span><span style="font-size:7px;opacity:.7">♥ ${sosSay(Math.round(tak * (8e-3 + Math.random() * 0.02)))}</span></div>`).join("") + `</div></div>`;
+  } else {
+    const o = (x) => ({ g: "", dk: "", S: t.kod + " " + x.sk + " " + (ALL[x.rk] ? ALL[x.rk].kod : ""), R: ALL[x.rk] ? ALL[x.rk].ad : "rakip" });
+    const L = (F.length ? F : [{ r: "B", sk: "0-0", rk: (ti + 1) % ALL.length }]).slice(0, 6);
+    h += `<div style="max-width:420px;margin:6px auto;text-align:left;font-size:9px">` + L.map((x) => {
+      const oo = o(x), ana = x.r === "G" ? "Galibiyet! " + oo.S + " · Bu üç puan sizin!" : x.r === "B" ? "Maç sona erdi: " + oo.S : "Maç sona erdi: " + oo.S + " · Toparlanacağız.";
+      const yor = [sosDoldur(rs(x.r === "G" ? SOS.bizim.concat(SOS.derbiBizim) : x.r === "M" ? SOS.onlar : SOS.notr), oo), sosDoldur(rs(x.r === "M" ? SOS.derbiBizim : SOS.derbiOnlar), oo)];
+      return `<div style="border-bottom:1px solid #334;padding:6px 0"><b style="color:#8ab4ff">@${kod}_resmi</b> ✔<br>${ana}<br><span style="opacity:.6">💬 ${sosSay(Math.round(tak * 4e-4))} · 🔁 ${sosSay(Math.round(tak * 1e-3))} · ♥ ${sosSay(Math.round(tak * 6e-3))}</span>` + yor.map((y, j) => `<div style="margin:3px 0 0 12px;opacity:.85">↳ <b>@${rs(SOS_KUL)}</b>: ${y}</div>`).join("") + `</div>`;
+    }).join("") + `</div>`;
+  }
+  document.querySelectorAll(".secModal").forEach((x) => x.remove());
+  pzM("📱 SOSYAL MEDYA", h, [{ t: "KAPAT", renk: "#555" }]);
+}
+function altReklam() {
+  if (!G || G.faz !== "oyun" || G.tekrar) return;
+  const dk = Math.floor(G.kare / G.top_kare * 90), an = [24, 52, 81].find((m) => dk === m || dk === m + 1);
+  if (an == null) {
+    G.altR = null;
+    return;
+  }
+  if (!G.altR || G.altR.m !== an) {
+    const RS = G._rs || (G._rs = rekStil());
+    G.altR = { m: an, t: 0, ad: rs(RS.ad), sl: rs(["Maçın sponsoru", "Bu maç size sunuluyor", "Resmi sponsor", "Devre arası kampanya"]) };
+  }
+  const A = G.altR;
+  A.t++;
+  if (A.t > 330) return;
+  const tm2 = SKB[G.tema] || SKB.GENEL, gir = Math.min(1, A.t / 18, (330 - A.t) / 18), mob = matchMedia("(pointer:coarse)").matches, y = mob ? 40 : VH - 16, w = 150, x = Math.round(VW / 2 - w / 2), yy = mob ? y : Math.round(y + (1 - gir) * 18);
+  cx.save();
+  cx.globalAlpha = mob ? gir : 1;
+  cx.fillStyle = tm2[0];
+  cx.fillRect(x, yy, w, 12);
+  cx.fillStyle = tm2[1];
+  cx.fillRect(x, yy, 3, 12);
+  cx.fillRect(x + w - 3, yy, 3, 12);
+  cx.fillStyle = "#fff";
+  cx.fillRect(x + 3, yy, 46, 12);
+  cx.font = "5px monospace";
+  cx.textBaseline = "middle";
+  cx.fillStyle = "#222";
+  cx.fillText(A.sl.toLocaleUpperCase("tr"), x + 5, yy + 6, 42);
+  cx.font = "7px monospace";
+  cx.fillStyle = "#fff";
+  const tw = cx.measureText(A.ad).width;
+  cx.fillText(A.ad, x + 49 + (w - 52 - tw) / 2, yy + 6.5);
+  cx.restore();
+}
+function hocaBant(SX) {
+  if (!G || G.faz !== "oyun" && G.faz !== "dur") return;
+  const b0 = 40 + 170 * 6 + 60, L = 260;
+  let k = -1, t = 0;
+  if (G.devre === 1 && G.kare >= b0 && G.kare < b0 + L * 2) {
+    const i = Math.floor((G.kare - b0) / L);
+    k = i === 0 ? G.takas ? 1 : 0 : G.takas ? 0 : 1;
+    t = (G.kare - b0) % L;
+  } else if (G.devre === 2 && G.kare >= G.top_kare / 2 + 300 && G.kare < G.top_kare / 2 + 300 + L) {
+    if (G.hocaB2 == null) G.hocaB2 = G.skor[0] < G.skor[1] ? 0 : G.skor[1] < G.skor[0] ? 1 : Math.random() < 0.5 ? 0 : 1;
+    k = G.hocaB2;
+    t = G.kare - G.top_kare / 2 - 300;
+  }
+  if (k < 0) return;
+  const T = G.T[k];
+  if (!T) return;
+  let ad = "";
+  try {
+    const s = KRY();
+    if (G.human >= 0 && k === G.human && s && s.men && s.ti === T.t.i) ad = (s.men.ad + " " + (s.men.soy || "")).trim();
+  } catch (e) {
+  }
+  if (!ad) ad = hocaAdi(T.t) || "";
+  if (!ad) return;
+  const a = Math.min(1, t / 10, (L - t) / 10);
+  cx.save();
+  cx.globalAlpha = a;
+  cx.fillStyle = "rgba(12,14,24,.95)";
+  cx.fillRect(SX, 4, 30, 13);
+  cx.fillStyle = T.c1;
+  cx.fillRect(SX, 15, 30, 2);
+  cx.font = '8px "Lucida Console",monospace';
+  cx.textBaseline = "top";
+  cx.fillStyle = "#fff";
+  cx.fillText(T.t.kod, SX + 3, 6);
+  cx.font = "5px monospace";
+  const w = Math.max(70, cx.measureText(ad).width + 14);
+  const g = cx.createLinearGradient(SX + 30, 0, SX + 30 + w, 0);
+  g.addColorStop(0, "#d0101e");
+  g.addColorStop(1, "#2a2a8a");
+  cx.fillStyle = g;
+  cx.fillRect(SX + 30, 4, w, 8);
+  cx.fillStyle = "#fff";
+  cx.fillText("TEKNİK DİREKTÖR", SX + 34, 5.5);
+  cx.fillStyle = "rgba(12,14,24,.95)";
+  cx.fillRect(SX + 30, 12, w, 8);
+  cx.fillStyle = "#fff";
+  cx.fillText(ad.toLocaleUpperCase("tr"), SX + 42, 13.5);
+  cx.restore();
+}
+function kadroSerit() {
+  if (!G || G.devre !== 1 || G.faz !== "oyun" && G.faz !== "dur") return;
+  const SG = 170, i = Math.floor((G.kare - 40) / SG);
+  if (G.kare < 40 || i >= 6) return;
+  const L0 = G.takas ? 1 : 0, k = i < 3 ? L0 : 1 - L0, T = G.T[k], gr = [["GK", "DF"], ["MF"], ["FW"]][i % 3], ps = G.P.filter((p) => p.k === k && gr.includes(p.rol)).sort((a, b) => (b.rol === "GK") - (a.rol === "GK") || a.fy - b.fy);
+  const n = (r) => G.P.filter((p) => p.k === k && p.rol === r).length, diz = n("DF") + "-" + n("MF") + "-" + n("FW"), y = matchMedia("(pointer:coarse)").matches ? 39 : VH - 17;
+  G.kadroSeritOn = 1;
+  cx.fillStyle = "rgba(12,14,24,.9)";
+  cx.fillRect(4, y, VW - 8, 13);
+  cx.fillStyle = T.c1;
+  cx.fillRect(4, y, 26, 13);
+  cx.fillStyle = T.c2 || "#fff";
+  cx.fillRect(4, y + 11, 26, 2);
+  cx.font = '6px "Lucida Console",monospace';
+  cx.textBaseline = "top";
+  cx.fillStyle = T.c2 || "#fff";
+  cx.fillText(T.t.kod, 6, y + 3);
+  cx.font = "7px monospace";
+  let x = 36;
+  ps.forEach((p) => {
+    const t = (p.no || "") + " " + (p.ad || "").split(" ").slice(-1)[0];
+    cx.fillStyle = "#ffe14d";
+    cx.fillText(String(p.no || ""), x, y + 3);
+    cx.fillStyle = "#fff";
+    const w0 = cx.measureText(String(p.no || "") + " ").width;
+    cx.fillText((p.ad || "").split(" ").slice(-1)[0], x + w0, y + 3);
+    x += cx.measureText(t).width + 10;
+  });
+  cx.font = '7px "Lucida Console",monospace';
+  cx.fillStyle = "#2ecc71";
+  const w = cx.measureText(diz).width;
+  cx.fillText(diz, VW - 8 - w, y + 3);
 }
 function sonSkor() {
   return G.takas ? [G.skor[1], G.skor[0]] : G.skor.slice();
@@ -1661,6 +2035,66 @@ function yerHepsi() {
 function varKarar() {
   G.tvIsaret = 110;
 }
+function saotCiz() {
+  if (G.faz !== "tekrar" || !G.ofsCizgi) return;
+  const o = G.ofsCizgi, ax = Math.round(o.ax), dx = Math.round(o.dx), gk = o.gk != null ? o.gk : G.golK || 0;
+  let a = null, d = null, ba = 1e9, bd = 1e9;
+  G.P.forEach((p) => {
+    if (p.rol === "GK") return;
+    if (p.k === gk) {
+      const e = Math.abs(p.x - ax);
+      if (e < ba) {
+        ba = e;
+        a = p;
+      }
+    } else {
+      const e = Math.abs(p.x - dx);
+      if (e < bd) {
+        bd = e;
+        d = p;
+      }
+    }
+  });
+  cx.save();
+  cx.beginPath();
+  cx.rect(0, 0, W, H);
+  [a, d].forEach((p) => {
+    if (p) cx.rect(Math.round(p.x) - 5, Math.round(p.y) - 12, 10, 15);
+  });
+  cx.fillStyle = "rgba(205,210,220,.62)";
+  cx.fill("evenodd");
+  const x0 = Math.min(ax, dx), x1 = Math.max(ax, dx);
+  cx.fillStyle = "rgba(255,255,255,.35)";
+  cx.fillRect(x0 - 1, MT, Math.max(2, x1 - x0 + 2), MB - MT);
+  cx.fillStyle = "rgba(255,255,255,.95)";
+  cx.fillRect(ax, MT, 1, MB - MT);
+  cx.fillRect(dx, MT, 1, MB - MT);
+  if (a) {
+    const r = 6 + G.kare % 40 / 10;
+    cx.strokeStyle = "rgba(255,255,255,.9)";
+    cx.lineWidth = 1;
+    cx.beginPath();
+    cx.arc(a.x, a.y - 5, r, Math.PI * 0.6, Math.PI * 1.5);
+    cx.stroke();
+    cx.beginPath();
+    cx.arc(a.x, a.y - 5, r + 3, Math.PI * 0.7, Math.PI * 1.4);
+    cx.stroke();
+  }
+  cx.restore();
+  if ((o.t = (o.t || 0) + 1) > 110) {
+    cx.save();
+    cx.setTransform(CS, 0, 0, CS, 0, 0);
+    const tx = o.iptal ? "OFSAYT" : "OFSAYT YOK";
+    cx.font = "7px monospace";
+    cx.textBaseline = "top";
+    const w = cx.measureText(tx).width + 12;
+    cx.fillStyle = o.iptal ? "#c0111f" : "#1d3fa8";
+    cx.fillRect(4, VH - 30, w, 12);
+    cx.fillStyle = "#fff";
+    cx.fillText(tx, 10, VH - 28);
+    cx.restore();
+  }
+}
 function ofsCizgiKur(gk, iptal) {
   const sn = G.ofsSnap && G.ofsSnap.k === gk ? G.ofsSnap : null, yon = gk === 0 ? 1 : -1, sc = G.golP;
   let dx = sn ? sn.hat : gk === 0 ? MR - 110 : ML + 110, ax = sn && sc && sn.xs[sc.id] != null ? sn.xs[sc.id] : dx + yon * (iptal ? 3 : -3);
@@ -1680,7 +2114,7 @@ function ofsCizgiKur(gk, iptal) {
     if (iptal && (ax - dx) * yon <= 1) ax = dx + yon * (2 + Math.random() * 3);
     if (!iptal && (ax - dx) * yon >= 0) ax = dx - yon * (1 + Math.random() * 4);
   }
-  return { iptal, ax, dx, fi, ad: sc && sc.ad || "" };
+  return { iptal, ax, dx, fi, gk, ad: sc && sc.ad || "" };
 }
 function golVar(gk, d) {
   const penGol = !!(G.penKontrol && !G.penKontrol.seri && G.penKontrol.k === gk) || !!(!G.seri && G.golKaynak && G.golKaynak.tip === "PENALTI" && G.golKaynak.k === gk);
@@ -1737,15 +2171,50 @@ function golVar(gk, d) {
     } else if (r < 0.17 && !dur) {
       tip = "ofs";
       iptal = false;
+    } else if (r < 0.23) {
+      tip = "cizgi";
+      iptal = Math.random() < 0.3;
     }
   }
-  if (tip) {
+  if (tip === "cizgi") {
+    G.kuy.push({ b: "VAR: BEKLEYİN", t: 110, f: () => {
+      G.kulak = 110;
+      hakemIsaret("yon", 0);
+      sesKalabalik(0.06, 3);
+      G.alt = "Hakem oyuncuları bekletiyor: top çizgiyi geçmiş olabilir";
+    } });
+    G.kuy.push({ b: "VAR: ÇİZGİ KONTROLÜ", t: 170, f: () => {
+      G.kulak = 170;
+      G.varKayit = G.golKayit || G.varKayit;
+      G.alt = "Atakta top oyun alanını terk etti mi?";
+    } });
+    G.kuy.push(iptal ? { b: "TOP DIŞARIDA! GOL İPTAL", t: 120, f: () => {
+      varKarar();
+      itirazBasla(gk, 0.7);
+      G.skor[gk]--;
+      G.olay.length = G.golOlayN || G.olay.length;
+      G.alt = "Top gol öncesi çizgiyi tamamen geçmişti";
+      sesTon(200, 90, 1.2, "sawtooth", 0.06);
+      sesKalabalik(0.3, 2);
+      G.restart = { tip: "AUT", k: d, x: d ? MR - 16 : ML + 16, y: H / 2 };
+    } } : Object.assign(gecerli(true), { f: () => {
+      golItiraz();
+      varKarar();
+      G.alt = "Top çizgiyi tamamen geçmemiş · gol geçerli";
+      sesKalabalik(0.45, 2.5);
+      G.restart = { tip: "SANTRA", k: d };
+    } }));
+  } else if (tip) {
     G.kuy.push({ b: "VAR KONTROLÜ", t: 130, f: () => {
       G.kulak = 130;
       sesKalabalik(0.06, 3);
       G.alt = tip === "ofs" ? "Gol: olası ofsayt kontrol ediliyor" : tip === "el" ? "Gol: atakta olası elle oynama" : "Gol: atakta olası faul";
     } });
     if (tip === "ofs") {
+      G.kuy.push({ b: "VAR: ATAK BAŞLANGICI", t: 150, f: () => {
+        G.kulak = 150;
+        G.alt = "Atağın başladığı an inceleniyor";
+      } });
       G.kuy.push({ b: "VAR: OFSAYT ÇİZGİLERİ", t: 190, f: () => {
         G.ofsCizgi = ofsCizgiKur(gk, iptal);
         G.alt = "Yarı otomatik ofsayt çizgileri çekiliyor";
@@ -1766,6 +2235,33 @@ function golVar(gk, d) {
       } });
       G.kuy.push({ b: tip === "el" ? "ELLE OYNAMA! GOL İPTAL" : "FAUL! GOL İPTAL", t: 120, f: () => iptalEt(false, tip === "el" ? "Top golcünün koluna çarptı" : "Gol öncesi atakta faul") });
     } else G.kuy.push(gecerli(true));
+  } else if (Math.random() < 0.25) {
+    const sk = Math.random() < 0.4;
+    G.varEk = (G.varEk || 0) + 1;
+    G.kuy.push({ b: "VAR KONTROLÜ", t: 140, f: () => {
+      G.kulak = 140;
+      sesKalabalik(0.06, 3);
+      G.alt = (sk ? "Golde oyuncu yerde kaldı · " : "") + "Atak başlangıcı: faul var mı?";
+    } });
+    G.kuy.push({ b: "VAR KONTROLÜ", t: 130, f: () => {
+      G.kulak = 130;
+      G.alt = "✓ Faul yok · Ofsayt kontrol ediliyor";
+    } });
+    G.kuy.push({ b: "VAR KONTROLÜ", t: 120, f: () => {
+      G.kulak = 120;
+      G.alt = "✓ Faul yok · ✓ Ofsayt yok · Elle oynama?";
+    } });
+    if (sk) G.kuy.push({ b: "OYUN DURDU", t: 90, f: () => {
+      G.kulak = 90;
+      G.alt = "Sağlık ekibi sahada, VAR incelemesi sürüyor";
+    } });
+    G.kuy.push({ b: "GOL GEÇERLİ!", t: 80, f: () => {
+      golItiraz();
+      varKarar();
+      G.alt = "✓ Faul yok · ✓ Ofsayt yok · ✓ Elle oynama yok";
+      sesKalabalik(0.45, 2.5);
+      G.restart = { tip: "SANTRA", k: d };
+    } });
   } else {
     G.kuy.push({ b: "VAR KONTROLÜ", t: 55, f: () => {
       G.kulak = 55;
@@ -2881,25 +3377,55 @@ function sakatlikBasla(sh) {
       G.saglik = { p: sh, tip: "tedavi", t: 0, sx: sh.x, sy: sh.y, ex: clamp(sh.x, ML + 6, MR - 6), ey: sh.y < H / 2 ? MT - 8 : MB + 10 };
       G.alt = ad + " tedavi ediliyor";
     } },
-    { b: "", t: 2, f: () => {
-      const agir = (sh.sakatSay || 0) >= 1 || Math.random() < 0.3;
-      sh.sakatSay = (sh.sakatSay || 0) + 1;
-      sh.sakatlik = 0;
-      if (agir) {
-        G.saglik = { p: sh, tip: "sedye", t: 0, sx: sh.x, sy: sh.y, ex: clamp(sh.x, ML + 6, MR - 6), ey: sh.y < H / 2 ? MT - 8 : MB + 10 };
-        G.kuy.unshift({ b: "SEDYE GELİYOR", t: 300, f: () => {
-          G.alt = ad + " devam edemiyor, sedyeyle çıkarılıyor";
-        } }, { b: "ZORUNLU DEĞİŞİKLİK", t: 70, f: () => sakatCikar(sh) });
-      } else {
-        G.saglik = null;
-        sh.yer = 0;
-        sh.disari = Math.round(G.top_kare / 90);
-        sh.disX = clamp(sh.x, ML + 6, MR - 6);
-        sh.disY = sh.y < H / 2 ? MT - 7 : MB + 8;
-        G.alt = ad + " tedavi edildi · 1 dakika kenarda bekleyecek";
-      }
-    } }
+    { b: "", t: 2, f: () => sakatKarar(sh, 1) }
   );
+}
+function sakatKarar(sh, tur) {
+  const ad = sh.ad || "Oyuncu", gk = sh.rol === "GK", onc = (sh.sakatSay || 0) >= 1;
+  const r = Math.random();
+  const iyi = () => {
+    sh.sakatSay = (sh.sakatSay || 0) + 1;
+    sh.sakatlik = 0;
+    G.saglik = null;
+    sh.yer = 0;
+    if (gk) {
+      G.alt = ad + " tedavi sonrası ayağa kalktı, kalede devam ediyor";
+      yorum("Kaleci devam edebilecek, tribünler alkışlıyor", 1);
+      return;
+    }
+    sh.disari = Math.round(G.top_kare / 90);
+    sh.disX = clamp(sh.x, ML + 6, MR - 6);
+    sh.disY = sh.y < H / 2 ? MT - 7 : MB + 8;
+    G.alt = ad + " tedavi edildi · 1 dakika kenarda bekleyecek";
+  };
+  const cik = (sedye) => {
+    sh.sakatSay = (sh.sakatSay || 0) + 1;
+    sh.sakatlik = 0;
+    const ex = clamp(sh.x, ML + 6, MR - 6), ey = sh.y < H / 2 ? MT - 8 : MB + 10;
+    if (sedye) {
+      G.saglik = { p: sh, tip: "sedye", t: 0, sx: sh.x, sy: sh.y, ex, ey };
+      G.kuy.unshift({ b: "SEDYE GELİYOR", t: 300, f: () => {
+        G.alt = ad + " devam edemiyor, sedyeyle çıkarılıyor";
+      } }, { b: "ZORUNLU DEĞİŞİKLİK", t: 70, f: () => sakatCikar(sh) });
+    } else {
+      G.saglik = { p: sh, tip: "yuru", t: 0, sx: sh.x, sy: sh.y, ex, ey };
+      G.kuy.unshift({ b: "KENARA GELİYOR", t: 230, f: () => {
+        G.alt = ad + " sağlık ekibinin yardımıyla topallayarak kenara geliyor";
+        yorum(ad + " devam edemeyecek gibi görünüyor", 1);
+      } }, { b: gk ? "ZORUNLU KALECİ DEĞİŞİKLİĞİ" : "ZORUNLU DEĞİŞİKLİK", t: 80, f: () => sakatCikar(sh) });
+    }
+  };
+  if (tur === 1) {
+    if (onc && r < 0.6) return cik(Math.random() < 0.4);
+    if (r < (gk ? 0.35 : 0.45)) return iyi();
+    G.saglik = { p: sh, tip: "tedavi", t: 71, sx: sh.x, sy: sh.y, ex: clamp(sh.x, ML + 6, MR - 6), ey: sh.y < H / 2 ? MT - 8 : MB + 10 };
+    G.kuy.unshift({ b: "TEDAVİ SÜRÜYOR", t: gk ? 260 : 200, f: () => {
+      G.alt = ad + " hâlâ acı çekiyor, sağlık ekibi tedaviye devam ediyor" + (gk ? " · yedek kaleci ısınıyor" : "");
+    } }, { b: "", t: 2, f: () => sakatKarar(sh, 2) });
+    return;
+  }
+  if (r < (gk ? 0.4 : 0.35)) return iyi();
+  cik(r > 0.85);
 }
 function sakatCikar(p) {
   G.saglik = null;
@@ -2946,6 +3472,20 @@ function cizSaglik() {
     cx.fillRect(x - 1, y - (kne ? 7 : 9), 3, 2);
   };
   const L = (a, b, u) => a + (b - a) * Math.max(0, Math.min(1, u));
+  if (S.tip === "yuru") {
+    const u = Math.min(1, t / 200), p = S.p;
+    if (p && G.P.indexOf(p) >= 0) {
+      p.yer = 0;
+      p.x = L(S.sx, S.ex, u);
+      p.y = L(S.sy, S.ey, u);
+      p.an += t % 3 ? 0 : 0.5;
+      p.dx = Math.sign(S.ex - S.sx) || 1;
+    }
+    const x = L(S.sx, S.ex, u), y = L(S.sy, S.ey, u);
+    ad(x - 5, y, false);
+    ad(x + 5, y, false);
+    return;
+  }
   if (S.tip === "tedavi") {
     const u = t / 70;
     ad(L(S.ex - 4, S.sx - 6, u), L(S.ey, S.sy, u), t > 70);
@@ -2999,7 +3539,7 @@ function cizSeremoni() {
   const T = serTema();
   cx.font = "5px monospace";
   cx.textBaseline = "top";
-  if (G.faz === "toren" || G.faz === "yazitura") {
+  if (G.faz === "toren") {
     cx.save();
     cx.globalAlpha = 0.85;
     cx.fillStyle = T.c1;
@@ -3321,7 +3861,7 @@ function gundemHtml(s) {
     P.unshift({ a: { ad: W2.ad, h: (W2.kod || "kulup").toLowerCase() + "_resmi", r: W2.c1 }, txt: xMetin(x) + `<div onclick="xVideo(${(s.xPost || []).indexOf(x)})" style="cursor:pointer;margin-top:6px;height:92px;max-width:260px;border-radius:10px;background:linear-gradient(135deg,${W2.c1},${W2.c2});display:flex;align-items:center;justify-content:center;position:relative;border:1px solid #2a3350"><span style="font-size:28px;text-shadow:2px 2px 0 #000">▶</span><span style="position:absolute;left:8px;top:6px;font-size:8px;font-weight:bold;color:#fff;text-shadow:1px 1px 0 #000">DERBİ BİZİM · ${x.sk[0]}-${x.sk[1]}</span><span style="position:absolute;right:6px;bottom:5px;font-size:8px;background:rgba(0,0,0,.7);padding:1px 4px;border-radius:3px">0:0${5 + x.t % 4}</span></div>`, i: j });
   });
   const kisa = (n) => n >= 1e3 ? (n / 1e3).toFixed(1) + "B" : n;
-  return `<div class="ligad">📱 GÜNDEM</div><div class="sonra" style="font-size:8px">Kurgusal hesaplar · gerçek kişi ve kurumlarla ilgisi yoktur</div><div style="max-width:560px;width:100%;text-align:left">${P.slice(0, 30).map((p, j) => {
+  return `<div class="ligad">📱 GÜNDEM</div><div style="display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin:4px 0"><button class="tab" style="background:#c13584;color:#fff" onclick="sosEkran(KRY().ti,'gram')">📷 PİKSELGRAM PROFİLİ</button><button class="tab" style="background:#1d9bf0;color:#fff" onclick="sosEkran(KRY().ti,'civil')">🐦 CIVIL HESABI</button></div><div class="sonra" style="font-size:8px">Kurgusal hesaplar · gerçek kişi ve kurumlarla ilgisi yoktur</div><div style="max-width:560px;width:100%;text-align:left">${P.slice(0, 30).map((p, j) => {
     const h = ((j + 1) * 2654435761 >>> 0) % 9e3;
     return `<div style="display:flex;gap:8px;padding:8px;border-bottom:1px solid #2a3350;background:#0f1424"><div style="width:26px;height:26px;border-radius:50%;background:${p.a.r};color:#fff;display:flex;align-items:center;justify-content:center;font-size:10px;flex:none">${p.a.ad[0]}</div><div style="font-size:9px;line-height:1.5"><b>${p.a.ad}</b> <span style="color:#1d9bf0">✔</span> <span style="opacity:.6">@${p.a.h} · ${1 + p.i}s</span><br>${p.txt}<div style="opacity:.6;margin-top:3px">💬 ${kisa(h % 300 + 4)} &nbsp; 🔁 ${kisa(h % 1800 + 20)} &nbsp; ❤️ ${kisa(h + 150)}</div></div></div>`;
   }).join("") || '<div class="sonra">Henüz gündem yok</div>'}</div>`;
@@ -4071,7 +4611,18 @@ function kuraKontrol(s, ev) {
     if (!c.lig || a.gun !== 0) return;
   } else if (!c.es || a.ayak === 2) return;
   s.kuraG[key] = 1;
-  setTimeout(() => kuraGoster(c, a), 150);
+  setTimeout(() => {
+    const bas = a.t === "lig" ? "LİG AŞAMASI" : adimAd(c, a);
+    secimModal("🎱 KURA ÇEKİMİ", `<b>${c.ad}</b> · ${bas} kurası bugün çekiliyor.<br>Törene katılıp kurayı canlı izlemek ister misin?<br><span style="opacity:.7">Katılmazsan eşleşmeler haberlere ve fikstüre yine işlenir.</span>`, [{ t: "🎟️ KATIL, CANLI İZLE", f: () => kuraGoster(c, a) }, { t: "KATILMA", renk: "#555", f: () => {
+      try {
+        const s2 = KRY();
+        s2.haber = s2.haber || [];
+        s2.haber.push("🎱 " + c.ad + " " + bas + " kurası çekildi (törene katılmadın).");
+        krKaydet(s2);
+      } catch (e) {
+      }
+    } }]);
+  }, 150);
 }
 function kuraGoster(c, a) {
   const s = KRY(), me = s.ti;
@@ -4723,6 +5274,28 @@ function cizReklam() {
     cx.fillText(ad, x + (w - cx.measureText(ad).width) / 2, y + 6);
     cx.textBaseline = tb;
   }
+  ligPano(y);
+}
+function ligPano(y) {
+  const tm2 = SKB[G.tema] || SKB.GENEL, ad = serTema().ad, x0 = W / 2 - 34;
+  cx.fillStyle = tm2[0];
+  cx.fillRect(x0, y, 68, 7);
+  cx.fillStyle = tm2[1];
+  cx.fillRect(x0, y, 68, 1);
+  cx.fillRect(x0, y + 6, 68, 1);
+  cx.fillStyle = "#fff";
+  cx.beginPath();
+  cx.arc(x0 + 6, y + 3.5, 2.6, 0, 7);
+  cx.fill();
+  cx.fillStyle = tm2[1];
+  cx.fillRect(x0 + 5, y + 2, 2, 3);
+  cx.font = "5px monospace";
+  const tb = cx.textBaseline;
+  cx.textBaseline = "alphabetic";
+  cx.fillStyle = "#fff";
+  const w = Math.min(54, cx.measureText(ad).width);
+  cx.fillText(ad, x0 + 11 + (54 - w) / 2, y + 6, 54);
+  cx.textBaseline = tb;
 }
 function cizYayin() {
   const ad = YAYINCI[G.tema] || YAYINCI.GENEL;
@@ -5214,7 +5787,7 @@ function torenGuncelle() {
     return;
   }
   if (e < 700) {
-    G.banner = "YAZI TURA";
+    G.banner = "";
     if (!G.yumak) {
       G.yumak = [Math.random() < 0.65, Math.random() < 0.65];
     }
@@ -5237,15 +5810,7 @@ function torenGuncelle() {
       const bx = ML + (W / 2 - ML) * p.fx * 1.6;
       torenYuru(p, k ? Math.max(W - bx, W / 2 + 6) : Math.min(bx, W / 2 - 6), MT + (MB - MT) * p.fy, 1.4);
     });
-    [c0, c1].forEach((c, k) => {
-      if (c && torenYuru(c, W / 2 + (k ? 11 : -11), H / 2 + 3, 1.1)) {
-        c.dx = k ? -1 : 1;
-        c.dy = 0;
-      }
-    });
-    torenYuru(G.hakem, W / 2, H / 2 - 4, 1.1);
-    torenYuru(G.yh[0], W / 2 - 18, H / 2 - 8, 1.1);
-    torenYuru(G.yh[1], W / 2 + 18, H / 2 - 8, 1.1);
+    ytDizil(false);
     if (e >= 660 && !G.flama) G.flama = 60;
     return;
   }
@@ -5257,11 +5822,25 @@ function torenGuncelle() {
       p.x = k ? Math.max(W - bx, W / 2 + 6) : Math.min(bx, W / 2 - 6);
       p.y = MT + (MB - MT) * p.fy;
     });
+    ytDizil(true);
     G.faz = "yazitura";
-    G.banner = "YAZI TURA";
+    G.banner = "";
     G.alt = "";
     setTimeout(ytGoster, 50);
   }
+}
+function ytDizil(an) {
+  const [c0, c1] = G.kaptan || [], cy = H / 2, L = [[G.hakem, W / 2, cy - 1, 0, 1], [G.yh[0], W / 2 - 8, cy - 5, 0, 1], [G.yh[1], W / 2 + 8, cy - 5, 0, 1], [c0, W / 2 - 13, cy + 3, 1, 0], [c1, W / 2 + 13, cy + 3, -1, 0]];
+  L.forEach(([o, x, y, dx, dy]) => {
+    if (!o) return;
+    if (an) {
+      o.x = x;
+      o.y = y;
+    } else if (!torenYuru(o, x, y, 1.1)) return;
+    o.dx = dx;
+    o.dy = dy;
+    o.an = 0;
+  });
 }
 function kayitAl() {
   if (G.kare % 2) return;
@@ -5632,6 +6211,127 @@ function kartGoster(renk, p) {
   G.hakemRenk = renk;
   G.alt = (p.ad ? p.ad + " · " : "") + G.T[p.k].t.kod;
 }
+function kornerKargasa(r) {
+  const kx = r.x < W / 2 ? ML : MR, gk = r.k;
+  if (r.kg == null) {
+    r.kg = 0;
+    r.olayAn = 50 + Math.floor(Math.random() * 90);
+    r.olay = Math.random();
+    r.uyari = 0;
+  }
+  r.kg++;
+  const kutu = (p) => Math.abs(p.x - kx) < 80 && Math.abs(p.y - H / 2) < 62;
+  const atk = G.P.filter((p) => p.k === gk && p !== r.taker && p.rol !== "GK" && kutu(p)), def = G.P.filter((p) => p.k !== gk && p.rol !== "GK" && kutu(p));
+  atk.forEach((a2, i) => {
+    let m = null, md = 14;
+    def.forEach((d2) => {
+      const e = Math.hypot(d2.x - a2.x, d2.y - a2.y);
+      if (e < md) {
+        md = e;
+        m = d2;
+      }
+    });
+    if (!m) return;
+    const ph = (G.kare + i * 13) % 28;
+    if (ph < 14) {
+      const s = 0.35 * (Math.random() < 0.5 ? 1 : -1);
+      a2.x += s;
+      m.x += s;
+      a2.y += rnd(-0.4, 0.4);
+      m.y += rnd(-0.4, 0.4);
+      a2.an += 0.25;
+      m.an += 0.25;
+    }
+    if (md > 5) {
+      m.x += (a2.x - m.x) * 0.05;
+      m.y += (a2.y - m.y) * 0.05;
+    }
+    a2.dx = Math.sign(m.x - a2.x) || 1;
+    m.dx = -a2.dx;
+  });
+  if (r.kg === 30 && def.length) yorum(rs(["Ceza sahasında itiş kakış var", "Kornerden önce formalar çekiliyor", "Oyuncular birbirini tutuyor, hakem dikkatli"]));
+  if (r.kg !== r.olayAn || !atk.length || !def.length) return false;
+  const o = r.olay, a = atk[Math.random() * atk.length | 0];
+  let d = def[0], bd = 1e9;
+  def.forEach((q) => {
+    const e = Math.hypot(q.x - a.x, q.y - a.y);
+    if (e < bd) {
+      bd = e;
+      d = q;
+    }
+  });
+  if (o < 0.35) {
+    r.uyari++;
+    hakemIsaret("yon", 0);
+    G.alt = "Hakem kornerden önce oyuncuları uyardı";
+    sesDuduk(1);
+    itirazBasla(gk, 0.35, ["Oyuncular hakeme formasının çekildiğini gösteriyor", "Savunma itiraz ediyor", "Hakem iki oyuncuyu yanına çağırdı"]);
+    r.olayAn = r.kg + 70 + Math.floor(Math.random() * 60);
+    r.olay = Math.random() * 0.9 + 0.1;
+    r.bek = Math.max(r.bek, 90);
+    return false;
+  }
+  if (o < 0.5) {
+    const t = G.top;
+    t.sahip = null;
+    t.vx = t.vy = t.vz = 0;
+    sesDuduk(1);
+    yereDus(d, (d.x - a.x) * 0.2, (d.y - a.y) * 0.2, 80);
+    G.faulN = (G.faulN || 0) + 1;
+    istSay("faul", gk);
+    G.faz = "dur";
+    G.fazT = 60;
+    G.banner = "HÜCUM FAULÜ!";
+    G.alt = (a.ad || "Hücum oyuncusu") + " kornerden önce rakibini itti";
+    G.kuy = [];
+    hakemIsaret("yon", gk ? 1 : -1);
+    itirazBasla(gk, 0.75, ["Hücumcular faul olmadığını söylüyor", "Kaptan hakemle tartışıyor", "Hakem kararından dönmüyor"]);
+    if (r.uyari && Math.random() < 0.5) G.kuy.push({ b: "SARI KART", t: 85, f: () => {
+      sariVer(a);
+    } });
+    G.restart = { tip: "FRİKİK", k: 1 - gk, x: clamp(d.x, ML + 6, MR - 6), y: clamp(d.y, MT + 6, MB - 6) };
+    return true;
+  }
+  if (o < 0.55) {
+    const t = G.top;
+    t.sahip = null;
+    t.vx = t.vy = t.vz = 0;
+    sesDuduk(2);
+    yereDus(a, (a.x - d.x) * 0.2, (a.y - d.y) * 0.2, 90);
+    G.faulN = (G.faulN || 0) + 1;
+    istSay("faul", 1 - gk);
+    G.faz = "dur";
+    G.fazT = 60;
+    G.banner = "PENALTI!";
+    G.alt = (d.ad || "Savunmacı") + " korner beklerken rakibini yere çekti";
+    G.kuy = [];
+    hakemIsaret("penalti", gk ? -1 : 1);
+    itirazBasla(1 - gk, 0.9, ["Savunma oyuncuları hakemin etrafını sardı", "Karşılıklı tutma olduğunu iddia ediyorlar", "Hakem itirazlara kulak asmıyor"]);
+    G.kuy.push({ b: "VAR KONTROLÜ", t: 120, f: () => {
+      G.kulak = 120;
+      G.alt = "Kornerden önce tutma: penaltı kontrol ediliyor";
+    } });
+    if (Math.random() < 0.2) {
+      G.kuy.push({ b: "KARŞILIKLI TUTMA", t: 100, f: () => {
+        varKarar();
+        G.alt = "VAR: iki oyuncu da tutuyordu, korner tekrar";
+        G.restart = { tip: "KORNER", k: gk, x: r.x, y: r.y };
+      } });
+    } else G.kuy.push({ b: "PENALTI ONAYLANDI", t: 80, f: () => {
+      varKarar();
+      if (Math.random() < 0.4) sariVer(d);
+      G.restart = { tip: "PENALTI", k: gk, x: gk ? ML + 55 : MR - 55, y: H / 2 };
+    } });
+    return true;
+  }
+  if (o >= 0.7) return false;
+  G.alt = (a.ad || "") + " ile " + (d.ad || "") + " birbirine girdi";
+  itirazBasla(1 - gk, 0.6, ["Oyuncular burun buruna geldi", "Hakem araya girdi", "Takım arkadaşları ayırıyor"]);
+  r.bek = Math.max(r.bek, 120);
+  r.olayAn = r.kg + 90;
+  r.olay = Math.random() < 0.5 ? Math.random() * 0.35 : 0.9;
+  return false;
+}
 function faulVer(p, sh, arkadan) {
   if (G.seri) {
     p.kay = 0;
@@ -5804,7 +6504,7 @@ function varda() {
   return G && G.faz === "dur" && /MONİTÖR/.test(G.banner || "");
 }
 function varTekrarMi() {
-  return G && G.faz === "dur" && /MONİTÖR|ÇİZGİ/.test(G.banner || "");
+  return G && G.faz === "dur" && /MONİTÖR|ÇİZGİ|ATAK BAŞ/.test(G.banner || "");
 }
 function yhGuncelle() {
   if (!G.yh) G.yh = [{ x: W * 0.7, y: MT - 7, an: 0 }, { x: W * 0.3, y: MB + 7, an: 0 }];
@@ -5975,7 +6675,17 @@ function restartKur() {
     if (dg < 280) {
       const atk = G.P.filter((p) => p.k === r.k && p !== taker && p.rol !== "GK").sort((a, b) => Math.abs(b.x - (r.k ? MR : ML)) - Math.abs(a.x - (r.k ? MR : ML)));
       const kal = atk.slice(-2);
-      atk.filter((p) => !kal.includes(p)).slice(0, 6).forEach((p, i) => {
+      const cizgi = dg > 140 || Math.abs(r.y - H / 2) > 50, on = atk.filter((p) => !kal.includes(p)).slice(0, 6);
+      if (cizgi) {
+        const lx = gx - dir * (50 + rnd(0, 6)), ust = r.y < H / 2;
+        on.forEach((p, i) => {
+          const sl = i - (on.length - 1) / 2;
+          p.x = lx - dir * (Math.abs(sl) < 1 ? 0 : rnd(0, 5));
+          p.y = H / 2 + (ust ? -1 : 1) * 6 + sl * 13 + rnd(-2, 2);
+          p.dx = -dir * 0 + (r.x < p.x ? -1 : 1) * 0 || -Math.sign(p.x - r.x) || dir;
+          p.dy = Math.sign(r.y - p.y) * 0.5;
+        });
+      } else on.forEach((p, i) => {
         p.x = gx - dir * (22 + i % 3 * 16 + rnd(0, 6));
         p.y = H / 2 + (i < 3 ? -1 : 1) * (10 + i % 3 * 14) + rnd(-4, 4);
         p.dx = dir;
@@ -6137,7 +6847,7 @@ function guncelle() {
     return;
   }
   if (G.faz === "yazitura") {
-    if (G.hakem) hakemGuncelle();
+    if (G.hakem) ytDizil(true);
     return;
   }
   if (G.faz === "basla" || G.faz === "dur" || G.faz === "gol" || G.faz === "devre") {
@@ -6235,7 +6945,8 @@ function guncelle() {
     } else {
       if (G.uzT == null) {
         const yo = G.olay.length - (G.olayBas || 0), fa = G.faulN || 0;
-        G.uzDk = clamp((G.devre === 2 ? 3 : 1) + Math.round(yo * 0.18 + fa * 0.1 + Math.random() * 2.4), G.devre === 2 ? 3 : 1, G.devre >= 3 ? 2 : G.devre === 2 ? 8 : 5);
+        G.uzDk = clamp((G.devre === 2 ? 3 : 1) + Math.round(yo * 0.18 + fa * 0.1 + Math.random() * 2.4) + (G.varEk || 0), G.devre === 2 ? 3 : 1, G.devre >= 3 ? 2 : G.devre === 2 ? 9 : 6);
+        G.varEk = 0;
         G.uzT = Math.round(G.uzDk * G.top_kare / 90 * 1.05);
         G.uzS = 0;
         G.uzG = 180;
@@ -6292,6 +7003,7 @@ function guncelle() {
       G.kontT = 45;
     }
   }
+  if (yerdeKontrol()) return;
   if (G.restart) degKuyUygula();
   const kp = ctrlOyuncu();
   const kp2 = G.iki ? ctrl2() : null;
@@ -6299,6 +7011,7 @@ function guncelle() {
   if (G.restart && G.restart.taker && t.sahip === G.restart.taker) {
     const r = G.restart;
     r.bek--;
+    if (r.tip === "KORNER" && kornerKargasa(r)) return;
     if (r.k === G.human && (!G.tek || r.taker.oid === G.tek)) {
       if (IN.ortaE && (r.tip === "FRİKİK" || r.tip === "TAÇ")) restartAt(r.taker, false, true);
       else if (IN.pasE || IN.araE || IN.ortaE) restartAt(r.taker, false);
@@ -7188,11 +7901,19 @@ function ciz() {
     F = G.golKayit[Math.min(G.golKayit.length - 1, Math.floor((G.tekrarUz - G.fazT) / (G.tekrarH || 2)))];
     et = G.tekrarH === 3 ? "PENALTI TEKRARI · YAVAŞ ÇEKİM" : "GOL TEKRARI";
   } else if (varTekrarMi() && G.varKayit && G.varKayit.length && (G.varSure || 0) > 30) {
-    F = G.ofsCizgi && G.ofsCizgi.fi != null && /ÇİZGİ/.test(G.banner || "") ? G.varKayit[G.ofsCizgi.fi] : G.varKayit[Math.floor((G.varSure - 45) / 2) % G.varKayit.length];
-    et = G.penCizgi ? "VAR · KALE ÇİZGİSİ" : /ÇİZGİ/.test(G.banner) ? "VAR · OFSAYT" : "VAR TEKRARI";
+    F = /ATAK BAŞ/.test(G.banner || "") ? G.varKayit[Math.min(G.varKayit.length - 1, Math.floor(Math.max(0, G.varSure - 30) / 3) % Math.max(1, Math.ceil(G.varKayit.length * 0.45)))] : G.ofsCizgi && G.ofsCizgi.fi != null && /ÇİZGİ/.test(G.banner || "") ? G.varKayit[G.ofsCizgi.fi] : G.varKayit[Math.floor((G.varSure - 45) / 2) % G.varKayit.length];
+    et = /ATAK BAŞ/.test(G.banner) ? "VAR · ATAK BAŞLANGICI" : /ÇİZGİ KONT/.test(G.banner) ? "VAR · TOP DIŞARIDA MI?" : G.penCizgi ? "VAR · KALE ÇİZGİSİ" : /ÇİZGİ/.test(G.banner) ? "VAR · OFSAYT" : "VAR TEKRARI";
+  }
+  {
+    const rp = !!F && G.faz !== "ozet";
+    if (rp !== !!G.repSon) {
+      G.repSon = rp;
+      G.stg = STG_T;
+    }
   }
   if (!F) {
     cizIc();
+    stingerCiz();
     return;
   }
   const P0 = G.P, T0 = G.top, hx = G.hakem.x, hy = G.hakem.y, fz = G.faz, bn = G.banner, al = G.alt;
@@ -7243,12 +7964,64 @@ function ciz() {
     cx.fillStyle = "rgba(255,255,255,.7)";
     cx.fillText("X / A: geç", VW - 46, 37);
   }
+  stingerCiz();
+}
+const STG_T = 28;
+function stingerCiz() {
+  if (!G || !(G.stg > 0)) return;
+  const p = 1 - G.stg / STG_T;
+  G.stg--;
+  const tm2 = SKB[G.tema] || SKB.GENEL, ad = YAYINCI[G.tema] || YAYINCI.GENEL;
+  cx.setTransform(CS, 0, 0, CS, 0, 0);
+  cx.save();
+  const ofs = -VW * 1.45 + p * VW * 2.9;
+  const band = (x0, w, c, a) => {
+    cx.globalAlpha = a;
+    cx.fillStyle = c;
+    cx.beginPath();
+    cx.moveTo(ofs + x0, 0);
+    cx.lineTo(ofs + x0 + w, 0);
+    cx.lineTo(ofs + x0 + w - 70, VH);
+    cx.lineTo(ofs + x0 - 70, VH);
+    cx.closePath();
+    cx.fill();
+  };
+  band(-60, 140, tm2[1], 0.92);
+  band(70, 330, tm2[0], 0.96);
+  band(390, 90, "#ffffff", 0.88);
+  band(470, 50, tm2[1], 0.92);
+  cx.globalAlpha = 0.9;
+  cx.fillStyle = "#ffffff";
+  cx.beginPath();
+  const cx0 = ofs + 250, cy0 = VH / 2;
+  cx.moveTo(cx0 - 30, cy0 - 50);
+  cx.lineTo(cx0 + 20, cy0);
+  cx.lineTo(cx0 - 30, cy0 + 50);
+  cx.lineTo(cx0 - 10, cy0 + 50);
+  cx.lineTo(cx0 + 40, cy0);
+  cx.lineTo(cx0 - 10, cy0 - 50);
+  cx.closePath();
+  cx.fill();
+  if (p > 0.32 && p < 0.68) {
+    cx.globalAlpha = 1;
+    cx.font = "10px monospace";
+    cx.textBaseline = "middle";
+    const w = cx.measureText(ad).width + 20;
+    cx.fillStyle = "rgba(10,14,30,.92)";
+    cx.fillRect(VW / 2 - w / 2, VH / 2 - 9, w, 18);
+    cx.fillStyle = "#e30613";
+    cx.fillRect(VW / 2 - w / 2 + 5, VH / 2 - 3, 6, 6);
+    cx.fillStyle = "#fff";
+    cx.fillText(ad, VW / 2 - w / 2 + 15, VH / 2);
+    cx.textBaseline = "top";
+  }
+  cx.restore();
 }
 function cizIc() {
   cozunurluk();
   if (!saha) saha = sahaCiz();
   const t = G.top;
-  const odak = G.isinma && G.faz === "devre" && G.fazT < 450 && G.fazT > 150 ? { x: W / 2, y: H / 2 + 20 } : G.hocaT != null && G.hocaT < 200 && (G.faz === "toren" || G.faz === "macsonu") ? { x: W / 2, y: MB - 60 } : G.faz === "basla" && G.ikinciCikis || G.faz === "devre" && G.devreYuru ? { x: W / 2, y: (G.cikisOy || MB) - 20 } : G.faz === "toren" && G.toren ? { x: W / 2, y: G.toren.oy - 10 } : G.kesinti && G.mesale ? G.mesale : varda() && G.hakem ? { x: VAR_X, y: VAR_Y - 20 } : G.faz === "gol" && G.golP && G.P.indexOf(G.golP) >= 0 ? G.golP : (G.faz === "dur" || G.faz === "macsonu") && G.kavga ? G.kavga : G.faz === "macsonu" && G.kupaKap ? { x: W / 2, y: H / 2 + 40 } : G.faz === "macsonu" ? { x: W / 2, y: H / 2 + 40 } : t;
+  const odak = G.faz === "tekrar" && G.ofsCizgi ? { x: G.ofsCizgi.ax, y: H / 2 } : G.isinma && G.faz === "devre" && G.fazT < 450 && G.fazT > 150 ? { x: W / 2, y: H / 2 + 20 } : G.hocaT != null && G.hocaT < 200 && (G.faz === "toren" || G.faz === "macsonu") ? { x: W / 2, y: MB - 60 } : G.faz === "basla" && G.ikinciCikis || G.faz === "devre" && G.devreYuru ? { x: W / 2, y: (G.cikisOy || MB) - 20 } : G.faz === "toren" && G.toren ? { x: W / 2, y: G.toren.oy - 10 } : G.kesinti && G.mesale ? G.mesale : varda() && G.hakem ? { x: VAR_X, y: VAR_Y - 20 } : G.faz === "gol" && G.golP && G.P.indexOf(G.golP) >= 0 ? G.golP : (G.faz === "dur" || G.faz === "macsonu") && G.kavga ? G.kavga : G.faz === "macsonu" && G.kupaKap ? { x: W / 2, y: H / 2 + 40 } : G.faz === "macsonu" ? { x: W / 2, y: H / 2 + 40 } : t;
   let camX = clamp(odak.x - VW / 2, 0, W - VW), camY = clamp(odak.y - VH / 2, 0, H - VH);
   if (G.sallan > 0) {
     G.sallan--;
@@ -7268,18 +8041,6 @@ function cizIc() {
   cizIsinma();
   cizOnIsinma();
   cizSeremoni();
-  if (G.faz === "tekrar" && G.ofsCizgi) {
-    const o = G.ofsCizgi;
-    const ax = Math.round(o.ax), dx = Math.round(o.dx);
-    cx.fillStyle = "rgba(60,140,255,.85)";
-    cx.fillRect(dx, MT, 1, MB - MT);
-    cx.fillStyle = "rgba(255,60,60,.85)";
-    cx.fillRect(ax, MT, 1, MB - MT);
-    cx.font = "5px monospace";
-    cx.fillStyle = "#fff";
-    cx.fillText("SAVUNMA", dx + 2, MT + 4);
-    cx.fillText("HÜCUM", ax + 2, MT + 12);
-  }
   list.forEach((p) => {
     if (p.gizli || p.sedye) return;
     const T = G.T[p.k], x = Math.round(p.x), y = Math.round(p.y), ad = Math.floor(p.an) % 2;
@@ -7402,7 +8163,7 @@ function cizIc() {
     G.paraT--;
     const h = G.hakem, u = G.paraT / 50, z = Math.round(Math.sin(u * Math.PI) * 22);
     cx.fillStyle = G.paraT % 6 < 3 ? "#ffd23f" : "#b8860b";
-    cx.fillRect(Math.round(h.x) + 2, Math.round(h.y) - 10 - z, G.paraT % 6 < 3 ? 3 : 1, 2);
+    cx.fillRect(Math.round(h.x) + (G.paraT > 8 ? 1 : 0), Math.round(h.y) - 6 - z + (G.paraT > 8 ? 0 : Math.round((8 - G.paraT) * 0.9)), G.paraT % 6 < 3 ? 3 : 1, 2);
   }
   if (t.sahip && t.sahip.ad) {
     const p = t.sahip, ad = p.ad.split(" ").slice(-1)[0];
@@ -7669,6 +8430,7 @@ function cizIc() {
     cx.fillRect(Math.round(t.x) - 1, Math.round(t.y), 3, 1);
   }
   cizTop(Math.round(t.x), Math.round(t.y - t.z) - 2);
+  saotCiz();
   cx.restore();
   cizHava();
   cizYayin();
@@ -7680,50 +8442,57 @@ function cizIc() {
     cx.fillText("DERBİ", VW - 42, VH - 24);
   }
   const L0 = G.takas ? 1 : 0, T0 = G.T[L0], T1 = G.T[1 - L0];
+  const SX = 46;
   {
     const tm2 = SKB[G.tema] || SKB.GENEL;
+    cx.fillStyle = "rgba(12,14,24,.92)";
+    cx.fillRect(SX, 4, 96, 13);
     cx.fillStyle = tm2[0];
-    cx.fillRect(4, 4, 126, 13);
+    cx.fillRect(SX + 30, 3, 36, 15);
     cx.fillStyle = tm2[1];
-    cx.fillRect(4, 16, 126, 1);
+    cx.fillRect(SX + 30, 17, 36, 1);
   }
   cx.fillStyle = T0.c1;
-  cx.fillRect(6, 6, 3, 9);
+  cx.fillRect(SX, 15, 30, 2);
   cx.fillStyle = T1.c1;
-  cx.fillRect(73, 6, 3, 9);
+  cx.fillRect(SX + 66, 15, 30, 2);
   cx.font = '8px "Lucida Console",monospace';
   cx.textBaseline = "top";
   cx.fillStyle = "#fff";
-  cx.fillText(T0.t.kod, 11, 7);
-  cx.fillText(G.skor[L0] + "-" + G.skor[1 - L0], 43, 7);
-  cx.fillText(T1.t.kod, 78, 7);
+  cx.fillText(T0.t.kod, SX + 3, 6);
+  cx.fillText(T1.t.kod, SX + 69, 6);
+  cx.fillText(String(G.skor[L0]), SX + 33, 6);
+  cx.fillText(String(G.skor[1 - L0]), SX + 55, 6);
+  cx.fillStyle = "rgba(255,255,255,.6)";
+  cx.fillRect(SX + 47, 7, 1, 7);
   for (let k = 0; k < 2; k++) for (let i = 0; i < G.kirmizi[k === 0 ? L0 : 1 - L0]; i++) {
     cx.fillStyle = "#e30613";
-    cx.fillRect((k ? 110 : 35) + i * 5, 15, 3, 4);
+    cx.fillRect((k ? SX + 90 : SX + 2) - i * 5 * (k ? 1 : -1), 18, 3, 4);
   }
   const dk = G.devre >= 3 ? Math.min(120, 90 + Math.floor((G.kare - G.top_kare) / (G.top_kare / 90))) : Math.min(90, Math.floor(G.kare / G.top_kare * 90));
-  {
-    const tm2 = SKB[G.tema] || SKB.GENEL;
-    cx.fillStyle = tm2[0];
-    cx.fillRect(134, 4, 30, 13);
-    cx.fillStyle = tm2[1];
-    cx.fillRect(134, 16, 30, 1);
-  }
-  cx.fillStyle = "#ffe14d";
+  cx.fillStyle = "#d0101e";
+  cx.fillRect(4, 4, 42, 13);
+  cx.fillStyle = "#fff";
   if (G.uzT != null) {
     const ek = Math.min(G.uzDk, 1 + Math.floor(G.uzS / (G.top_kare / 90 * 1.6)));
-    cx.fillStyle = "rgba(10,14,30,.85)";
-    cx.fillRect(134, 4, 44, 13);
-    cx.fillStyle = "#ffe14d";
-    cx.fillText(([0, 45, 90, 105, 120][G.devre] || 120) + "+" + ek + "'", 137, 7);
+    cx.fillText(([0, 45, 90, 105, 120][G.devre] || 120) + "+" + ek, 6, 6);
     if (G.uzG > 0) {
       G.uzG--;
       cx.fillStyle = "#111";
-      cx.fillRect(182, 4, 30, 13);
+      cx.fillRect(SX + 98, 4, 30, 13);
       cx.fillStyle = "#2ecc71";
-      cx.fillText("+" + G.uzDk, 186, 7);
+      cx.fillText("+" + G.uzDk, SX + 102, 6);
     }
-  } else cx.fillText((dk < 10 ? "0" : "") + dk + "'", 137, 7);
+  } else {
+    const tm2 = G.devre >= 3 ? dk : G.kare / G.top_kare * 90, sn = Math.floor(tm2 % 1 * 60);
+    const mm = Math.min(dk, 120);
+    cx.fillText((mm < 10 ? "0" : "") + mm + ":" + (G.devre >= 3 || G.faz !== "oyun" && G.faz !== "dur" && G.faz !== "gol" ? "00" : (sn < 10 ? "0" : "") + sn), 6, 6);
+  }
+  kadroSerit();
+  hocaBant(SX);
+  sosyalCiz();
+  tabletCiz();
+  altReklam();
   if (G.faz === "oyun") {
     const k = ctrlOyuncu();
     if (k) {
@@ -7733,7 +8502,7 @@ function cizIc() {
       cx.fillRect(5, 21, 44 * k.en / 100, 4);
     }
   }
-  if (G.faz === "oyun") {
+  if (G.faz === "oyun" && !(G.devre === 1 && G.kare >= 40 && G.kare < 40 + 170 * 6)) {
     const k = ctrlOyuncu();
     if (k && k.ad) {
       cx.font = "7px monospace";
@@ -7797,7 +8566,7 @@ function cizIc() {
       cx.fillText(ip, VW / 2 - cx.measureText(ip).width / 2, VH - 50);
     }
   }
-  if (!["toren", "macsonu", "yazitura"].includes(G.faz) && !(G.faz === "devre" && G.devreYuru) && !(G.faz === "basla" && G.ikinciCikis)) {
+  if (!["toren", "macsonu", "yazitura"].includes(G.faz) && !(G.altR && G.altR.t <= 330) && !(G.devre === 1 && G.kare >= 40 && G.kare < 40 + 170 * 6 && (G.faz === "oyun" || G.faz === "dur")) && !(G.faz === "devre" && G.devreYuru) && !(G.faz === "basla" && G.ikinciCikis)) {
     const mw = 64, mh = Math.round(mw * (MB - MT) / (MR - ML)), mx = Math.round(VW / 2 - mw / 2), my = VH - mh - 4, sx = mw / (MR - ML), sy = mh / (MB - MT);
     cx.fillStyle = "rgba(0,0,0,.55)";
     cx.fillRect(mx - 2, my - 2, mw + 4, mh + 4);
@@ -8108,6 +8877,8 @@ function tamEkranYatay() {
   }, { passive: true });
   let son2 = "";
   setInterval(() => {
+    const mb = document.getElementById("mob");
+    if (mb) mb.classList.toggle("sus", !!G && !["oyun", "dur", "basla", "gol"].includes(G.faz));
     if (!G || G.human < 0) return;
     const t = G.top, bizde = t.sahip && t.sahip.k === G.human, dur = G.restart && G.restart.k === G.human;
     const m = bizde || dur ? "h" : "s";
