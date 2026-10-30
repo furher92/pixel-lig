@@ -79,6 +79,16 @@ tr.ucl td:first-child{box-shadow:inset 4px 0 0 #3b6cff}tr.uel td:first-child{box
 .skr b{font-size:22px;color:var(--sar);margin:0 10px}
 .nasil{font-size:8px;line-height:2.2;max-width:520px;background:var(--pn);padding:14px;border-radius:4px}
 #oyun{position:fixed;top:0;right:0;bottom:0;left:0;display:none;background:#000}
+/* 📱 Mobil: uzun pencereler kaydırılabilir (ortalı kalır, sığmazsa yukarıdan başlar), geniş tablolar yana kayar */
+.secModal,body>div[style*="position:fixed"][style*="justify-content:center"],body>div[style*="position: fixed"][style*="justify-content: center"]{overflow-y:auto;-webkit-overflow-scrolling:touch}
+.secModal>*:first-child,body>div[style*="position:fixed"][style*="justify-content:center"]>*:first-child{margin-top:auto!important}
+.secModal>*:last-child,body>div[style*="position:fixed"][style*="justify-content:center"]>*:last-child{margin-bottom:auto!important}
+.secModal{justify-content:flex-start!important}
+body>div[style*="position:fixed"][style*="justify-content:center"]{justify-content:flex-start!important}
+#karIc table{display:block;max-width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch}
+@media (max-width:600px){#karIc{padding-left:4px;padding-right:4px}#karIc .tabs{gap:3px}#karIc .tab{padding:6px 7px;font-size:8px}#karIc td,#karIc th{padding:3px 4px}}
+@media (pointer:coarse) and (max-height:500px){.secModal .btn{padding:8px 12px;min-height:0}.secModal{gap:6px!important;padding:10px!important}}
+
 #cv{position:absolute;image-rendering:pixelated;image-rendering:crisp-edges}
 #mob{display:none}
 @media (pointer:coarse){#mob{display:block}}
@@ -632,7 +642,7 @@ function macBaslat(ev, dep, opts) {
   window._iki = false;
   G.taktik = taktikAl();
   G.hk = opts && opts.hakem || HAKEMLER[Math.random() * HAKEMLER.length | 0];
-  G.tema = opts && opts.tema || (ev.lig && ev.lig === dep.lig && SKB[ULK(ev.lig)] ? ULK(ev.lig) : ev.lig === "MİLLİ" || dep.lig === "MİLLİ" ? "MILLI" : "GENEL");
+  G.tema = opts && opts.tema || (ev.lig && ULK(ev.lig) === ULK(dep.lig) && SKB[ULK(ev.lig)] ? ULK(ev.lig) : ev.lig === "MİLLİ" || dep.lig === "MİLLİ" ? "MILLI" : "GENEL");
   G.tek = opts && opts.tek || 0;
   if (window._izBonus) {
     G.P.forEach((p) => {
@@ -1149,6 +1159,18 @@ function sonucSkor() {
   const s = sonSkor();
   return G.donus ? [s[1], s[0]] : s;
 }
+function kayitKes(K) {
+  if (!K || K.length < 4) return K;
+  const sic = (i) => {
+    const a = K[i - 1].t, b = K[i].t;
+    return Math.hypot(a[0] - b[0], a[1] - b[1]) > 30;
+  };
+  let son2 = K.length;
+  for (let i = K.length - 1; i >= Math.max(1, K.length - 6); i--) if (sic(i)) son2 = i;
+  let kes = 0;
+  for (let i = 1; i < son2; i++) if (sic(i)) kes = i;
+  return son2 - kes >= 6 ? K.slice(kes, son2) : K.slice(0, son2);
+}
 function ofsHat(k) {
   const sag = k === 0;
   const xs = G.P.filter((p) => p.k !== k && !(p.disari > 0) && !p.sedye).map((p) => p.x).sort((a, b) => sag ? b - a : a - b);
@@ -1169,6 +1191,13 @@ function ofsKaydet(p) {
     }
   });
   if (S.size) G.ofs = { k, S, M, t: 150 };
+  {
+    const xs = {};
+    G.P.forEach((q) => {
+      if (q.k === k) xs[q.id] = q.x;
+    });
+    G.ofsSnap = { k, hat, xs, kayN: G.kayN || 0 };
+  }
 }
 function ofsaytVer(p) {
   if (G.seri) {
@@ -1632,6 +1661,27 @@ function yerHepsi() {
 function varKarar() {
   G.tvIsaret = 110;
 }
+function ofsCizgiKur(gk, iptal) {
+  const sn = G.ofsSnap && G.ofsSnap.k === gk ? G.ofsSnap : null, yon = gk === 0 ? 1 : -1, sc = G.golP;
+  let dx = sn ? sn.hat : gk === 0 ? MR - 110 : ML + 110, ax = sn && sc && sn.xs[sc.id] != null ? sn.xs[sc.id] : dx + yon * (iptal ? 3 : -3);
+  if (iptal && (ax - dx) * yon <= 1) ax = dx + yon * (2 + Math.random() * 3);
+  if (!iptal && (ax - dx) * yon >= 0) ax = dx - yon * (1 + Math.random() * 4);
+  const K = G.varKayit || [];
+  let fi = null;
+  if (sn && K.length) {
+    fi = K.length - 1 - ((G.kayNGol || G.kayN || 0) - sn.kayN);
+    fi = fi < 0 || fi >= K.length ? null : fi;
+  }
+  if (fi == null && K.length) {
+    fi = 0;
+    const F = K[0].P, ben = F.find((q) => q[2] === gk && sc && q[8] === sc.no), def = F.filter((q) => q[2] !== gk).map((q) => q[0]).sort((a, b) => yon > 0 ? b - a : a - b);
+    if (def[1] != null) dx = def[1];
+    ax = ben ? ben[0] : dx + yon * (iptal ? 3 : -3);
+    if (iptal && (ax - dx) * yon <= 1) ax = dx + yon * (2 + Math.random() * 3);
+    if (!iptal && (ax - dx) * yon >= 0) ax = dx - yon * (1 + Math.random() * 4);
+  }
+  return { iptal, ax, dx, fi, ad: sc && sc.ad || "" };
+}
 function golVar(gk, d) {
   const penGol = !!(G.penKontrol && !G.penKontrol.seri && G.penKontrol.k === gk) || !!(!G.seri && G.golKaynak && G.golKaynak.tip === "PENALTI" && G.golKaynak.k === gk);
   const ofsGec = !!(G.ofsGec && G.ofsGec.k === gk), kayn = G.golKaynak;
@@ -1697,7 +1747,7 @@ function golVar(gk, d) {
     } });
     if (tip === "ofs") {
       G.kuy.push({ b: "VAR: OFSAYT ÇİZGİLERİ", t: 190, f: () => {
-        G.ofsCizgi = { iptal, x: null };
+        G.ofsCizgi = ofsCizgiKur(gk, iptal);
         G.alt = "Yarı otomatik ofsayt çizgileri çekiliyor";
       } });
       G.kuy.push(iptal ? { b: "OFSAYT! GOL İPTAL", t: 120, f: () => {
@@ -4575,6 +4625,73 @@ function cizKosan() {
 const REKLAM = ["KRONOS BANK", "PİKSELNET", "TURBOGAZ", "ZİRVE ENERJİ", "NEXA AIR", "ATLAS SİGORTA", "CATANADEV", "YELKA", "AXIOX ARENA", "SAYI AVCISI", "MAVİ SU", "ROKET KARGO", "ANADOLU ÇAY", "VOLTA OTO", "BETONSA"];
 const YAYINCI = { TR: "PİKSEL SPOR", ENG: "SKYLINE SPORTS", ESP: "ESTRELLA TV", ITA: "CALCIO+", GER: "FUSSBALL EINS", FRA: "CANAL FOOT", NED: "ORANJE TV", POR: "SPORT LUSO", BEL: "BELGA SPORT", SCO: "TARTAN TV", UCL: "EUROVİZYON+", UEL: "EUROVİZYON+", UECL: "EUROVİZYON+", MILLI: "ULUSAL TV", GENEL: "PİKSEL TV" };
 const TOP_RENK = { UCL: "#7cc4ff", UEL: "#ffa040", UECL: "#4ff0a0" };
+const TOP_DESEN = {
+  TR: { ad: "Anadolu Yıldız 26", r: ["#e8322b", "#1c2a5a", "#7cc8ee"] },
+  ENG: { ad: "Ada Işıltı", r: ["#3d1a5c", "#ff3fa4", "#2ec8d6"] },
+  ESP: { ad: "İber Ateş", r: ["#ff7a00", "#1d1d1d", "#ffd200"] },
+  ITA: { ad: "Çizme Rüzgar", r: ["#1f4fd8", "#00b56a", "#e83a3a"] },
+  GER: { ad: "Ren Kıvılcım", r: ["#d40000", "#151515", "#f2c400"] },
+  FRA: { ad: "Gal Akım", r: ["#0b2f6b", "#ffde00", "#e5004f"] },
+  NED: { ad: "Lale Dalga", r: ["#ff6a00", "#0a3d91", "#ff6a00"] },
+  POR: { ad: "Luso Rota", r: ["#00843d", "#ffcc00", "#d0102a"] },
+  BEL: { ad: "Flaman Çizgi", r: ["#151515", "#ffd400", "#e1002a"] },
+  SCO: { ad: "Tartan Kuzey", r: ["#002b7f", "#7fd0ff", "#002b7f"] },
+  UCL: { ad: "Yıldız Gecesi", r: ["#1b1b3a", "#ff3dd6", "#3dd6ff", "#ffe03d"] },
+  UEL: { ad: "Kıta Alevi", r: ["#111111", "#ff4b1a", "#ff9a1a"] },
+  UECL: { ad: "Umut Işığı", r: ["#111111", "#25e06b", "#e04bd6"] },
+  MILLI: { ad: "Ulus Kupası", r: ["#c9a227", "#1a1a1a", "#c9a227"] },
+  GENEL: { ad: "Piksel Klasik", r: ["#111111", "#111111", "#555555"] }
+};
+function topDesen() {
+  return TOP_DESEN[G && G.tema] || TOP_DESEN.GENEL;
+}
+function cizTop(x, y) {
+  const D = topDesen().r, t = G.top, don = Math.floor(G.kare * Math.min(3, Math.hypot(t.vx, t.vy)) / 6) % 4;
+  if (GRAFIK === 0) {
+    cx.fillStyle = "#fff";
+    cx.fillRect(x - 1, y, 2, 2);
+    cx.fillStyle = D[0];
+    cx.fillRect(x, y, 1, 1);
+    return;
+  }
+  cx.fillStyle = "#fff";
+  cx.fillRect(x - 1, y - 1, 3, 3);
+  const p = [[-1, -1], [1, -1], [1, 1], [-1, 1]];
+  cx.fillStyle = D[0];
+  cx.fillRect(x + p[don][0], y + p[don][1], 1, 1);
+  cx.fillStyle = D[1];
+  cx.fillRect(x + p[(don + 2) % 4][0], y + p[(don + 2) % 4][1], 1, 1);
+  if (D[2]) {
+    cx.fillStyle = D[2];
+    cx.fillRect(x, y, 1, 1);
+  }
+}
+const REK_STIL = {
+  TR: { bg: ["#b8000f", "#ffffff", "#0b1e5b"], fg: ["#ffffff", "#b8000f", "#ffffff"], ad: ["PİKSELNET", "ANADOLU ÇAY", "TURBOGAZ", "KRONOS BANK", "ROKET KARGO", "MAVİ SU", "CATANADEV", "YELKA"] },
+  ENG: { bg: ["#38003c", "#00e47c", "#ffffff"], fg: ["#ffffff", "#38003c", "#38003c"], ad: ["SKYLINE", "NEXA AIR", "CROWNMART", "ATLAS SİGORTA", "BLUEFERN", "CATANADEV"] },
+  ESP: { bg: ["#ffffff", "#ff4b00", "#111111"], fg: ["#111111", "#ffffff", "#ffd200"], ad: ["ESTRELLA", "SOLCOM", "VIAJAR+", "MADERA", "AXIOX ARENA"] },
+  ITA: { bg: ["#0b3c8c", "#ffffff", "#00a650"], fg: ["#ffffff", "#0b3c8c", "#ffffff"], ad: ["CALCIO+", "PASTA NOVA", "VELOCE", "BANCA PIXEL", "SAYI AVCISI"] },
+  GER: { bg: ["#ffffff", "#d20515", "#111111"], fg: ["#d20515", "#ffffff", "#ffffff"], ad: ["FUSSBALL EINS", "KRAFTWERK", "AUTOHAUS PX", "VOLTA OTO", "ZİRVE ENERJİ"] },
+  FRA: { bg: ["#091c3e", "#dae025", "#ffffff"], fg: ["#dae025", "#091c3e", "#091c3e"], ad: ["CANAL FOOT", "BOULANGE", "LUMIÈRE", "NEXA AIR"] },
+  NED: { bg: ["#ff6a00", "#ffffff", "#0a3d91"], fg: ["#ffffff", "#ff6a00", "#ffffff"], ad: ["ORANJE TV", "KAASHUIS", "FIETS+", "MOLEN BANK"] },
+  POR: { bg: ["#006b3c", "#ffd200", "#ffffff"], fg: ["#ffffff", "#006b3c", "#d0102a"], ad: ["SPORT LUSO", "BACALHAU", "ONDA", "ROTA AIR"] },
+  BEL: { bg: ["#151515", "#ffd400", "#e1002a"], fg: ["#ffd400", "#151515", "#ffffff"], ad: ["BELGA SPORT", "CHOCO", "FRITUUR", "GENT BANK"] },
+  SCO: { bg: ["#1d1b5c", "#ffffff", "#7fd0ff"], fg: ["#ffffff", "#1d1b5c", "#1d1b5c"], ad: ["TARTAN TV", "HIGHLAND", "PEAT & CO", "LOCH BANK"] },
+  UCL: { bg: ["#06103a", "#0b1e5b", "#06103a"], fg: ["#9fd4ff", "#ffffff", "#ffe03d"], ad: ["YILDIZ TV", "KRONOS BANK", "NEXA AIR", "GALAKSİ", "EUROVİZYON+"], yildiz: 1 },
+  UEL: { bg: ["#111111", "#ff6a00", "#111111"], fg: ["#ff9a1a", "#111111", "#ffffff"], ad: ["KITA TV", "TURBOGAZ", "ROTA AIR", "EUROVİZYON+"] },
+  UECL: { bg: ["#111111", "#25e06b", "#111111"], fg: ["#25e06b", "#111111", "#e04bd6"], ad: ["UMUT TV", "MAVİ SU", "YELKA", "EUROVİZYON+"] },
+  MILLI: { bg: ["#1a1a1a", "#c9a227", "#ffffff"], fg: ["#c9a227", "#1a1a1a", "#1a1a1a"], ad: ["ULUSAL TV", "KRONOS BANK", "ATLAS SİGORTA"] }
+};
+const REK_YEREL = { TR: ["YILMAZ NAKLİYAT", "KARDEŞLER FIRIN", "ÖZ YAPI", "ŞEHİR ECZANE", "DOĞAN OTO", "ÇINAR KAFE", "AKIN MOBİLYA"], INT: ["SMITH & SONS", "THE RED LION", "HILLTOP MOTORS", "CITY BAKERY", "RIVERSIDE INN", "NORTH TILES"] };
+function rekStil() {
+  if (!G) return REK_STIL.TR;
+  const ev = G.T && G.T[0] && G.T[0].t, k = ev && ev.lig ? KADEME(ev.lig) : 1;
+  if (k >= 2 && !["UCL", "UEL", "UECL", "MILLI"].includes(G.tema)) {
+    const ul = ULK(ev.lig);
+    return { bg: ["#e9e4d8", "#2d5d8a", "#7a2a2a", "#2f6b3a", "#d9a400"], fg: ["#222", "#fff", "#fff", "#fff", "#222"], ad: REK_YEREL[ul === "TR" ? "TR" : "INT"], sabit: 1 };
+  }
+  return REK_STIL[G.tema] || REK_STIL.TR;
+}
 function cizReklam() {
   if (G.derbi && GRAFIK > 0) {
     for (let i = 0; i < 14; i++) {
@@ -4590,11 +4707,17 @@ function cizReklam() {
   if (GRAFIK === 0 && G.kare % 2) return;
   const y = MT - 12, w = 64, n = Math.ceil((MR - ML + 40) / w), of = Math.floor(G.kare / 420);
   cx.font = "5px monospace";
+  const RS = G._rs || (G._rs = rekStil()), O = RS.sabit ? 0 : of;
   for (let i = 0; i < n; i++) {
-    const x = ML - 20 + i * w, ad = REKLAM[(i + of) % REKLAM.length], c = ["#0b1e5b", "#a8000e", "#111", "#1d6b3a", "#5b2a86"][(i + of) % 5];
-    cx.fillStyle = c;
+    const x = ML - 20 + i * w, ad = RS.ad[(i + O) % RS.ad.length], j = (i + O) % RS.bg.length;
+    cx.fillStyle = RS.bg[j];
     cx.fillRect(x, y, w - 1, 7);
-    cx.fillStyle = G.kare % 420 < 12 ? "#fff" : "#ffe14d";
+    if (RS.yildiz && GRAFIK > 0) {
+      cx.fillStyle = "rgba(159,212,255,.35)";
+      cx.fillRect(x + 3, y + 3, 1, 1);
+      cx.fillRect(x + w - 6, y + 2, 1, 1);
+    }
+    cx.fillStyle = !RS.sabit && G.kare % 420 < 12 ? "#fff" : RS.fg[j % RS.fg.length];
     const tb = cx.textBaseline;
     cx.textBaseline = "alphabetic";
     cx.fillText(ad, x + (w - cx.measureText(ad).width) / 2, y + 6);
@@ -4846,6 +4969,7 @@ function onIsinmaGuncelle() {
   if (e === 90) G.banner = "";
   if (G.hakem) G.hakem.x = W / 2, G.hakem.y = MB + 16;
   if (e === 15) yorum(`🎙️ İyi akşamlar! ${G.T[0].t.ad} - ${G.T[1].t.ad}${G.derbi ? " derbisi" : ""} birazdan başlıyor.`, 1);
+  if (e === 560) yorum(`⚽ Maçın resmi topu: ${topDesen().ad}`, 1);
   if (e === 150) yorum(spikerYorum(0), 1);
   if (e === 400) yorum(spikerYorum(1), 1);
   G.alt = e < 330 ? "Kadro anonsu: " + G.T[0].t.ad : "Kadro anonsu: " + G.T[1].t.ad;
@@ -5410,10 +5534,12 @@ function topDisi() {
       G.faz = "gol";
       G.golK = k;
       sesGol();
-      G.golKayit = (G.kay || []).slice(penG ? -Math.min(110, Math.max(8, (G.kayN || 0) - (G.penKayN || 0) + 16)) : -110);
+      G.kayNGol = G.kayN || 0;
+      G.golKayit = kayitKes((G.kay || []).slice(penG ? -Math.min(110, Math.max(8, (G.kayN || 0) - (G.penKayN || 0) + 16)) : -110));
       G.tekrarH = 2;
       if (penG) {
-        G.golKayit = (G.penFaul || []).concat(G.golKayit);
+        const _pf = kayitKes(G.penFaul || []), _ilk = G.golKayit[0];
+        G.golKayit = _pf.concat(_pf.length && _ilk ? Array.from({ length: 12 }, (_, i) => Object.assign({}, _ilk, { gecis: i + 1 })) : []).concat(G.golKayit);
         G.tekrarH = 3;
       }
       G.penFaul = null;
@@ -7062,7 +7188,7 @@ function ciz() {
     F = G.golKayit[Math.min(G.golKayit.length - 1, Math.floor((G.tekrarUz - G.fazT) / (G.tekrarH || 2)))];
     et = G.tekrarH === 3 ? "PENALTI TEKRARI · YAVAŞ ÇEKİM" : "GOL TEKRARI";
   } else if (varTekrarMi() && G.varKayit && G.varKayit.length && (G.varSure || 0) > 30) {
-    F = G.varKayit[Math.floor((G.varSure - 45) / 2) % G.varKayit.length];
+    F = G.ofsCizgi && G.ofsCizgi.fi != null && /ÇİZGİ/.test(G.banner || "") ? G.varKayit[G.ofsCizgi.fi] : G.varKayit[Math.floor((G.varSure - 45) / 2) % G.varKayit.length];
     et = G.penCizgi ? "VAR · KALE ÇİZGİSİ" : /ÇİZGİ/.test(G.banner) ? "VAR · OFSAYT" : "VAR TEKRARI";
   }
   if (!F) {
@@ -7089,6 +7215,17 @@ function ciz() {
     G.alt = al;
   }
   cx.setTransform(CS, 0, 0, CS, 0, 0);
+  if (F.gecis) {
+    const a = F.gecis < 4 ? F.gecis / 4 : F.gecis > 9 ? (13 - F.gecis) / 4 : 1;
+    cx.fillStyle = `rgba(5,7,15,${(0.92 * a).toFixed(2)})`;
+    cx.fillRect(0, 0, VW, VH);
+    cx.globalAlpha = a;
+    cx.font = "9px monospace";
+    cx.fillStyle = "#ffd23f";
+    const tx = "PENALTI ATIŞI";
+    cx.fillText(tx, VW / 2 - cx.measureText(tx).width / 2, VH / 2 - 4);
+    cx.globalAlpha = 1;
+  }
   cx.strokeStyle = et === "GOL TEKRARI" ? "#ffd23f" : "#4aa3ff";
   cx.lineWidth = 2;
   cx.strokeRect(1, 1, VW - 2, VH - 2);
@@ -7132,9 +7269,8 @@ function cizIc() {
   cizOnIsinma();
   cizSeremoni();
   if (G.faz === "tekrar" && G.ofsCizgi) {
-    const tx = t.x, o = G.ofsCizgi;
-    if (o.x == null) o.x = tx;
-    const ax = Math.round(o.x), dx = Math.round(o.x + (o.iptal ? -3 : 3) * (G.golK === 0 ? 1 : -1));
+    const o = G.ofsCizgi;
+    const ax = Math.round(o.ax), dx = Math.round(o.dx);
     cx.fillStyle = "rgba(60,140,255,.85)";
     cx.fillRect(dx, MT, 1, MB - MT);
     cx.fillStyle = "rgba(255,60,60,.85)";
@@ -7532,10 +7668,7 @@ function cizIc() {
     cx.fillStyle = "rgba(0,0,0,.35)";
     cx.fillRect(Math.round(t.x) - 1, Math.round(t.y), 3, 1);
   }
-  cx.fillStyle = TOP_RENK[G.tema] || "#fff";
-  cx.fillRect(Math.round(t.x) - 1, Math.round(t.y - t.z) - 2, 2, 2);
-  cx.fillStyle = "#111";
-  cx.fillRect(Math.round(t.x), Math.round(t.y - t.z) - 2, 1, 1);
+  cizTop(Math.round(t.x), Math.round(t.y - t.z) - 2);
   cx.restore();
   cizHava();
   cizYayin();
