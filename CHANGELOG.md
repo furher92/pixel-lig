@@ -1,5 +1,26 @@
 # Sürüm notları
 
+## V9.9.3 — Bakım
+- 🔧 V10 hazırlığı: 13 Kasım 09:00'a kadar sadece Hızlı Maç açık, kayıtlar güvende
+
+## V9.9.2 — 6 Kasım 2026
+- 🔧 Bakım öncesi son güncelleme: yeni özellik yok, kararlılık sürümü
+- 🛠️ Ardından V9.9.3 bakım modu: 13 Kasım 09:00'a kadar sadece Hızlı Maç
+
+## V9.9.1 — 6 Kasım 2026
+- 🎉 Kanarya 120. yıl özel arması (1907–2027)
+- 🛡️ Tüm takımlara özgün armalar (kulüp renkleri + kısaltma)
+- Puan durumunda diğer ligler de görülebilir (ülke → kademe seçici)
+- Transfer ekranındaki lig filtresi derli toplu
+- Muhtemel İlk 11 kartı yenilendi (düzgün diziliş, net renkler)
+- Penaltıda kalecin sensen ↑/↓ ile köşe seçebilirsin
+- KKTC ligleri: Akdeniz Piksel Süper Ligi / 1. Lig (İngiltere'nin Ada ligiyle karışmasın)
+- Kendi yarı sahamızdan orta (D): rakip kaleye değil, ilerideki en uygun arkadaşa uzun top
+- Frikik ve aut pası (X) boştaki en uygun arkadaşa, yetişecek güçte (iki takım için de)
+- Aut atışında rakipler ceza sahamıza dolmuyor, bizimkiler rakip yarıda kalmıyor
+- Yerden paslar biraz daha güçlü, şut gücü dengelendi
+- Hava durumu yazısı dakikanın altına taşındı
+
 ## V9.9.0 — 6 Kasım 2026 (Part 1)
 - Sekmeli ana menü (Modlar / Ayarlar), sabit piksel stadyum arka planı, atlanabilir Catanadev intro
 - 🆕 Yenilikler ekranı: sürüm geçmişi (V9.1.0 → V9.9.0)
@@ -29,6 +50,8 @@
 - 🌧️ Kötü hava: maç öncesi saha kontrolü (gerekirse 30 dk erteleme), kesinti sonrası zemin kontrolü
 - ⛈️ Kariyerde kış maçları kar/sağanakta ertelenebilir, sezon sonundaki ek haftada oynanır
 - 🐞 Hata bildir butonu (sağ alt): hatalar otomatik toplanır, e-posta / kopyala / indir
+- 🚌 Maç öncesi otobüs gelişi + 🎙️ stüdyo yorumcuları (atlanabilir)
+- Şut gücü biraz düşürüldü (fazla hızlıydı)
 - 🧱 Baraj: 3+ kişilik barajda hücumcular en az 1 m uzakta
 - 📱 Mobil: yavaş telefonda simülasyon yavaşlamıyor, ilk açılışta düşük grafik
 - 🐦 X ekranı: Gündemdekiler, taraftar tepkileri
