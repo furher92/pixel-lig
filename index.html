@@ -34,7 +34,25 @@ html,body{margin:0;height:100%;background:var(--bg);color:var(--tx);font-family:
 .mi{font-size:18px;line-height:1}.mt{font-weight:bold;font-size:12px;letter-spacing:.5px}.ma{font-size:9px;opacity:.85}
 .mk.kilit{cursor:not-allowed;background:repeating-linear-gradient(45deg,#2a2e42 0 8px,#323750 8px 16px);opacity:.8}.mk.kilit .ma{color:#ffd23f;opacity:1}.mk.kilit:hover{transform:none;filter:none}
 @media(max-width:380px){.modGrid{grid-template-columns:1fr}}
-#ana{background-color:#0b1530;background-size:cover;background-position:center bottom}#ana>*{position:relative;z-index:1}#ana .btn{box-shadow:0 2px 0 rgba(0,0,0,.45)}#yenilik .kart{background:rgba(10,16,40,.95);border:2px solid #ffd23f;border-radius:6px;padding:12px;max-width:520px;width:92vw;max-height:80vh;overflow-y:auto;text-align:left;font-size:8px;line-height:1.8}#yenilik h3{font-size:10px;color:#ffd23f;margin:8px 0 4px}#intro{position:fixed;inset:0;z-index:99999;background:#05070f;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;cursor:pointer}#intro .l1{font-size:10px;color:#8ab4ff;letter-spacing:3px;opacity:0;transition:opacity .6s}#intro .l2{font-size:26px;color:#ffd23f;opacity:0;transition:opacity .6s;text-shadow:3px 3px 0 #b3001b}#intro .l3{font-size:7px;color:#aaa;opacity:0;transition:opacity .6s}
+#ana{background-color:#0b1530;background-size:cover;background-position:center bottom}#ana>*{position:relative;z-index:1}#ana .btn{box-shadow:0 2px 0 rgba(0,0,0,.45)}#yenilik .kart{background:rgba(10,16,40,.95);border:2px solid #ffd23f;border-radius:6px;padding:12px;max-width:520px;width:92vw;max-height:80vh;overflow-y:auto;text-align:left;font-size:8px;line-height:1.8}#yenilik h3{font-size:10px;color:#ffd23f;margin:8px 0 4px}#intro{position:fixed;inset:0;z-index:99999;background:#05070f;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;cursor:pointer}
+#intro{overflow:hidden;background:radial-gradient(ellipse at 50% 40%,#102050 0%,#05070f 70%)}
+#intro .iz{position:absolute;inset:0;background:repeating-linear-gradient(115deg,rgba(255,255,255,.03) 0 40px,transparent 40px 80px);animation:izKay 4s linear infinite}
+#intro .isaha{position:absolute;left:0;right:0;bottom:0;height:22%;background:repeating-linear-gradient(90deg,#246f32 0 60px,#2c8a3d 60px 120px);border-top:3px solid rgba(255,255,255,.8);transform:perspective(300px) rotateX(35deg);transform-origin:bottom}
+#intro .itop{position:absolute;width:clamp(44px,6vw,80px);height:clamp(44px,6vw,80px);bottom:17%;left:-60px;animation:iTop 1.15s cubic-bezier(.3,.6,.4,1) .15s forwards}
+#intro .iflas{position:absolute;inset:0;background:#fff;opacity:0;animation:iFlas .5s ease-out 1.15s}
+#intro .l1{font-size:clamp(9px,1.4vw,16px);color:#8ab4ff;letter-spacing:2px;opacity:0;animation:iBel .5s ease-out .3s forwards;z-index:2}
+#intro .l2{font-size:clamp(30px,6.5vw,80px);color:#ffd23f;text-shadow:3px 3px 0 #b3001b,6px 6px 0 #000;z-index:2;white-space:nowrap}
+#intro .l2 span{display:inline-block;opacity:0;transform:translateY(-60px) scale(1.6);animation:iHarf .35s cubic-bezier(.3,1.6,.5,1) forwards}
+#intro .l4{font-size:clamp(16px,2.6vw,32px);color:#fff;text-shadow:2px 2px 0 #000;opacity:0;animation:iBel .4s ease-out 2.1s forwards;z-index:2}
+#intro .l5{font-size:clamp(11px,1.6vw,20px);color:#111;background:#ffd23f;border:2px solid #000;padding:4px 10px;box-shadow:3px 3px 0 #b3001b;opacity:0;transform:scale(3) rotate(-12deg);animation:iDamga .3s ease-in 2.5s forwards;z-index:2}
+#intro .l3{position:absolute;bottom:4%;font-size:7px;color:#ccc;opacity:0;animation:iBel .4s ease-out 2.9s forwards;z-index:2}
+@keyframes izKay{to{background-position:160px 0}}
+@keyframes iTop{0%{left:-60px;transform:rotate(0)}70%{left:calc(50% - 3vw);bottom:17%;transform:rotate(540deg)}100%{left:calc(50% - 3vw);bottom:62%;transform:rotate(720deg) scale(.2);opacity:0}}
+@keyframes iFlas{0%{opacity:.85}100%{opacity:0}}
+@keyframes iBel{to{opacity:1}}
+@keyframes iHarf{to{opacity:1;transform:none}}
+@keyframes iDamga{to{opacity:1;transform:scale(1) rotate(-6deg)}}
+
 .ekr{position:fixed;inset:0;display:none;flex-direction:column;align-items:center;justify-content:flex-start;padding:16px;overflow-y:auto;touch-action:pan-y;gap:10px}
 h1{font-size:20px;color:var(--sar);text-shadow:3px 3px 0 #c0392b;margin:18px 0 2px;text-align:center;line-height:1.5}
 .alt{font-size:8px;opacity:.7;margin-bottom:12px}
@@ -3100,19 +3118,39 @@ function digerTablo(s,lig){const L=LEAGUES.find(l=>l.id===lig);if(!L)return {};c
  try{for(let w=0;w<n;w++)fk[w].forEach(([a,b])=>{if(a<0||b<0)return;isle(tab,a,b,simMac({rt:ALL[a].rt},{rt:ALL[b].rt}));});}finally{Math.random=R0;}return window._dtC[key]=tab;}
 function anaSekme(i){$('anaModlar').style.display=i?'none':'flex';$('anaAyar').style.display=i?'flex':'none';$('atM').classList.toggle('akt',!i);$('atA').classList.toggle('akt',!!i);}
 // sabit (hareketsiz) piksel stadyum arka planı — bir kez çizilir, resim olarak konur
-(function anaArka(){try{const c=document.createElement('canvas');c.width=320;c.height=180;const g=c.getContext('2d');
- const gr=g.createLinearGradient(0,0,0,90);gr.addColorStop(0,'#050a1e');gr.addColorStop(1,'#13285a');g.fillStyle=gr;g.fillRect(0,0,320,90);
- for(let i=0;i<40;i++){g.fillStyle='rgba(255,255,255,'+(.3+((i*37)%7)/10)+')';g.fillRect((i*53)%320,(i*29)%60,1,1);}
- [[30,8],[290,8]].forEach(([x,y])=>{g.fillStyle='#2b2f3a';g.fillRect(x-1,y,3,70);g.fillStyle='#fff7c2';g.fillRect(x-8,y-6,17,7);g.fillStyle='rgba(255,247,194,.08)';g.beginPath();g.moveTo(x-8,y);g.lineTo(x+60*(x<160?1:-1),120);g.lineTo(x-60*(x<160?-1:1)+(x<160?0:0),120);g.fill();});
- g.fillStyle='#1a1f2e';g.fillRect(0,62,320,44);const R=['#c0392b','#f1c40f','#2c7be5','#ecf0f1','#27ae60','#8e44ad'];
- for(let y=64;y<104;y+=3)for(let x=(y%2);x<320;x+=3){g.fillStyle=R[((x*7+y*13)>>2)%R.length];g.globalAlpha=.55;g.fillRect(x,y,2,2);}g.globalAlpha=1;
- g.fillStyle='#0d1424';g.fillRect(0,104,320,4);g.fillStyle='#2f8a3a';g.fillRect(0,108,320,72);
- for(let i=0;i<8;i++){g.fillStyle=i%2?'#2f8a3a':'#35963f';g.fillRect(i*40,108,40,72);}
- g.fillStyle='rgba(255,255,255,.75)';g.fillRect(0,110,320,1);g.fillRect(159,110,1,70);g.beginPath();g.arc(160,150,18,0,Math.PI*2);g.strokeStyle='rgba(255,255,255,.75)';g.lineWidth=1;g.stroke();
- const sh=g.createLinearGradient(0,0,0,180);sh.addColorStop(0,'rgba(5,7,15,.55)');sh.addColorStop(.5,'rgba(5,7,15,.35)');sh.addColorStop(1,'rgba(5,7,15,.75)');g.fillStyle=sh;g.fillRect(0,0,320,180);
+(function anaArka(){try{const W=480,H=270,c=document.createElement('canvas');c.width=W;c.height=H;const g=c.getContext('2d');
+ const sk=g.createLinearGradient(0,0,0,130);sk.addColorStop(0,'#02040c');sk.addColorStop(.6,'#0a1a44');sk.addColorStop(1,'#1d2f6a');g.fillStyle=sk;g.fillRect(0,0,W,130);
+ for(let i=0;i<70;i++){g.fillStyle='rgba(255,255,255,'+(.25+((i*37)%7)/10)+')';g.fillRect((i*67)%W,(i*31)%70,1,1);}
+ // uzak şehir silüeti
+ g.fillStyle='#0b1330';for(let x=0;x<W;x+=14){const h=10+((x*13)%23);g.fillRect(x,96-h,12,h);}
+ g.fillStyle='rgba(255,210,63,.5)';for(let x=3;x<W;x+=14)for(let y=80;y<94;y+=5)if((x*y)%7<3)g.fillRect(x,y,1,1);
+ // tribün (kavisli)
+ const R=['#c0392b','#f1c40f','#2c7be5','#ecf0f1','#27ae60','#8e44ad','#e67e22'];
+ g.fillStyle='#141a2c';g.beginPath();g.moveTo(0,150);g.quadraticCurveTo(W/2,70,W,150);g.lineTo(W,175);g.lineTo(0,175);g.fill();
+ for(let y=92;y<174;y+=3){const t=(y-92)/82;for(let x=0;x<W;x+=3){const top=150-(1-Math.pow((x-W/2)/(W/2),2))*80;if(y<top+4)continue;g.globalAlpha=.45+.4*t;g.fillStyle=R[((x*7+y*13)>>2)%R.length];g.fillRect(x,y,2,2);}}g.globalAlpha=1;
+ // pankart şeridi
+ g.fillStyle='#b3001b';g.fillRect(0,170,W,6);g.fillStyle='#ffd23f';for(let x=4;x<W;x+=40)g.fillRect(x,172,22,2);
+ // ışık direkleri + huzme
+ [[40,20],[W-40,20],[150,40],[W-150,40]].forEach(([x,y],k)=>{g.fillStyle='#1c2233';g.fillRect(x-1,y+8,3,150-y);
+  const hz=g.createRadialGradient(x,y,2,x,y,70);hz.addColorStop(0,'rgba(255,250,210,.55)');hz.addColorStop(1,'rgba(255,250,210,0)');g.fillStyle=hz;g.fillRect(x-70,y-70,140,140);
+  g.fillStyle='#fffbe0';g.fillRect(x-9,y-3,19,8);g.fillStyle='#2b2f3a';for(let i=0;i<4;i++)g.fillRect(x-8+i*5,y+1,1,4);
+  g.fillStyle='rgba(255,250,210,.06)';g.beginPath();g.moveTo(x-6,y+4);g.lineTo(W/2-60+k*30,270);g.lineTo(W/2+60+k*30,270);g.lineTo(x+6,y+4);g.fill();});
+ // saha (perspektif)
+ const hz=178;g.fillStyle='#246f32';g.fillRect(0,hz,W,H-hz);
+ for(let i=0;i<14;i++){const a=hz+(H-hz)*Math.pow(i/14,1.5),b=hz+(H-hz)*Math.pow((i+1)/14,1.5);if(i%2){g.fillStyle='#2c8a3d';g.fillRect(0,a,W,b-a);}}
+ g.strokeStyle='rgba(255,255,255,.8)';g.lineWidth=1;g.beginPath();g.moveTo(-60,H);g.lineTo(60,hz+2);g.lineTo(W-60,hz+2);g.lineTo(W+60,H);g.stroke();
+ g.beginPath();g.moveTo(W/2,hz+2);g.lineTo(W/2,H);g.stroke();g.beginPath();g.ellipse(W/2,hz+52,48,16,0,0,Math.PI*2);g.stroke();
+ g.beginPath();g.moveTo(W/2-60,hz+2);g.lineTo(W/2-74,hz+18);g.lineTo(W/2+74,hz+18);g.lineTo(W/2+60,hz+2);g.stroke();
+ // kale
+ g.strokeStyle='#fff';g.lineWidth=1.5;g.strokeRect(W/2-18,hz-10,36,12);g.strokeStyle='rgba(255,255,255,.25)';g.lineWidth=.5;for(let x=W/2-16;x<W/2+18;x+=3){g.beginPath();g.moveTo(x,hz-10);g.lineTo(x,hz+2);g.stroke();}
+ // konfeti
+ for(let i=0;i<60;i++){g.fillStyle=R[i%R.length];g.globalAlpha=.7;g.fillRect((i*97)%W,(i*53)%140+10,2,1);}g.globalAlpha=1;
+ const sh=g.createLinearGradient(0,0,0,H);sh.addColorStop(0,'rgba(2,4,12,.35)');sh.addColorStop(.55,'rgba(2,4,12,.15)');sh.addColorStop(1,'rgba(2,4,12,.7)');g.fillStyle=sh;g.fillRect(0,0,W,H);
+ const vg=g.createRadialGradient(W/2,H/2,W*.25,W/2,H/2,W*.7);vg.addColorStop(0,'rgba(0,0,0,0)');vg.addColorStop(1,'rgba(0,0,0,.55)');g.fillStyle=vg;g.fillRect(0,0,W,H);
  const a=$('ana');if(a){a.style.backgroundImage='url('+c.toDataURL()+')';a.style.imageRendering='pixelated';}}catch(e){}})();
 // 🆕 Yenilikler: sürüm geçmişi mini ekranı
 const SURUMLER=[
+ ['V10.0.13 · 12 Kasım 2026',['🎬 Yeni intro: saha üstünde top yuvarlanıp ekrana fırlıyor, flaş, PİKSEL LİG harfleri tek tek düşüyor, 26/27 ve V10 damgası','🏟️ Yeni ana menü arka planı: gece stadı — kavisli dolu tribün, 4 ışık direği ve huzmeler, şehir silüeti, perspektif saha + kale, konfeti']],
  ['V10.0.12 · 12 Kasım 2026',['🎨 Yeni ana menü: düğmeler yerine kart ızgarası (simge + kısa açıklama), Hızlı Maç ve Kariyer büyük kartlar, Draft kartları kilitli çizgili','🎨 Diğer kartlarda da emoji yerine çizim: krampon, Avrupa yıldız rozeti, iki oyuncu, madalya, draft kartları ve kadro panosu','⚽🏆 Hızlı Maç kartında Anadolu Kıvrım 26 topu, Kariyer kartında yıldızlı gümüş kupa çizimi (emoji yerine)']],
  ['V10.0.11 · 12 Kasım 2026',['🔒 DRAFT modu geliyor: Hızlı Maç Draft ve Kariyer Draft düğmeleri menüde, kilitli — Yakında, 27/28 sezonu ile']],
  ['V10.0.10 · 12 Kasım 2026',['⚽ Anadolu ve Akdeniz topları artık farklı: Anadolu Kıvrım 26 gümüş-beyaz zemin üstüne kırmızı/lacivert/açık mavi kıvrımlar, Akdeniz Sütun beyaz üstüne kırmızı-siyah dikey sütun','🔒 Top deseni artık dönmüyor, sabit duruyor','🏷️ Maçtaki lig panosu oynanan ligin kendi adını yazıyor (Akdeniz 1. Lig maçında artık Süper Lig yazmıyor)']],
@@ -3138,9 +3176,9 @@ function yenilikAc(){let d=$('yenilik');if(d)d.remove();d=document.createElement
  d.onclick=e=>{if(e.target===d)d.remove();};document.body.appendChild(d);}
 // 🎬 kısa intro (oturum başına bir kez, atlanabilir)
 (function intro(){let g=false;try{g=sessionStorage.getItem('pl_intro');}catch(e){}if(g)return;try{sessionStorage.setItem('pl_intro','1');}catch(e){}
- const d=document.createElement('div');d.id='intro';d.innerHTML='<div class="l1">CATANADEV</div><div class="l2">PİKSEL LİG</div><div class="l3">26/27 · V10 · atlamak için tıkla</div>';document.body.appendChild(d);
- const L=d.children;let kap=false;const bit=()=>{if(kap)return;kap=true;d.style.transition='opacity .4s';d.style.opacity='0';setTimeout(()=>d.remove(),420);removeEventListener('keydown',bit);};
- d.onclick=bit;addEventListener('keydown',bit);setTimeout(()=>L[0].style.opacity='1',150);setTimeout(()=>L[1].style.opacity='1',700);setTimeout(()=>L[2].style.opacity='1',1300);setTimeout(bit,3200);})();
+ const d=document.createElement('div');d.id='intro';d.innerHTML='<div class="iz"></div><div class="isaha"></div><div class="itop"><svg viewBox="0 0 40 40" width="100%" height="100%"><defs><clipPath id="itc"><circle cx="20" cy="20" r="18"/></clipPath></defs><circle cx="20" cy="20" r="18" fill="#eef0f3"/><g clip-path="url(#itc)" fill="none" stroke-linecap="round"><path d="M4 14 Q14 4 26 10" stroke="#e8322b" stroke-width="3.2"/><path d="M5 18 Q15 8 27 14" stroke="#1c2440" stroke-width="2.6"/><path d="M6 21.5 Q16 12 28 17.5" stroke="#7fc4ec" stroke-width="1.6"/><path d="M36 26 Q26 36 14 30" stroke="#e8322b" stroke-width="3.2"/><path d="M35 22 Q25 32 13 26" stroke="#1c2440" stroke-width="2.6"/><path d="M34 18.5 Q24 28 12 22.5" stroke="#7fc4ec" stroke-width="1.6"/></g><circle cx="20" cy="20" r="18" fill="none" stroke="#111" stroke-width="2"/></svg></div><div class="iflas"></div><div class="l1">C A T A N A D E V &nbsp;S U N A R</div><div class="l2"><span style="animation-delay:1.25s">P</span><span style="animation-delay:1.32s">İ</span><span style="animation-delay:1.39s">K</span><span style="animation-delay:1.46s">S</span><span style="animation-delay:1.53s">E</span><span style="animation-delay:1.60s">L</span><span style="animation-delay:1.67s">&nbsp;</span><span style="animation-delay:1.74s">L</span><span style="animation-delay:1.81s">İ</span><span style="animation-delay:1.88s">G</span></div><div class="l4">26/27</div><div class="l5">V10</div><div class="l3">atlamak için tıkla</div>';document.body.appendChild(d);
+ let kap=false;const bit=()=>{if(kap)return;kap=true;d.style.transition='opacity .5s';d.style.opacity='0';setTimeout(()=>d.remove(),520);removeEventListener('keydown',bit);};
+ d.onclick=bit;addEventListener('keydown',bit);setTimeout(bit,4600);})();
 function bakimUyar(){const d=$('bakimBant');if(d){d.style.borderColor='#ff3b3b';setTimeout(()=>d.style.borderColor='',600);}}
 
 function boyut(){const c=document.getElementById('cv');const dk=document.body.classList.contains('dik'),Wd=dk?innerHeight:innerWidth,Hd=dk?innerWidth:innerHeight;const vv=window.visualViewport,W2=vv&&!dk?vv.width:Wd,H2=vv&&!dk?vv.height:Hd;const s=Math.min(W2/VW,H2/VH);c.style.width=VW*s+'px';c.style.height=VH*s+'px';}

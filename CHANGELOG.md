@@ -1,5 +1,9 @@
 # Sürüm notları
 
+## V10.0.13 — 12 Kasım 2026
+- 🎬 Yeni animasyonlu intro
+- 🏟️ Yeni ana menü arka planı (gece stadı)
+
 ## V10.0.12 — 12 Kasım 2026
 - 🎨 Yeni kart ızgaralı ana menü
 
