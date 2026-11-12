@@ -1,5 +1,8 @@
 # Sürüm notları
 
+## V10.0.25 — 12 Kasım 2026
+- 🧹 Haberler kutusu / düğme kayması düzeltildi
+
 ## V10.0.24 — 12 Kasım 2026
 - ❄️ Kupalar ekranında Doğu Kupaları (Rusya & KKTC)
 
