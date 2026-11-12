@@ -1,5 +1,9 @@
 # Sürüm notları
 
+## V10.0.26 — 12 Kasım 2026
+- ❄️ Doğu Kupaları bağımsız oynanıyor
+- ⚽ Anadolu / Yıldızlar topları ayrıştı
+
 ## V10.0.25 — 12 Kasım 2026
 - 🧹 Haberler kutusu / düğme kayması düzeltildi
 
