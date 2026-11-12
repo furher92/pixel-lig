@@ -1,5 +1,28 @@
 # Sürüm notları
 
+## V10 — 12 Kasım 2026
+- 📦 Tek dosya: Legacy ayrı sürümü kalktı, eski/zayıf cihazda HAFİF MOD kendiliğinden açılır (Ayarlar → Hafif mod: Otomatik / Açık / Kapalı)
+- 🔁 Oyuncu değişikliği bitmeden santra yapılmıyor
+- 🏆 Kupa maçlarında orta sahada o kupanın adı yazıyor
+- 🛡️ Türkiye ve KKTC büyüklerine yeni armalar + şampiyonluk yıldızları (her 5 şampiyonluk = 1★)
+- 💚 Aslanlar'ın yeni 3. forması: zümrüt yeşili-siyah
+- ℹ️ Açılışta lisans/açıklama ekranı (Ayarlar → Hakkında)
+- İtiraz eden oyuncuların elleri artık havada kalmıyor
+- Son dakika golünde teknik direktör takılı kalmıyor
+- Tedavi gören oyuncu kenara yürüyerek çıkıyor, santrada sahaya ışınlanmıyor
+- Değişiklikte çıkan oyuncu tribüne değil, kenar çizgisinden yedek kulübesine yürüyor
+- Giren oyuncu kulübeden 4. hakemin yanına yürüyerek geliyor
+- Hakem atak sürerken düdük çalmıyor: düdük top ölüyken, kaleci tutunca ya da tehlike bitince
+- Autta X kısa pas, D uzun top; frikikte X ve D artık auta gitmiyor
+- Oyuncun faulle yerdeyken rakip gol atarsa VAR faul kontrolü yapıp golü iptal ediyor
+- Penaltı atışlarındaki takılma giderildi
+- Uzaktan frikikte oyuncular ceza sahasına dizilmiyor
+- Hakemle sadece kaptan konuşabilir: itiraz eden diğer oyunculara sarı kart
+- ⌚ Gol çizgisi teknolojisi (büyük liglerde ve Avrupa kupalarında)
+- Kadro ekranında oyuncu bayrağı ve sarı kart sınırı uyarısı
+- 🎙️ Maç öncesi stüdyo ve yorumcular yeniden çizildi
+- Bakım ekranı kaldırıldı
+
 ## V9.9.3 — Bakım
 - 🔧 V10 hazırlığı: 13 Kasım 09:00'a kadar sadece Hızlı Maç açık, kayıtlar güvende
 
