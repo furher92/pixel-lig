@@ -1,5 +1,9 @@
 # Sürüm notları
 
+## V10.0.7 — 12 Kasım 2026
+- 👕 26/27 formaları Part 1: İber, Ada, Çizme, Ren, Gal 1. kademe (96 kulüp, 3'er forma)
+- ⏭️ Part 2 V10.1'de
+
 ## V10.0.6 — 12 Kasım 2026
 - 🧤 Kaleciye faul yapılınca gol iptal, kaleci lehine frikik
 - 🌧️ Yağmur/kar kesintisinden sonra da gerçek hakem topu
