@@ -1,5 +1,8 @@
 # Sürüm notları
 
+## V10.0.22 — 12 Kasım 2026
+- ⚽ Yeni Avrupa topları (Yıldızlar/Kıta/Umut)
+
 ## V10.0.21 — 12 Kasım 2026
 - ⚽ Pas gücü mesafeye göre (taça giden pas hatası)
 
