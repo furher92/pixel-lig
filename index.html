@@ -227,7 +227,7 @@ function simMac(h,a){const d=(h.rt-a.rt)/18;return[poisson(Math.max(.2,1.35*Math
 
 // ===== motor =====
 const W=640,H=400,ML=24,MR=W-24,MT=24,MB=H-24,GW=50,GY1=H/2-GW/2,GY2=H/2+GW/2;
-const VW=384,VH=216;
+const VW=384,VH=216;function HDK(sc){return Math.max(2,Math.min(6,Math.ceil((sc||1)*(window.devicePixelRatio||1))));}
 const cv=document.getElementById('cv'),cx=cv.getContext('2d');cv.addEventListener('pointerdown',()=>{try{onIsinmaAtla();}catch(e){}});cx.imageSmoothingEnabled=false;
 let CS=0;function cozunurluk(){const dpr=window.devicePixelRatio||1,ek=(parseFloat(cv.style.width)||VW*2)/VW;const hd=Math.round(ek*dpr);const k=GRAFIK===0?Math.max(2,Math.min(4,hd)):Math.max(3,Math.min(6,hd));if(k!==CS){CS=k;cv.width=VW*k;cv.height=VH*k;}cx.setTransform(CS,0,0,CS,0,0);cx.imageSmoothingEnabled=false;}
 const FORM=[["GK",.03,.5],["DF",.17,.14],["DF",.15,.38],["DF",.15,.62],["DF",.17,.86],["MF",.37,.16],["MF",.34,.4],["MF",.34,.6],["MF",.37,.84],["FW",.56,.38],["FW",.56,.62]];
@@ -853,9 +853,9 @@ function odulGecesi(){const s=KRY(),L=LEAGUES.find(l=>l.id===s.lig);const sir=si
 // --- basın ---
 function basinDuyuru(b,m,sonra){secimModal(b,`<div style="background:#f4efe1;color:#222;padding:10px;max-width:400px;text-align:left;font-family:Georgia,serif;font-size:11px;line-height:1.5;border:3px double #222"><div style="font-weight:bold;border-bottom:2px solid #222;margin-bottom:6px;font-size:13px">📰 ${rs(BASIN_GZ).toLocaleUpperCase('tr')}</div>${m}</div>`,[{t:'DEVAM',f:sonra}]);}
 function basinOda(s,baslik,sorular,sonra){const B=ALL[s.ti]||{c1:'#c0392b',c2:'#fff',kod:''};const d=document.createElement('div');d.className='basinOda';d.style.cssText='position:fixed;inset:0;z-index:9999;background:#05070f;display:flex;flex-direction:column;align-items:center;gap:8px;padding:10px;overflow:auto';
- const c=document.createElement('canvas');c.width=384;c.height=150;const sc=Math.max(1,Math.min((innerWidth-20)/384,(innerHeight*.42)/150));c.style.width=Math.round(384*sc)+'px';c.style.height=Math.round(150*sc)+'px';c.style.imageRendering='pixelated';d.appendChild(c);
+ const c=document.createElement('canvas');const sc=Math.max(1,Math.min((innerWidth-20)/384,(innerHeight*.42)/150)),HK=HDK(sc);c.width=384*HK;c.height=150*HK;c.style.width=Math.round(384*sc)+'px';c.style.height=Math.round(150*sc)+'px';c.style.imageRendering='pixelated';d.appendChild(c);
  const bx=document.createElement('div');bx.style.cssText='display:flex;flex-direction:column;align-items:center;gap:8px;max-width:560px;text-align:center';d.appendChild(bx);document.body.appendChild(d);
- const x=c.getContext('2d');let fr=0,bitti=false,el=0;const SP=['CATANADEV','KRONOS BANK','PİKSELNET','ZİRVE ENERJİ','NEXA AIR','YELKA','AXIOX'];
+ const x=c.getContext('2d');x.setTransform(HK,0,0,HK,0,0);x.imageSmoothingEnabled=false;let fr=0,bitti=false,el=0;const SP=['CATANADEV','KRONOS BANK','PİKSELNET','ZİRVE ENERJİ','NEXA AIR','YELKA','AXIOX'];
  const kare=()=>{if(bitti)return;fr++;x.fillStyle='#141a2c';x.fillRect(0,0,384,150);
   for(let r=0;r<4;r++)for(let k=0;k<7;k++){const X=k*64+(r%2?32:0)-32,Y=r*22;x.fillStyle=(r+k)%2?B.c1:'#1f2740';x.fillRect(X,Y,64,22);x.font='6px monospace';x.fillStyle=(r+k)%2?B.c2:'rgba(255,255,255,.55)';x.fillText(SP[(r*7+k)%SP.length],X+5,Y+14);}
   x.fillStyle='#2a1d12';x.fillRect(96,86,192,26);x.fillStyle='#3a2a1a';x.fillRect(96,84,192,6);x.fillStyle=B.c1;x.fillRect(170,92,44,12);x.font='5px monospace';x.fillStyle=B.c2;x.fillText(B.kod||'',178,100);
@@ -1225,12 +1225,12 @@ function derbiX(s,a,b,x,y){if(x===y||!derbiMi(a,b))return;const w=x>y?a:b,l=x>y?
  s.xPost=s.xPost||[];if(s.xPost.some(p=>p.sz===s.sezon&&p.h===s.hafta&&p.w===w))return;s.xPost.unshift({w,l,sk:w===a?[x,y]:[y,x],sz:s.sezon,h:s.hafta,t:(Math.random()*8)|0});s.xPost=s.xPost.slice(0,8);}
 function xMetin(x){const W=ALL[x.w],L=ALL[x.l],sk=x.sk[0]+'-'+x.sk[1];const M=[`Şehrin hakimi belli. 😎 ${W.ad} ${sk} ${L.ad}`,`Sessizlik... 🤫 Komşuya geçmiş olsun.`,`Derbi günü, derbi sonucu. 👑 ${sk}`,`Bugün de renklerimiz kazandı! 🎨 ${sk}`,`Bu akşam şehirde tek bir şarkı çalıyor 🎶`,`Komşuya küçük bir hatırlatma: skor ${sk} 📌`,`Derbi demek ${W.kod} demek! 🔥`,`Ev ödevi: 90 dakikalık maç özetini tekrar izleyin 📺`];return M[x.t%M.length]+' #'+W.kod+'vs'+L.kod;}
 function xVideo(i){const s=KRY(),x=(s.xPost||[])[i];if(!x)return;const W=ALL[x.w],L=ALL[x.l];const d=document.createElement('div');d.style.cssText='position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.92);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px';
- const c=document.createElement('canvas');c.width=320;c.height=180;const sc=Math.max(1,Math.min(innerWidth/340,(innerHeight-140)/190));c.style.width=Math.round(320*sc)+'px';c.style.height=Math.round(180*sc)+'px';c.style.imageRendering='pixelated';c.style.borderRadius='10px';d.appendChild(c);
+ const c=document.createElement('canvas');const sc=Math.max(1,Math.min(innerWidth/340,(innerHeight-140)/190)),HK=HDK(sc);c.width=320*HK;c.height=180*HK;c.style.width=Math.round(320*sc)+'px';c.style.height=Math.round(180*sc)+'px';c.style.imageRendering='pixelated';c.style.borderRadius='10px';d.appendChild(c);
  const tx=document.createElement('div');tx.style.cssText='font-size:10px;color:#fff;max-width:420px;text-align:center';tx.innerHTML=`<b>${W.ad}</b> <span style="color:#1d9bf0">✔</span><br>${xMetin(x)}`;d.appendChild(tx);
  const bt=document.createElement('button');bt.className='btn';bt.textContent='KAPAT';d.appendChild(bt);document.body.appendChild(d);
  const g=c.getContext('2d');let fr=0,on=true;bt.onclick=()=>{on=false;d.remove();};
  const oy=(X,Y,c1,c2,kol,zp)=>{Y-=zp;g.fillStyle='#222';g.fillRect(X-2,Y-1,1,2);g.fillRect(X+1,Y-1,1,2);g.fillStyle=c2;g.fillRect(X-2,Y-3,4,2);g.fillStyle=c1;g.fillRect(X-2,Y-7,4,4);g.fillStyle='#f1c27d';g.fillRect(X-1,Y-9,3,2);if(kol){g.fillRect(X-3,Y-12,1,4);g.fillRect(X+2,Y-12,1,4);}};
- const kare=()=>{if(!on)return;fr++;g.setTransform(1,0,0,1,0,0);
+ const kare=()=>{if(!on)return;fr++;g.setTransform(HK,0,0,HK,0,0);g.imageSmoothingEnabled=false;
   for(let y=0;y<52;y+=3)for(let X=0;X<320;X+=3){const dl=((X/3|0)+(y/3|0)+(fr>>2))%6<3;g.fillStyle=(y/6|0)%2?(dl?W.c1:W.c2):(dl?W.c2:W.c1);g.fillRect(X,y,2,2);}
   g.fillStyle='#2f8a3a';g.fillRect(0,52,320,128);for(let i=0;i<8;i++){g.fillStyle=i%2?'#2f8a3a':'#38a145';g.fillRect(i*40,52,40,128);}
   g.fillStyle='#e8f5e9';g.fillRect(290,80,2,60);g.fillRect(290,80,24,2);g.fillRect(290,138,24,2);
@@ -1262,7 +1262,7 @@ function macSonuToplanti(s,son,evBen,sonra){const b=evBen?son[0]:son[1],r=evBen?
 // ===== patch91: gerçek transfer süreci videosu (kulis → havalimanı → sağlık → imza → resmi duyuru) =====
 function transferVideo(p,T,fiyat,sonra){let s=null;try{s=KRY();}catch(e){}const B=s?ALL[s.ti]:T;const no=p.no||(7+((p.id||0)%23));const soy=((p.ad||'').split(' ').slice(-1)[0]||'').toLocaleUpperCase('tr');
  const d=document.createElement('div');d.style.cssText='position:fixed;inset:0;z-index:9999;background:#05070f;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px';
- const c=document.createElement('canvas');const TVK=GRAFIK>=1?3:1;c.width=384*TVK;c.height=216*TVK;const sc=Math.max(1,Math.min(innerWidth/384,(innerHeight-120)/216));c.style.width=Math.round(384*sc)+'px';c.style.height=Math.round(216*sc)+'px';c.style.imageRendering='pixelated';d.appendChild(c);
+ const c=document.createElement('canvas');const sc=Math.max(1,Math.min(innerWidth/384,(innerHeight-120)/216)),TVK=GRAFIK>=1?HDK(sc):2;c.width=384*TVK;c.height=216*TVK;c.style.width=Math.round(384*sc)+'px';c.style.height=Math.round(216*sc)+'px';c.style.imageRendering='pixelated';d.appendChild(c);
  const tx=document.createElement('div');tx.className='ligad';tx.style.cssText='font-size:11px;text-align:center;min-height:32px';d.appendChild(tx);
  const row=document.createElement('div');row.className='row';const bt=document.createElement('button');bt.className='btn gri';bt.textContent='⏩ ATLA';row.appendChild(bt);d.appendChild(row);document.body.appendChild(d);
  const x=c.getContext('2d');x.setTransform(TVK,0,0,TVK,0,0);x.imageSmoothingEnabled=false;const gz=rs(['Kulis Muhabiri','Transfer Masası','Pazar Kulağı']);
@@ -1306,7 +1306,7 @@ function transferVideo(p,T,fiyat,sonra){let s=null;try{s=KRY();}catch(e){}const 
  bt.onclick=()=>{si++;fr=0;if(si>=SAH.length)bit();else gec();};requestAnimationFrame(dongu);}
 
 function imzaToreni(p,T,fiyat,sonra){const s=KRY(),B=ALL[s.ti],yildiz=p.g>=84||fiyat>=40;const d=document.createElement('div');d.style.cssText='position:fixed;inset:0;z-index:9999;background:#05070f;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px';
- const c=document.createElement('canvas');const TVK=GRAFIK>=1?3:1;c.width=384*TVK;c.height=216*TVK;const sc=Math.max(1,Math.min(innerWidth/384,(innerHeight-120)/216));c.style.width=Math.round(384*sc)+'px';c.style.height=Math.round(216*sc)+'px';c.style.imageRendering='pixelated';d.appendChild(c);
+ const c=document.createElement('canvas');const sc=Math.max(1,Math.min(innerWidth/384,(innerHeight-120)/216)),TVK=GRAFIK>=1?HDK(sc):2;c.width=384*TVK;c.height=216*TVK;c.style.width=Math.round(384*sc)+'px';c.style.height=Math.round(216*sc)+'px';c.style.imageRendering='pixelated';d.appendChild(c);
  const tx=document.createElement('div');tx.className='ligad';tx.style.cssText='font-size:12px;text-align:center';tx.innerHTML=(yildiz?'🌟 YILDIZ TRANSFERİ · STADYUMDA İMZA TÖRENİ':'📰 BASIN TOPLANTISI · YENİ TRANSFER')+`<br><span style="font-size:10px;color:#fff">${p.ad} · ${B.ad}</span><br><span style="font-size:8px;opacity:.7">${p.mv} · güç ${p.g} · ${para(fiyat)}</span>`;d.appendChild(tx);
  const bt=document.createElement('button');bt.className='btn';bt.textContent='DEVAM';d.appendChild(bt);document.body.appendChild(d);
  const x=c.getContext('2d');x.setTransform(TVK,0,0,TVK,0,0);x.imageSmoothingEnabled=false;let fr=0,bitti=false;const SP=['CATANADEV','KRONOS BANK','PİKSELNET','ZİRVE ENERJİ','NEXA AIR','YELKA','AXIOX'];
@@ -1503,7 +1503,7 @@ function ytDizil(an){const [c0,c1]=G.kaptan||[],cy=H/2,L=[[G.hakem,W/2,cy-1,0,1]
 function kayitAl(){if(G.kare%2)return;const K=G.kay||(G.kay=[]);K.push({P:G.P.map(p=>[p.x,p.y,p.k,p.rol,p.an,p.kay,p.sers,p.dx,p.no]),t:[G.top.x,G.top.y,G.top.z],h:[G.hakem.x,G.hakem.y]});if(K.length>140)K.shift();G.kayN=(G.kayN||0)+1;}
 const SKB={KY:['#0b2a5c','#9fd4ff'],KR:['#2a1205','#ff8f3a'],AY:['#06302a','#7fe3c4'],TR:['#a8000e','#ffffff'],RUS:['#1f5fd8','#ffffff'],KKTC:['#14213d','#e8322b'],ENG:['#38003c','#00ff85'],ESP:['#d42a1e','#ffd200'],ITA:['#0b3c8c','#ffffff'],GER:['#b80d24','#111111'],FRA:['#091c3e','#dae025'],NED:['#e05600','#ffffff'],POR:['#006b3c','#ffd200'],BEL:['#6b1d32','#ffd200'],SCO:['#1d1b5c','#ffffff'],UCL:['#0b1e5b','#9fd4ff'],UEL:['#9a4500','#ffb15c'],UECL:['#006b3e','#7dffb9'],MILLI:['#1a1a1a','#ffd23f'],GENEL:['rgba(10,14,30,.88)','#3b6cff']};
 function kupaToreni(baslik,T,sonra){const d=document.createElement('div');d.style.cssText='position:fixed;inset:0;z-index:9999;background:#05070f;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px';
- const c=document.createElement('canvas');const TVK=GRAFIK>=1?3:1;c.width=384*TVK;c.height=216*TVK;const sc=Math.max(1,Math.min(innerWidth/384,(innerHeight-110)/216));c.style.width=Math.round(384*sc)+'px';c.style.height=Math.round(216*sc)+'px';c.style.imageRendering='pixelated';d.appendChild(c);
+ const c=document.createElement('canvas');const sc=Math.max(1,Math.min(innerWidth/384,(innerHeight-110)/216)),TVK=GRAFIK>=1?HDK(sc):2;c.width=384*TVK;c.height=216*TVK;c.style.width=Math.round(384*sc)+'px';c.style.height=Math.round(216*sc)+'px';c.style.imageRendering='pixelated';d.appendChild(c);
  const tx=document.createElement('div');tx.className='ligad';tx.style.fontSize='13px';tx.style.textAlign='center';tx.innerHTML='🏆 '+baslik+'<br><span style="font-size:10px;color:#fff">'+T.ad+'</span>';d.appendChild(tx);
  const bt=document.createElement('button');bt.className='btn';bt.textContent='DEVAM';d.appendChild(bt);document.body.appendChild(d);
  const g=c.getContext('2d');g.setTransform(TVK,0,0,TVK,0,0);g.imageSmoothingEnabled=false;const kon=[];for(let i=0;i<140;i++)kon.push({x:Math.random()*384,y:-Math.random()*216,v:.4+Math.random()*.9,c:[T.c1,T.c2,'#ffd23f','#ffffff'][i%4]});
@@ -3060,10 +3060,10 @@ function ilk11Goster(){if(!G||!G.T||!G.P||$('ilk11'))return;const SK=SKB[G.tema]
 // 🚌 maç öncesi: takım otobüsleri stada geliyor + 🎙️ stüdyoda yorumcular (atlanabilir, ~7 sn)
 function macOnuAnim(sonra){if(!G||!G.T){sonra&&sonra();return;}G.durdu=true;const T0=G.T[0],T1=G.T[1],SK=SKB[G.tema]||SKB.GENEL;
  const d=document.createElement('div');d.id='macOnu';d.style.cssText='position:fixed;inset:0;z-index:9991;background:#05070f;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px';
- const c=document.createElement('canvas');c.width=384;c.height=216;const sc=Math.max(1,Math.floor(Math.min(innerWidth/384,(innerHeight-90)/216)))||1;c.style.width=384*sc+'px';c.style.height=216*sc+'px';c.style.imageRendering='pixelated';d.appendChild(c);
+ const c=document.createElement('canvas');const sc=Math.max(1,Math.min(innerWidth/384,(innerHeight-90)/216)),HK=HDK(sc);c.width=384*HK;c.height=216*HK;c.style.width=384*sc+'px';c.style.height=216*sc+'px';c.style.imageRendering='pixelated';d.appendChild(c);
  const tx=document.createElement('div');tx.className='ligad';tx.style.cssText='font-size:10px;min-height:30px;text-align:center;max-width:90vw';d.appendChild(tx);
  const b=document.createElement('button');b.className='btn gri';b.textContent='⏩ ATLA';d.appendChild(b);document.body.appendChild(d);
- const x=c.getContext('2d');x.imageSmoothingEnabled=false;let fr=0,bit=false;const ev=T0.t,dp=T1.t,st=(G.stad&&G.stad.ad)||(ev.ad+' Stadı');
+ const x=c.getContext('2d');x.setTransform(HK,0,0,HK,0,0);x.imageSmoothingEnabled=false;let fr=0,bit=false;const ev=T0.t,dp=T1.t,st=(G.stad&&G.stad.ad)||(ev.ad+' Stadı');
  const Y1=['Hoş geldiniz! Bugün dev bir maç var.','İki takım da 3 puan için sahada olacak.','Taraftarlar saatler öncesinden stadı doldurdu.','Ev sahibi baskılı başlamak isteyecektir.'],Y2=['Deplasman ekibi kontrataklarla tehlikeli.','Orta saha mücadelesi maçın kaderini belirler.','Hakem kadrosu da hazır, VAR odası çalışıyor.','Benim tahminim: gollü bir maç izleyeceğiz!'];
  const y1=Y1[(Math.random()*Y1.length)|0],y2=Y2[(Math.random()*Y2.length)|0];
  const bitir=()=>{if(bit)return;bit=true;d.remove();G&&(G.durdu=false);sonra&&sonra();};b.onclick=bitir;
@@ -3150,6 +3150,7 @@ function anaSekme(i){$('anaModlar').style.display=i?'none':'flex';$('anaAyar').s
  const a=$('ana');if(a){a.style.backgroundImage='url('+c.toDataURL()+')';a.style.imageRendering='pixelated';}}catch(e){}})();
 // 🆕 Yenilikler: sürüm geçmişi mini ekranı
 const SURUMLER=[
+ ['V10.0.14 · 12 Kasım 2026',['🖥️ PC\'de net görüntü: maç önü programı, transfer videoları, basın ve toplantı ekranları artık ekran boyutuna göre yüksek çözünürlükte çiziliyor (bulanık/küçük görüntü düzeltildi); maç önü ekranı artık ekranı dolduruyor']],
  ['V10.0.13 · 12 Kasım 2026',['🎬 Yeni intro: saha üstünde top yuvarlanıp ekrana fırlıyor, flaş, PİKSEL LİG harfleri tek tek düşüyor, 26/27 ve V10 damgası','🏟️ Yeni ana menü arka planı: gece stadı — kavisli dolu tribün, 4 ışık direği ve huzmeler, şehir silüeti, perspektif saha + kale, konfeti']],
  ['V10.0.12 · 12 Kasım 2026',['🎨 Yeni ana menü: düğmeler yerine kart ızgarası (simge + kısa açıklama), Hızlı Maç ve Kariyer büyük kartlar, Draft kartları kilitli çizgili','🎨 Diğer kartlarda da emoji yerine çizim: krampon, Avrupa yıldız rozeti, iki oyuncu, madalya, draft kartları ve kadro panosu','⚽🏆 Hızlı Maç kartında Anadolu Kıvrım 26 topu, Kariyer kartında yıldızlı gümüş kupa çizimi (emoji yerine)']],
  ['V10.0.11 · 12 Kasım 2026',['🔒 DRAFT modu geliyor: Hızlı Maç Draft ve Kariyer Draft düğmeleri menüde, kilitli — Yakında, 27/28 sezonu ile']],

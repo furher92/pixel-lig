@@ -1,5 +1,8 @@
 # Sürüm notları
 
+## V10.0.14 — 12 Kasım 2026
+- 🖥️ Maç önü / transfer / basın / toplantı ekranları HD
+
 ## V10.0.13 — 12 Kasım 2026
 - 🎬 Yeni animasyonlu intro
 - 🏟️ Yeni ana menü arka planı (gece stadı)
