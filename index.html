@@ -358,12 +358,13 @@ function sahaCiz(){
  g.fillStyle='#2f8a3a';g.fillRect(ML-12,MT-12,MR-ML+24,MB-MT+24);
  for(let x=ML,i=0;x<MR;x+=24,i++){g.fillStyle=i%2?'#2f8a3a':'#38a145';g.fillRect(x,MT,24,MB-MT);}
  if(GRAFIK===2){for(let i=0;i<1400;i++){g.fillStyle=Math.random()<.5?'rgba(0,0,0,.07)':'rgba(255,255,255,.05)';g.fillRect(ML+((Math.random()*(MR-ML))|0),MT+((Math.random()*(MB-MT))|0),1,1);}const gr=g.createLinearGradient(0,MT,0,MB);gr.addColorStop(0,'rgba(0,0,0,.10)');gr.addColorStop(.5,'rgba(0,0,0,0)');gr.addColorStop(1,'rgba(0,0,0,.12)');g.fillStyle=gr;g.fillRect(ML,MT,MR-ML,MB-MT);}
- g.strokeStyle='#e8f5e9';g.lineWidth=1;
+ const KAR=G&&G.hava==='kar';if(KAR){for(let x=ML-12,i=0;x<MR+12;x+=24,i++){g.fillStyle=i%2?'#e6ebf1':'#dde4ec';g.fillRect(x,MT-12,24,MB-MT+24);}for(let i=0;i<(GRAFIK>0?260:60);i++){g.fillStyle=Math.random()<.6?'rgba(47,138,58,.45)':'rgba(150,165,185,.35)';g.fillRect(ML+((Math.random()*(MR-ML))|0),MT+((Math.random()*(MB-MT))|0),2+((Math.random()*3)|0),1+((Math.random()*2)|0));}}
+ g.strokeStyle=KAR?'#ff6a00':'#e8f5e9';g.lineWidth=KAR?2:1;
  const r=(x,y,w,h)=>g.strokeRect(x+.5,y+.5,w,h);
  r(ML,MT,MR-ML,MB-MT);g.beginPath();g.moveTo(W/2+.5,MT);g.lineTo(W/2+.5,MB);g.stroke();
  g.beginPath();g.arc(W/2,H/2,36,0,7);g.stroke();
  r(ML,H/2-70,80,140);r(MR-80,H/2-70,80,140);r(ML,H/2-30,26,60);r(MR-26,H/2-30,26,60);
- g.fillStyle='#e8f5e9';g.fillRect(W/2-1,H/2-1,2,2);g.fillRect(ML+54,H/2,2,2);g.fillRect(MR-56,H/2,2,2);
+ g.fillStyle=KAR?'#ff6a00':'#e8f5e9';g.fillRect(W/2-1,H/2-1,2,2);g.lineWidth=1;g.fillRect(ML+54,H/2,2,2);g.fillRect(MR-56,H/2,2,2);
  // kale
  [[ML-10,1],[MR,0]].forEach(([x])=>{g.fillStyle='rgba(255,255,255,.18)';g.fillRect(x,GY1,10,GW);g.strokeStyle='rgba(255,255,255,.45)';if(GRAFIK>0)for(let i=0;i<GW;i+=4){g.beginPath();g.moveTo(x,GY1+i+.5);g.lineTo(x+10,GY1+i+.5);g.stroke();}g.fillStyle='#fff';g.fillRect(x===ML-10?ML-1:MR,GY1-1,2,2);g.fillRect(x===ML-10?ML-1:MR,GY2-1,2,2);});
  return c;
@@ -2515,7 +2516,9 @@ function karKovYeni(){const s=KRY();if(!s.kovIs){s.men.itibar=clamp(s.men.itibar
 
 function formaCiz(cv,k,t,arka,yama){const x=cv.getContext('2d'),W=cv.width,H=cv.height;x.clearRect(0,0,W,H);
  const P=new Path2D(`M${W*.3} ${H*.08}L${W*.12} ${H*.18}L${W*.02} ${H*.42}L${W*.17} ${H*.48}L${W*.22} ${H*.36}L${W*.22} ${H*.95}L${W*.78} ${H*.95}L${W*.78} ${H*.36}L${W*.83} ${H*.48}L${W*.98} ${H*.42}L${W*.88} ${H*.18}L${W*.7} ${H*.08}Q${W*.5} ${H*.2} ${W*.3} ${H*.08}Z`);
- x.fillStyle=k.c1;x.fill(P);x.save();x.clip(P);x.fillStyle=k.c2;x.fillRect(0,H*.38,W*.2,H*.12);x.fillRect(W*.8,H*.38,W*.2,H*.12);
+ x.fillStyle=k.c1;x.fill(P);x.save();x.clip(P);x.fillStyle=k.c2;x.beginPath();x.moveTo(W*.02,H*.42);x.lineTo(W*.17,H*.48);x.lineTo(W*.19,H*.43);x.lineTo(W*.045,H*.365);x.fill();x.fillStyle=k.c3||k.c2;x.beginPath();x.moveTo(W*.98,H*.42);x.lineTo(W*.83,H*.48);x.lineTo(W*.81,H*.43);x.lineTo(W*.955,H*.365);x.fill();
+ x.strokeStyle='rgba(0,0,0,.25)';x.lineWidth=1;x.beginPath();x.moveTo(W*.22,H*.36);x.lineTo(W*.24,H*.16);x.moveTo(W*.78,H*.36);x.lineTo(W*.76,H*.16);x.stroke();
+ if(!arka){x.fillStyle='rgba(255,255,255,.06)';for(let i=-H;i<W;i+=7){x.beginPath();x.moveTo(i,H);x.lineTo(i+H*.6,0);x.lineTo(i+H*.6+2,0);x.lineTo(i+2,H);x.fill();}}
  const g=x.createLinearGradient(0,0,W,0);g.addColorStop(0,'rgba(0,0,0,.28)');g.addColorStop(.35,'rgba(255,255,255,.12)');g.addColorStop(.65,'rgba(0,0,0,0)');g.addColorStop(1,'rgba(0,0,0,.3)');x.fillStyle=g;x.fillRect(0,0,W,H);x.restore();
  x.lineWidth=3;x.strokeStyle=k.c2;x.stroke(P);x.beginPath();x.moveTo(W*.3,H*.08);x.quadraticCurveTo(W*.5,H*(arka?.13:.22),W*.7,H*.08);x.lineWidth=5;x.stroke();
  x.textAlign='center';x.fillStyle=k.c2;
@@ -2526,13 +2529,16 @@ function formaCiz(cv,k,t,arka,yama){const x=cv.getContext('2d'),W=cv.width,H=cv.
  x.fillStyle='#ffd34d';x.font=`${H*.04}px sans-serif`;const yz=Math.min(yama.yildiz,5);for(let i=0;i<yz;i++)x.fillText('★',cx+(i-(yz-1)/2)*H*.04,cy-r-4);
  if(yama.yildiz>5){x.font=`bold ${H*.03}px monospace`;x.fillText('×'+yama.yildiz,cx,cy-r-H*.05);}
  const yam=(px,py,bg,yz)=>{x.beginPath();x.arc(px,py,H*.045,0,7);x.fillStyle=bg;x.fill();x.lineWidth=2;x.strokeStyle='#fff';x.stroke();x.fillStyle='#fff';x.font=`bold ${H*.026}px monospace`;x.fillText(yz,px,py+H*.01);};
- yam(W*.1,H*.3,'#1b2a5c',yama.lig);if(yama.sampiyon)yam(W*.9,H*.3,'#b8860b','🏆');else if(yama.avrupa)yam(W*.9,H*.3,'#0b3c8c','★EU');
+ const R=PATCH_KURAL[yama.ulke]||PATCH_KURAL._;const sb=yama.sampiyon&&R.kol==='altin';
+ yam(W*.1,H*.3,sb?'#c9a227':'#1b2a5c',yama.lig);yam(W*.9,H*.3,yama.sampiyon&&R.kol==='altin'?'#c9a227':yama.sampiyon&&R.kol==='ozel'?'#7a1fa2':yama.avrupa?'#0b3c8c':'#1b2a5c',yama.sampiyon&&R.kol==='ozel'?'ŞMP':yama.avrupa&&!yama.sampiyon?'★EU':yama.lig);
+ if(yama.sampiyon&&R.gogus){const gx=W*.36,gy=H*.3;x.fillStyle=R.gogus==='kalkan'?'#1e9a46':'#c9a227';x.beginPath();if(R.gogus==='kalkan'){x.moveTo(gx-9,gy-10);x.lineTo(gx+9,gy-10);x.lineTo(gx+9,gy+2);x.lineTo(gx,gy+11);x.lineTo(gx-9,gy+2);x.closePath();x.fill();x.fillStyle='#fff';x.fillRect(gx-2,gy-10,4,18);x.fillStyle='#d62828';x.fillRect(gx+3,gy-10,6,13);}else{x.arc(gx,gy,10,0,7);x.fill();x.fillStyle='#fff';x.font=`bold ${H*.03}px monospace`;x.fillText('★',gx,gy+4);}}
 }
+const PATCH_KURAL={TR:{kol:'ozel',not:'Anadolu\'da her 5 şampiyonlukta armaya 1 yıldız; şampiyon bir sezon kolda özel şampiyon yaması taşır.'},ENG:{kol:'altin',not:'Ada\'da şampiyon, bir sezon boyunca iki kolda altın renkli lig yaması taşır.'},ITA:{kol:'',gogus:'kalkan',not:'Çizme\'de şampiyon, göğüste üç renkli kalkan taşır.'},GER:{kol:'',gogus:'rozet',not:'Ren\'de şampiyon göğüste şampiyon rozeti taşır.'},ESP:{kol:'ozel',not:'İber\'de şampiyon kolda şampiyon yaması taşır.'},FRA:{kol:'ozel',not:'Şampiyon kolda şampiyon yaması taşır.'},_:{kol:'ozel',not:'Şampiyon bir sezon kolda şampiyon yaması taşır; Avrupa\'daysan kola ★EU gelir.'}};
 function formaKupaHtml(s){const t=TT(s.ti),F=formalar(t),M=(s.muze||[]).filter(m=>m);const L=LEAGUES.find(l=>l.id===s.lig)||{};
  const ligK=M.filter(m=>LEAGUES.some(l=>l.ad===m.ad));const son=M.some(m=>m.sz===s.sezon-1&&LEAGUES.some(l=>l.ad===m.ad));
- window._fy={lig:(s.lig||'').slice(0,3),yildiz:ligK.length,sampiyon:son,avrupa:!!s.avrupa,isim:(s.soy||t.kod).toLocaleUpperCase('tr').slice(0,10),no:'10'};
+ const ul=(s.lig||'').replace(/\d.*$/,'').replace(/[A-C]$/,'');window._fy={ulke:ul,lig:(s.lig||'').slice(0,3),yildiz:ul==='TR'?Math.floor(ligK.length/5):ligK.length,sampiyon:son,avrupa:!!s.avrupa,isim:(s.soy||t.kod).toLocaleUpperCase('tr').slice(0,10),no:'10'};
  window._fk=window._fk||0;const k=F[window._fk]||F[0];
- let h=`<div class="ligad">👕 FORMA + KUPALAR · ${t.ad}</div><div class="sonra" style="font-size:8px">Arma kurgusaldır. Her lig şampiyonluğu armanın üstüne ★ ekler; son sezon şampiyonsan sağ kola 🏆 yaması gelir, sol kolda lig yaması var.</div>`;
+ let h=`<div class="ligad">👕 FORMA + KUPALAR · ${t.ad}</div><div class="sonra" style="font-size:8px">Arma ve yamalar kurgusaldır. Yama kuralları gerçek liglerden esinli: ${(PATCH_KURAL[(s.lig||'').replace(/\d.*$/,'').replace(/[A-C]$/,'')]||PATCH_KURAL._).not}</div>`;
  h+=`<div style="display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin:6px 0">${F.map((f,i)=>`<button class="tab ${i===window._fk?'akt':''}" onclick="window._fk=${i};kariyerEkran('forma')">${f.ad}</button>`).join('')}</div>`;
  h+=`<div style="display:flex;flex-wrap:wrap;gap:18px;justify-content:center;align-items:center">
  <div style="text-align:center"><div class="sonra" style="font-size:9px">2D · ÖN / ARKA</div><canvas id="fk2a" width="220" height="240"></canvas><canvas id="fk2b" width="220" height="240"></canvas></div>
@@ -3377,6 +3383,7 @@ function anaSekme(i){$('anaModlar').style.display=i?'none':'flex';$('anaAyar').s
  const du=c.toDataURL();document.documentElement.style.setProperty('--stad','url('+du+')');const a=$('ana');if(a){a.style.backgroundImage='url('+du+')';a.style.imageRendering='pixelated';}}catch(e){}})();
 // 🆕 Yenilikler: sürüm geçmişi mini ekranı
 const SURUMLER=[
+ ['V10.0.46 · 12 Kasım 2026',['❄️ Karlı maçta saha karla kaplı, çizgiler turuncu','👕 Formalarda kol ucu bantları (iki kolda farklı renk olabilir), kumaş deseni','🏅 Lig yaması kuralları: Anadolu 5 şampiyonlukta 1 yıldız + şampiyon kol yaması, Ada altın kol yaması, Çizme göğüste kalkan, Ren göğüste rozet, İber/diğerleri şampiyon kol yaması']],
  ['V10.0.45 · 12 Kasım 2026',['👕 Kariyere FORMA + KUPALAR sekmesi: takımın formaları 2D (ön/arka) ve 3D (döndürülebilir); kurgusal arma, sol kolda lig yaması, şampiyonluk yıldızları ve şampiyon yaması; altta kupa vitrini']],
  ['V10.0.44 · 12 Kasım 2026',['📰 Haberler & Kulüp: her haber ayrı satırda, arasında çizgi; uzun haberler birbirine ve kutu kenarına binmiyor']],
  ['V10.0.43 · 12 Kasım 2026',['📱 Telefonda tam ekran: menülerde de ilk dokunuşta tam ekrana geçer (önceden sadece maçta)','⬇️ Kariyer ekranında en alttaki düğmeler artık kesilmiyor (alt boşluk + çentikli telefon payı)','📺 Haftanın maçı artık senin maçınla çakışmıyor: senin maçından 1 gün önce (Cuma 20:00) oynanır, tarihi kartta yazar']],
