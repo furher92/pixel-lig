@@ -1,5 +1,8 @@
 # Sürüm notları
 
+## V10.0.20 — 12 Kasım 2026
+- 🔍 Büyük ekranda pencereler büyüyor
+
 ## V10.0.19 — 12 Kasım 2026
 - 🧩 Kulüp sekmesi sütunlu düzen (PC'de kaydırma yok)
 
