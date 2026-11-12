@@ -1,5 +1,9 @@
 # Sürüm notları
 
+## V10.0.6 — 12 Kasım 2026
+- 🧤 Kaleciye faul yapılınca gol iptal, kaleci lehine frikik
+- 🌧️ Yağmur/kar kesintisinden sonra da gerçek hakem topu
+
 ## V10.0.5 — 12 Kasım 2026
 - 🟡 Gerçek hakem topu: hakem topa gelir, iki takımdan birer oyuncu yanına gelir, top sekerek bırakılır
 
