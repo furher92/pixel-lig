@@ -170,7 +170,7 @@ body.dik #oyun{inset:auto;left:0;top:0;width:100vh;height:100vw;transform-origin
 .fmSut .sonra{box-shadow:none!important;border:1px solid #2b3560!important;background:rgba(0,0,0,.18)!important;padding:7px!important;line-height:1.8;font-size:8px!important}
 .fmSut table{box-shadow:none;border:1px solid #2b3560;font-size:7px}.fmSut .row{justify-content:center;flex-wrap:wrap}
 .fmAks .row .btn{min-width:140px}
-.fmHaber{width:100%;background:rgba(10,14,34,.85);border:2px solid #000;border-radius:8px;padding:8px;font-size:8px}.fmHaber summary{cursor:pointer;color:#ffd23f}.fmHaber .gec{max-width:none!important;margin-top:6px;text-align:left;line-height:2;max-height:40vh;overflow-y:auto}.fmAlt2{justify-content:center;gap:8px;flex-wrap:wrap;width:100%}
+.fmAks .fmHaber{margin-top:6px;border-width:1px;background:rgba(0,0,0,.2)}.fmHaber{width:100%;background:rgba(10,14,34,.85);border:2px solid #000;border-radius:8px;padding:8px;font-size:8px}.fmHaber summary{cursor:pointer;color:#ffd23f}.fmHaber .gec{max-width:none!important;margin-top:6px;text-align:left;line-height:2;max-height:40vh;overflow-y:auto}.fmAlt2{justify-content:center;gap:8px;flex-wrap:wrap;width:100%}
 #karIc{gap:8px!important}
 </style>
 <style id="v10020">#yenilik{padding:12px;box-sizing:border-box}
@@ -2547,7 +2547,7 @@ function kariyerEkran(sekme){{const s0=KRY();if(s0&&s0.toren){const tt=s0.toren;
  if(sekme==='men')h+=menajerHtml(s);
  if(sekme==='taktik')h+=taktikHtml('kar');if(sekme==='gundem')h+=gundemHtml(s);if(sekme==='mali')h+=maliHtml(s);if(sekme==='akademi')h+=akademiHtml(s);if(sekme==='lig'){const gl=(window._plLig&&LEAGUES.find(l=>l.id===window._plLig))||L;h+=ligRaf(gl.id,'window._plLig=\'#\';kariyerEkran(\'lig\')',false);const _sr=sirala(gl.id===s.lig?s.tab:digerTablo(s,gl.id),gl.t.map(t=>t.i));h+=`<div class="ligad">${gl.ad}</div>`+tabloHtml(_sr,s.ti,ligRenk(gl.id,_sr))+ligLej(gl.id);}
  h+=`<button class="btn gri" onclick="ekran('ana')">ANA MENÜ</button>`;
- if(h.includes('<!--K4-->')){const P=h.split(/<!--K[1-4]-->/);const bos=x=>x&&x.replace(/<[^>]*>/g,'').trim()?x:'<div class="fmAlt" style="padding:8px">Henüz yok</div>';h=P[0]+`<div class="fmIzgara"><div class="fmSut fmAks"><div class="fmKb2">⚽ MAÇ GÜNÜ</div>${bos(P[3])}</div><div class="fmSut"><div class="fmKb2">📊 SON MAÇ</div>${bos(P[1])}</div><div class="fmSut"><div class="fmKb2">🗓️ TAKVİM & OLAYLAR</div>${bos(P[2])}</div></div><details class="fmHaber"><summary>📰 HABERLER & KULÜP</summary>${P[4].slice(0,P[4].indexOf('<button')<0?P[4].length:P[4].indexOf('<button'))}</details><div class="row fmAlt2">${P[4].indexOf('<button')<0?'':P[4].slice(P[4].indexOf('<button'))}</div>`;}
+ if(h.includes('<!--K4-->')){const P=h.split(/<!--K[1-4]-->/);const bos=x=>x&&x.replace(/<[^>]*>/g,'').trim()?x:'<div class="fmAlt" style="padding:8px">Henüz yok</div>';const _hb=P[4].indexOf('<button')<0?P[4]:P[4].slice(0,P[4].indexOf('<button'));h=P[0]+`<div class="fmIzgara"><div class="fmSut fmAks"><div class="fmKb2">⚽ MAÇ GÜNÜ</div>${bos(P[3])}<details class="fmHaber" open><summary>📰 HABERLER & KULÜP</summary>${_hb}</details></div><div class="fmSut"><div class="fmKb2">📊 SON MAÇ</div>${bos(P[1])}</div><div class="fmSut"><div class="fmKb2">🗓️ TAKVİM & OLAYLAR</div>${bos(P[2])}</div></div><div class="row fmAlt2">${P[4].indexOf('<button')<0?'':P[4].slice(P[4].indexOf('<button'))}</div>`;}
  $('karIc').innerHTML=h;
 }
 function sezonSonuHtml(s,sir,sira,L){const odul=ligOdulu(s.lig,L.t.length,sira,s.sezon);const _td=terfiDurumu(s.lig,sira,L.t.length);
@@ -3332,6 +3332,7 @@ function anaSekme(i){$('anaModlar').style.display=i?'none':'flex';$('anaAyar').s
  const du=c.toDataURL();document.documentElement.style.setProperty('--stad','url('+du+')');const a=$('ana');if(a){a.style.backgroundImage='url('+du+')';a.style.imageRendering='pixelated';}}catch(e){}})();
 // 🆕 Yenilikler: sürüm geçmişi mini ekranı
 const SURUMLER=[
+ ['V10.0.38 · 12 Kasım 2026',['📰 Haberler & Kulüp artık MAÇ GÜNÜ kutusunun hemen altında ve açık geliyor (sayfanın en altında kaybolmuyor)']],
  ['V10.0.37 · 12 Kasım 2026',['🎓 Akademi artık dolu: her sezon başında her mevki (kaleci/defans/orta saha/forvet) 9 gence tamamlanır — 15-19 yaş, farklı güç ve potansiyelde; eski kariyerlerde de ilk açılışta dolar']],
  ['V10.0.36 · 12 Kasım 2026',['🌍 YENİ: FUTBOL DÜNYASI (ana menüde) — 3 büyük özellik erken geldi:','🏆 Ligler Panosu: 12 ülkenin 1. kademe kartları (bayrak, lig renkleri, en çok şampiyonluk, en iyi oyuncu, ilk 5)','🛡️ Kulüp Profili: büyük arma, 26/27 formaları (iç/dep/3.) yan yana çizim, kupa dolabı, hoca, kaptan, kadro değeri ve tam kadro','👤 Oyuncu Veritabanı: tüm liglerin oyuncuları — isim/kulüp arama, mevki, uyruk, yaş (U21/U23) filtreleri; güç/değer/yaş sıralaması; gençlerde potansiyel yıldızı']],
  ['V10.0.35 · 12 Kasım 2026',['🎓 Altyapı akademisi yenilendi: gençler artık otomatik A takıma çıkmıyor, akademide bekliyor; her mevkide (kaleci/defans/orta saha/forvet) en fazla 9 genç; "⬆ A TAKIMA AL" ile kadroya eklersin, "⬇ AKADEMİYE" ile geri gönderirsin; ilk sezon akademi 6 gençle açılır']],
