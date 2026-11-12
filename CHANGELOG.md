@@ -1,5 +1,8 @@
 # Sürüm notları
 
+## V10.0.12 — 12 Kasım 2026
+- 🎨 Yeni kart ızgaralı ana menü
+
 ## V10.0.11 — 12 Kasım 2026
 - 🔒 Draft (Hızlı Maç + Kariyer) menüde kilitli: Yakında · 27/28
 
