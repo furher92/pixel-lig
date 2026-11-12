@@ -1276,7 +1276,8 @@ function takimAnaliz(s,t){const F=((s.form&&s.form[t])||[]).slice(-5),K=takimKad
 function izleAnaliz(a,b){const s=KRY();const dr=derbiMi(a,b),fa=takimGucu(a,s)-takimGucu(b,s);
  const tah=Math.abs(fa)<2?'Dengeli bir maç bekleniyor.':fa>0?`${ALL[a].ad} kağıt üstünde favori.`:`${ALL[b].ad} kağıt üstünde favori.`;
  secimModal(`🔭 MAÇ ÖNCESİ ANALİZ${dr?' · DERBİ':''}`,`${takimAnaliz(s,a)}<br><br>${takimAnaliz(s,b)}<br><br>🎙️ ${tah}${dr?' Derbilerde form tutmaz!':''}<br><span style="color:#5ad1ff">Tribünden izlersen sonuç ligde aynen işlenir.</span>`,
-  [{t:'▶️ 90 DAKİKA İZLE',renk:'#c0392b',f:()=>izleBaslat(a,b)},{t:'VAZGEÇ',f:()=>{}}]);}
+  [{t:'▶️ 90 DAKİKA İZLE',renk:'#c0392b',f:()=>izleBaslat(a,b)},{t:'⏩ İZLEME, SİMÜLE ET',f:()=>izleSimule(a,b)}]);}
+function izleSimule(a,b){const s=KRY();const r=simMac({rt:takimGucu(a,s)},{rt:takimGucu(b,s)});s.izlenen={sezon:s.sezon,h:s.hafta,k:a+'-'+b,r};s.haber.push(`⏩ Haftanın maçı simüle edildi: ${ALL[a].ad} ${r[0]}-${r[1]} ${ALL[b].ad}`);krKaydet(s);kariyerEkran();}
 function izleBaslat(a,b){const s=KRY();const h=s.hafta,sz=s.sezon;ekran(null);try{MAC_AY=haftaTarih(s,s.hafta).getMonth();}catch(e){}
  onMacBitti=(sk,terk)=>{G=null;$('oyun').style.display='none';const s2=KRY();if(!terk){s2.izlenen={sezon:sz,h,k:a+'-'+b,r:sk.slice(0,2)};s2.haber.push(`📺 Tribünden izledin: ${ALL[a].ad} ${sk[0]}-${sk[1]} ${ALL[b].ad}`);krKaydet(s2);}ekran('kar');kariyerEkran();};
  macBaslat(ALL[a],ALL[b],{sure:60*150,yt:true,derbi:derbiMi(a,b),human:-1,kadro:[ilk11(takimKadro(a,s)),ilk11(takimKadro(b,s))]});}
@@ -3386,6 +3387,7 @@ function anaSekme(i){$('anaModlar').style.display=i?'none':'flex';$('anaAyar').s
  const du=c.toDataURL();document.documentElement.style.setProperty('--stad','url('+du+')');const a=$('ana');if(a){a.style.backgroundImage='url('+du+')';a.style.imageRendering='pixelated';}}catch(e){}})();
 // 🆕 Yenilikler: sürüm geçmişi mini ekranı
 const SURUMLER=[
+ ['V10.0.52 · 12 Kasım 2026',['📺 Haftanın maçı: VAZGEÇ yerine "⏩ İZLEME, SİMÜLE ET" — izlemek istemezsen maç hemen simüle edilir, sonuç haberlere düşer ve ligde aynen işlenir']],
  ['V10.0.51 · 12 Kasım 2026',['👕 Arma, kol yamaları ve bayrak küçültüldü, gerçek formadaki gibi ölçülü']],
  ['V10.0.50 · 12 Kasım 2026',['🏷️ Her ligin kendi kurgusal kol yaması: Anadolu beyaz-kırmızı APL, Ada camgöbeği ADA, İber turuncu, Çizme yeşil, Ren kırmızı… (gerçek lig logoları kullanılmaz)']],
  ['V10.0.49 · 12 Kasım 2026',['👕 Arma ve kol yamaları büyütüldü, bayrakla dengeli']],
