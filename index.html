@@ -358,8 +358,7 @@ function sosyalCiz(){if(!G||!G.T)return;if(G.faz==='oyun'){const tot=G.skor[0]+G
 
 // ===== patch79: yerde kalan oyuncu → hakem oyunu durdurur =====
 function yerdeKontrol(){if(G.faz!=='oyun'||G.seri||G.restart||G.saglik)return false;const t=G.top;
- if(!G.yerKal&&G.kare>200&&Math.random()<1/5200){const c=G.P.filter(p=>p.rol!=='GK'&&p!==t.sahip&&!p.yer&&!(p.disari>0)&&!p.sedye&&Math.hypot(p.x-t.x,p.y-t.y)<70&&Math.hypot(p.x-t.x,p.y-t.y)>14);
-  if(c.length){const p=rs(c);yereDus(p,0,0,2000);G.yerKal={p,t:0};yorum((p.ad||'Bir oyuncu')+' ikili mücadelede yerde kaldı',1);}}
+ // (V10.0.2) rastgele temassız 'yerde kaldı' olayı KALDIRILDI: hayalet sakatlık yapıyordu
  const Y=G.yerKal;if(!Y)return false;const p=Y.p;if(G.P.indexOf(p)<0||!(p.yer>0)){G.yerKal=null;return false;}Y.t++;
  // top tehlikeli bölgede değilse ya da süre uzadıysa hakem durdurur
  const tehlike=Math.abs(t.x-(t.sahip?(t.sahip.k?ML:MR):W/2))<90;if(Y.t<150||(tehlike&&Y.t<330))return false;
@@ -1642,8 +1641,9 @@ function guncelle(){if(G.faz==='ozet'){ozetAdim();return;}
   if(G.kare<ys){if(!(G.restart&&G.restart.tip==='baslama'))G.kare++;if(G.kare%(G.derbi?600:1200)===(G.derbi?300:600))sesTezahurat();if(G.kare%30===0&&G.restart)aiDegisim();if(G.kare%300===0)tribunTepki();}
   else{if(G.uzT==null){const yo=G.olay.length-(G.olayBas||0),fa=G.faulN||0;G.uzDk=clamp((G.devre===2?3:1)+Math.round(yo*.18+fa*.1+Math.random()*2.4)+(G.varEk||0),G.devre===2?3:1,G.devre>=3?2:G.devre===2?9:6);G.varEk=0;G.uzT=Math.round(G.uzDk*G.top_kare/90*1.05);G.uzS=0;G.uzG=180;}
    G.uzS++;}}
- if(G.uzT!=null&&G.uzS>=G.uzT&&(!atakSuruyor()||G.uzS>=G.uzT+Math.round(G.top_kare/90*3))&&(G.devre===1||G.devre===3)){G.uzT=null;G.olayBas=G.olay.length;G.faulN=0;G.devre++;G.faz='devre';G.fazT=G.devre===2?600:100;G.devreYuru=G.devre===2;G.banner=G.devre===2?'DEVRE ARASI':'UZATMA DEVRE ARASI';G.alt=G.devre===2?'Takımlar soyunma odasına gidiyor':'';sesDuduk(2);return;}
- if(G.uzT!=null&&G.uzS>=G.uzT&&(!atakSuruyor()||G.uzS>=G.uzT+Math.round(G.top_kare/90*3))&&(G.devre===2||G.devre===4)){G.uzT=null;G.olayBas=G.olay.length;G.faulN=0;if(eleBerabere()){if(G.devre===2){G.devre=3;G.faz='devre';G.fazT=160;G.banner='UZATMALARA GİDİLİYOR';G.alt='2 x 15 dakika';sesDuduk(2);return;}seriBasla();return;}macSonuBasla(null);return;}
+ const penBek=(G.restart&&G.restart.tip==='PENALTI')||G.penKontrol||G.varBek;
+ if(!penBek&&G.uzT!=null&&G.uzS>=G.uzT&&(!atakSuruyor()||G.uzS>=G.uzT+Math.round(G.top_kare/90*3))&&(G.devre===1||G.devre===3)){G.uzT=null;G.olayBas=G.olay.length;G.faulN=0;G.P.forEach(p=>{if(p.disari>0&&!p.sedye){p.disari=0;p.x=clamp(p.x,ML+4,MR-4);p.y=clamp(p.y,MT+4,MB-4);}if(!p.sedye){p.yer=0;}});if(G.saglik&&G.saglik.tip!=='sedye')G.saglik=null;G.yerKal=null;G.devre++;G.faz='devre';G.fazT=G.devre===2?600:100;G.devreYuru=G.devre===2;G.banner=G.devre===2?'DEVRE ARASI':'UZATMA DEVRE ARASI';G.alt=G.devre===2?'Takımlar soyunma odasına gidiyor':'';sesDuduk(2);return;}
+ if(!penBek&&G.uzT!=null&&G.uzS>=G.uzT&&(!atakSuruyor()||G.uzS>=G.uzT+Math.round(G.top_kare/90*3))&&(G.devre===2||G.devre===4)){G.uzT=null;G.olayBas=G.olay.length;G.faulN=0;if(eleBerabere()){if(G.devre===2){G.devre=3;G.faz='devre';G.fazT=160;G.banner='UZATMALARA GİDİLİYOR';G.alt='2 x 15 dakika';sesDuduk(2);return;}seriBasla();return;}macSonuBasla(null);return;}
  if(IN.degE&&!(G.top.sahip&&G.top.sahip.k===G.human)){const cur=G.kont;let b=null,bd=1e9;G.P.forEach(p=>{if(p.k!==G.human||p.rol==='GK'||p===cur)return;const d=Math.hypot(p.x-G.top.x,p.y-G.top.y);if(d<bd){bd=d;b=p;}});if(b){G.kont=b;G.kontT=45;}}
  if(G.hakem)hakemGuncelle();
  if(yerdeKontrol())return;
@@ -1707,7 +1707,7 @@ function guncelle(){if(G.faz==='ozet'){ozetAdim();return;}
    if(p.kay>0&&d<8){const arkadan=(p.dx*sh.dx+p.dy*sh.dy)>.45;const temiz=Math.random()<(arkadan?.25:.55)*clamp(p.rt/sh.rt,.8,1.2);p.kay=0;
     if(!temiz){p.kayK=true;faulVer(p,sh,arkadan);return;}
     if(!G.varBek&&!G.seri&&Math.abs(sh.x-(p.k?MR:ML))<80&&Math.abs(sh.y-H/2)<70&&Math.random()<.18)G.varBek={k:sh.k,t:110,kay:(G.kay||[]).slice(-90)};
-    t.sahip=null;t.vx=(p.dx||rnd(-1,1))*2.2+rnd(-.5,.5);t.vy=(p.dy||rnd(-1,1))*2.2+rnd(-.5,.5);t.son=p.k;sh.cool=30;yereDus(sh,(p.dx||0)*1.1,(p.dy||0)*1.1,34);p.mp=(p.mp||0)+.4;return;}
+    t.sahip=null;t.vx=(p.dx||rnd(-1,1))*2.2+rnd(-.5,.5);t.vy=(p.dy||rnd(-1,1))*2.2+rnd(-.5,.5);t.son=p.k;sh.cool=30;yereDus(sh,(p.dx||0)*1.1,(p.dy||0)*1.1,34);if(!G.yerKal&&!G.saglik&&Math.random()<.07){yereDus(sh,0,0,2000);G.yerKal={p:sh,t:0};yorum((sh.ad||'Oyuncu')+' sert müdahale sonrası yerde kaldı',1);}p.mp=(p.mp||0)+.4;return;}
    const sans=(p.kay>0?.35:presci?.06:.035)*(p.rt/sh.rt);
    if(Math.random()<sans){
     const arkadan=(p.dx*sh.dx+p.dy*sh.dy)>.45;const fp=p.kay>0?(arkadan?.7:.3):(arkadan?.1:.03);
@@ -3088,6 +3088,7 @@ function anaSekme(i){$('anaModlar').style.display=i?'none':'flex';$('anaAyar').s
  const a=$('ana');if(a){a.style.backgroundImage='url('+c.toDataURL()+')';a.style.imageRendering='pixelated';}}catch(e){}})();
 // 🆕 Yenilikler: sürüm geçmişi mini ekranı
 const SURUMLER=[
+ ['V10.0.2 · 12 Kasım 2026',['⏱️ Penaltı (ya da VAR penaltı incelemesi) beklerken devre/maç bitmiyor — önce penaltı kullanılıyor','🚑 Devre arasında kenarda tedavi bekleyen oyuncu artık tribüne ışınlanmıyor','👻 Hayalet sakatlık kaldırıldı: temas yokken rastgele "ikili mücadelede yerde kaldı" olayı silindi; yerde kalma artık sadece gerçek sert müdahaleden sonra']],
  ['V10.0.1 · 12 Kasım 2026',['⚽ Pas fiziği: hızlı top artık arkadaşının içinden geçip taca/auta gitmiyor (pas tutma ~%35 → ~%66)','🎯 İnsan pas gücü topun duracağı mesafeye göre ayarlandı','🏁 Santrada X: en yakın arkadaşa kısa pas (artık taca gitmiyor)','🏃 Hücumda forvetler ve bir orta saha ceza sahasına koşuyor','🤝 Fair play hakem topu: yerde kalan oyuncunun takımı topu alır, rakibin yarı sahasına (kalecisine) uzun atar; diğerleri 4 m uzakta','📱 Mobilde frikik/penaltı ipucu klavye yerine düğme adlarıyla']],
  ['V10 · 12 Kasım 2026',['📦 Tek dosya: Legacy ayrı sürümü kalktı, eski/zayıf cihazda HAFİF MOD kendiliğinden açılır (Ayarlar → Hafif mod: Otomatik / Açık / Kapalı)','🔁 Oyuncu değişikliği bitmeden santra yapılmıyor','🏆 Kupa maçlarında orta sahada o kupanın adı yazıyor (Yıldızlar/Kıta/Umut Ligi, Kutup Yıldızı, Kuzey Rüzgârı, Ayaz, yerel kupalar)','🛡️ Türkiye ve KKTC büyüklerine yeni armalar + şampiyonluk yıldızları (her 5 şampiyonluk = 1★)','💚 Aslanlar\'ın yeni 3. forması: zümrüt yeşili-siyah','ℹ️ Açılışta lisans/açıklama ekranı (Ayarlar → Hakkında)','İtiraz eden oyuncuların elleri artık havada kalmıyor','Son dakika golünde teknik direktör takılı kalmıyor','Tedavi gören oyuncu kenara yürüyerek çıkıyor, santrada sahaya ışınlanmıyor','Değişiklikte çıkan oyuncu tribüne değil, kenar çizgisinden yedek kulübesine yürüyor','Giren oyuncu kulübeden 4. hakemin yanına yürüyerek geliyor','Hakem artık atak sürerken düdük çalmıyor: düdük top ölüyken, kaleci tutunca ya da tehlike bitince','Autta X kısa pas, D uzun top; frikikte X ve D artık auta gitmiyor','Oyuncun faulle yerdeyken rakip gol atarsa VAR faul kontrolü yapıp golü iptal ediyor','Penaltı atışlarındaki takılma giderildi','Uzaktan frikikte oyuncular ceza sahasına dizilmiyor','Hakemle sadece kaptan konuşabilir: itiraz eden diğer oyunculara sarı kart','⌚ Gol çizgisi teknolojisi (büyük liglerde ve Avrupa kupalarında)','Kadro ekranında oyuncu bayrağı ve sarı kart sınırı uyarısı','🎙️ Maç öncesi stüdyo ve yorumcular yeniden çizildi']],
  ['V9.9.3 · Bakım',['🔧 V10 hazırlığı için bakım']],

@@ -1,5 +1,10 @@
 # Sürüm notları
 
+## V10.0.2 — 12 Kasım 2026
+- ⏱️ Penaltı beklerken devre/maç bitmiyor
+- 🚑 Devre arasında tedavideki oyuncu tribüne ışınlanmıyor
+- 👻 Temassız rastgele "yerde kaldı" (hayalet sakatlık) olayı kaldırıldı; sadece gerçek sert müdahaleden sonra
+
 ## V10.0.1 — 12 Kasım 2026
 - ⚽ Pas fiziği: hızlı top artık arkadaşının içinden geçip taca/auta gitmiyor
 - 🎯 İnsan pas gücü topun duracağı mesafeye göre ayarlandı
