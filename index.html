@@ -529,6 +529,7 @@ function vurus(p,tx,ty,guc,yuksek){if(G&&G.top)G.top.isaK=null;
  const t=G.top;t.onceki=(t.sonV&&t.sonV.k===p.k&&t.sonV!==p)?t.sonV:null;t.sonV=p;t.guclu=0;t.gkDene=null;t.penKurt=false;G.P.forEach(q=>q.duvar=0);const dx=tx-p.x,dy=ty-p.y,d=Math.hypot(dx,dy)||1;
  t.sahip=null;t.vx=dx/d*guc;t.vy=dy/d*guc;sesVurus(guc);t.vz=yuksek?guc*.55:0;t.z=1;t.son=p.k;p.cool=14;G.restart=null;
 }
+function pasGuc(hd){const f=.965+(G.hava==='yagmur'?.008:G.hava==='kar'?-.008:0);return clamp(hd*(1-f)+.9,1.8,6.2);}
 function pasVer(p,yuksek){ofsKaydet(p);
  if(G.restart&&G.restart.tip==='baslama'&&!yuksek){let b=null,bd=1e9;G.P.forEach(q=>{if(q.k!==p.k||q===p||q.rol==='GK')return;const d=Math.hypot(q.x-p.x,q.y-p.y);if(d<bd){bd=d;b=q;}});if(b){vurus(p,b.x,b.y,clamp(bd*.036+1.1,1.6,3.6),false);if(p.k===G.human){G.pasAlici=b;G.pasAliciT=90;}return;}}
  let best=null,bs=-1e9;
@@ -540,7 +541,7 @@ function pasVer(p,yuksek){ofsKaydet(p);
  const d=Math.hypot(best.x-p.x,best.y-p.y);
  const hx=clamp(best.x+best.vx*8,ML+8,MR-8),hy=clamp(best.y+best.vy*8,MT+10,MB-10),hd=Math.hypot(hx-p.x,hy-p.y);
  if(yuksek||d>150){const g0=clamp((-25+Math.sqrt(625+20*hd))/10,2,5.8);vurus(p,hx,hy,g0,true);sertlestir(1.25);if(p.k===G.human){G.pasAlici=best;G.pasAliciT=110;}}
- else if(p.k!==G.human)vurus(p,hx,hy,clamp(d*.056+2.1,2.3,5.7),false);else{vurus(p,hx,hy,clamp(hd*.05+1.9,2.6,6.2),false);G.pasAlici=best;G.pasAliciT=90;}
+ else if(p.k!==G.human)vurus(p,hx,hy,pasGuc(hd),false);else{vurus(p,hx,hy,pasGuc(hd),false);G.pasAlici=best;G.pasAliciT=90;}
 }
 function araPasEski(p){ofsKaydet(p);
  const ileri=p.k?-1:1;let best=null,bs=-1e9;
@@ -3219,6 +3220,7 @@ function anaSekme(i){$('anaModlar').style.display=i?'none':'flex';$('anaAyar').s
  const du=c.toDataURL();document.documentElement.style.setProperty('--stad','url('+du+')');const a=$('ana');if(a){a.style.backgroundImage='url('+du+')';a.style.imageRendering='pixelated';}}catch(e){}})();
 // 🆕 Yenilikler: sürüm geçmişi mini ekranı
 const SURUMLER=[
+ ['V10.0.21 · 12 Kasım 2026',['⚽ Pas taça gitme hatası düzeltildi: yerden paslar artık mesafeye göre doğru güçte atılıyor (önceden pas, arkadaşından ~25-60 piksel ileri gidip alıcı kaçırınca auta çıkıyordu); yağmur/karda zemine göre ayarlanıyor']],
  ['V10.0.20 · 12 Kasım 2026',['🔍 PC\'de büyük ekranlarda açılır pencereler (basın toplantısı, seçimler, maç öncesi ilk 11, maç önü) ekran boyutuna göre büyüyor — artık minik kalmıyor','🏟️ Açılır pencerelerin arkasında da kararmış stadyum']],
  ['V10.0.19 · 12 Kasım 2026',['🧩 Kulüp sekmesi artık sütunlu: MAÇ GÜNÜ · SON MAÇ · TAKVİM & OLAYLAR yan yana (PC\'de 3, tablette 2, telefonda 1 sütun); PC\'de sayfa aşağı kaymıyor, her sütun kendi içinde kayıyor','📰 Haberler ve kulüp günlüğü katlanır kutuda; iç içe kutular sadeleşti']],
  ['V10.0.18 · 12 Kasım 2026',['🗂️ Kariyer sekmeleri artık yana kaymıyor: ekrana sığmayan sekmeler alt satıra iniyor','🏟️ Tüm ekranlarda düz mavi yerine kararmış gece stadı arka planı','📋 Kadro, transfer, istatistik ve puan tabloları kart içinde: sarı başlık satırı, zebra satırlar, üstüne gelince vurgulama, yuvarlak köşeler']],

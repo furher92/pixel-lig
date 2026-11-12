@@ -1,5 +1,8 @@
 # Sürüm notları
 
+## V10.0.21 — 12 Kasım 2026
+- ⚽ Pas gücü mesafeye göre (taça giden pas hatası)
+
 ## V10.0.20 — 12 Kasım 2026
 - 🔍 Büyük ekranda pencereler büyüyor
 
