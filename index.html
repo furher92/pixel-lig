@@ -105,7 +105,9 @@ body.dik #oyun{inset:auto;left:0;top:0;width:100vh;height:100vw;transform-origin
  <div class="anaTab"><button class="tab akt" id="atM" onclick="anaSekme(0)">⚽ MODLAR</button><button class="tab" id="atA" onclick="anaSekme(1)">⚙️ AYARLAR</button></div>
  <div id="anaModlar" class="anaGrup">
  <button class="btn" onclick="hizliMac()">HIZLI MAÇ</button>
+ <button class="btn" disabled style="background:#3a3f55;opacity:.75;cursor:not-allowed;font-size:.85em" title="Yakında · 27/28 sezonu">🔒 HIZLI MAÇ · DRAFT<br><small style="color:#ffd23f">Yakında · 27/28 sezonu</small></button>
  <button class="btn" style="background:#1e7a3a" onclick="kariyerBasla()">KARİYER</button>
+ <button class="btn" disabled style="background:#3a3f55;opacity:.75;cursor:not-allowed;font-size:.85em" title="Yakında · 27/28 sezonu">🔒 KARİYER · DRAFT<br><small style="color:#ffd23f">Yakında · 27/28 sezonu</small></button>
  <button class="btn" style="background:#1f6fb2" onclick="oyuncuBasla()">OYUNCU KARİYERİ</button>
  <button class="btn" onclick="kupaMenu()">AVRUPA KUPALARI</button>
  <button class="btn" style="background:#8e44ad" onclick="ikiOyuncu()">👥 2 OYUNCU</button>
@@ -3103,6 +3105,7 @@ function anaSekme(i){$('anaModlar').style.display=i?'none':'flex';$('anaAyar').s
  const a=$('ana');if(a){a.style.backgroundImage='url('+c.toDataURL()+')';a.style.imageRendering='pixelated';}}catch(e){}})();
 // 🆕 Yenilikler: sürüm geçmişi mini ekranı
 const SURUMLER=[
+ ['V10.0.11 · 12 Kasım 2026',['🔒 DRAFT modu geliyor: Hızlı Maç Draft ve Kariyer Draft düğmeleri menüde, kilitli — Yakında, 27/28 sezonu ile']],
  ['V10.0.10 · 12 Kasım 2026',['⚽ Anadolu ve Akdeniz topları artık farklı: Anadolu Kıvrım 26 gümüş-beyaz zemin üstüne kırmızı/lacivert/açık mavi kıvrımlar, Akdeniz Sütun beyaz üstüne kırmızı-siyah dikey sütun','🔒 Top deseni artık dönmüyor, sabit duruyor','🏷️ Maçtaki lig panosu oynanan ligin kendi adını yazıyor (Akdeniz 1. Lig maçında artık Süper Lig yazmıyor)']],
  ['V10.0.9 · 12 Kasım 2026',['⚽ TOPLAR YUVARLAK — Part 1: maçtaki top artık kare değil, yuvarlak ve lig desenli (dönerken desen döner). Part 2 (detaylı lig desenleri, gölge) V10.1 ile','📱 Mobil HD: oyun ekranı telefonun piksel yoğunluğuna göre daha yüksek çözünürlükte çiziliyor (net görüntü)','📱 Mobilde ekran artık tam sığıyor (adres çubuğu/küçük ekranlarda kesilme düzeltildi)']],
  ['V10.0.8 · 12 Kasım 2026',['⚽ Yeni maç topları: Anadolu Kıvrım 26 (beyaz + kırmızı/siyah), Kutup Akış (kırmızı/mavi/lacivert), Akdeniz Dalga (turuncu/siyah)','📺 Kutup ve Akdeniz liglerine kendi skorbordu ve saha kenarı reklam panoları (kurgusal markalar)','🟥 Anadolu skorbordu kırmızı tonda']],
