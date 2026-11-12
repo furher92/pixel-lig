@@ -172,6 +172,7 @@ body.dik #oyun{inset:auto;left:0;top:0;width:100vh;height:100vw;transform-origin
 .fmSut .sonra{box-shadow:none!important;border:1px solid #2b3560!important;background:rgba(0,0,0,.18)!important;padding:7px!important;line-height:1.8;font-size:8px!important}
 .fmSut table{box-shadow:none;border:1px solid #2b3560;font-size:7px}.fmSut .row{justify-content:center;flex-wrap:wrap}
 .fmAks .row .btn{min-width:140px}
+.hbL{line-height:1.6!important;display:flex;flex-direction:column;gap:0;padding:0!important}.hbI{padding:6px 4px;border-bottom:1px solid #2b3560;word-break:break-word;overflow-wrap:anywhere}.hbI:last-child{border-bottom:0}.fmHaber{overflow:hidden;box-sizing:border-box}.fmHaber .hbL{max-height:45vh;overflow-y:auto}
 .fmAks .fmHaber{margin-top:6px;border-width:1px;background:rgba(0,0,0,.2)}.fmHaber{width:100%;background:rgba(10,14,34,.85);border:2px solid #000;border-radius:8px;padding:8px;font-size:8px}.fmHaber summary{cursor:pointer;color:#ffd23f}.fmHaber .gec{max-width:none!important;margin-top:6px;text-align:left;line-height:2;max-height:40vh;overflow-y:auto}.fmAlt2{justify-content:center;gap:8px;flex-wrap:wrap;width:100%}
 #karIc{gap:8px!important}
 </style>
@@ -2533,7 +2534,7 @@ function kariyerEkran(sekme){{const s0=KRY();if(s0&&s0.toren){const tt=s0.toren;
   else if(s.hafta<s.fik.length){const m=s.fik[s.hafta].find(x=>x.includes(s.ti));const ev=ALL[m[0]],dep=ALL[m[1]];const dr=derbiMi(m[0],m[1]);
    h+=`<div class="sonra ${dr?'derbi':''}">${dr?alev()+'<br>':''}${s.hafta+1}. HAFTA / ${s.fik.length} · ${tarihYaz(haftaTarih(s,s.hafta))} · Ligde ${sira}.<br>${chip(ev)} ${ev.ad} (${takimGucu(ev.i,s)}) - (${takimGucu(dep.i,s)}) ${dep.ad} ${chip(dep)}</div>${izleHtml(s,m)}<div class="row"><button class="btn" onclick="kariyerMac(false)">MAÇI OYNA</button><button class="btn gri" onclick="kariyerMac(true)">SİMÜLE ET</button></div>`;}
   else{if(sira===1&&!s.ligTorenOldu){s.ligTorenOldu=1;s.toren={ad:L.ad,ti:s.ti};krKaydet(s);setTimeout(()=>kariyerEkran(sekme),0);}teklifUret(s,sira);krKaydet(s);h+=sezonSonuHtml(s,sir,sira,L)+teklifHtml(s);}
-  h+='<!--K4-->';h+=`<div class="gec" style="max-width:560px">${s.haber.slice(-10).reverse().join('<br>')}</div><button class="btn gri" onclick="if(confirm('Kariyer silinsin mi?')){kayit('kariyer',{});kariyerBasla();}">KARİYERİ SIFIRLA</button>`;
+  h+='<!--K4-->';h+=`<div class="gec hbL" style="max-width:560px">${s.haber.slice(-10).reverse().map(x=>`<div class="hbI">${x}</div>`).join('')}</div><button class="btn gri" onclick="if(confirm('Kariyer silinsin mi?')){kayit('kariyer',{});kariyerBasla();}">KARİYERİ SIFIRLA</button>`;
  }
  if(sekme==='kadro'){const k=takimKadro(s.ti,s),uy=kadroUygun(s,s.ti),x=s.kadroSec&&s.kadroSec.length?s.kadroSec.map(id=>uy.find(p=>p.id==id)).filter(Boolean):benimIlk11(s);{const sec=s.kadroSec&&s.kadroSec.length?s.kadroSec.filter(id=>kadroUygun(s,s.ti).some(p=>p.id==id)).length:0;h+=`<div class="sonra" style="font-size:9px">İLK 11: ${s.kadroSec&&s.kadroSec.length?(sec===11?'✅ Senin seçimin':'✏️ Seçim yapılıyor '+sec+'/11 (eksik yerleri maçta oyun en iyilerle doldurur)'):'🤖 Otomatik (en güçlüler)'} <button class="tab" onclick="ilk11Oto()">OTOMATİK</button></div>`;}
   h+=`<div class="sonra" style="font-size:8px">${yabanciYazi(s)}Takım gücü: ${takimGucu(s.ti,s)} · (K) = kiralık · 🎓 = altyapı · ⚡ kondisyon (60 altı yorgun) · M maç, G gol, A asist</div>`;
@@ -3344,6 +3345,7 @@ function anaSekme(i){$('anaModlar').style.display=i?'none':'flex';$('anaAyar').s
  const du=c.toDataURL();document.documentElement.style.setProperty('--stad','url('+du+')');const a=$('ana');if(a){a.style.backgroundImage='url('+du+')';a.style.imageRendering='pixelated';}}catch(e){}})();
 // 🆕 Yenilikler: sürüm geçmişi mini ekranı
 const SURUMLER=[
+ ['V10.0.44 · 12 Kasım 2026',['📰 Haberler & Kulüp: her haber ayrı satırda, arasında çizgi; uzun haberler birbirine ve kutu kenarına binmiyor']],
  ['V10.0.43 · 12 Kasım 2026',['📱 Telefonda tam ekran: menülerde de ilk dokunuşta tam ekrana geçer (önceden sadece maçta)','⬇️ Kariyer ekranında en alttaki düğmeler artık kesilmiyor (alt boşluk + çentikli telefon payı)','📺 Haftanın maçı artık senin maçınla çakışmıyor: senin maçından 1 gün önce (Cuma 20:00) oynanır, tarihi kartta yazar']],
  ['V10.0.42 · 12 Kasım 2026',['🛡️ Veritabanı › Kulüp Profili listesi liglere ayrıldı: önce ülke bayrağı, sonra kademe seç, o ligin kulüpleri güç sırasıyla gelir']],
  ['V10.0.41 · 12 Kasım 2026',['🌍 Futbol Dünyası artık "Veritabanı": sezon 26/27 verisi, her sezon güncellenir, salt okunur (kariyerden bağımsız) · kariyerde üst şeritte küçük 🌍 VERİTABANI düğmesi']],
