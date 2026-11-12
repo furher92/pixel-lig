@@ -35,7 +35,8 @@ html,body{margin:0;height:100%;background:var(--bg);color:var(--tx);font-family:
 .bs{display:flex;gap:6px;align-items:flex-start;padding:7px;border:2px solid #000;border-radius:5px;background:linear-gradient(135deg,#1e8a44,#123020);font-size:7px;line-height:1.6}
 .bs b{display:block;font-size:8px;color:#ffd23f}.bs .bi{font-size:16px;line-height:1}.bs.k{background:repeating-linear-gradient(45deg,#2a2e42 0 6px,#323750 6px 12px);opacity:.7}.bs.k b{color:#ccc}
 .bsBar{height:8px;background:#222a4a;border:1px solid #000;border-radius:4px;overflow:hidden;margin-top:6px}.bsBar i{display:block;height:100%;background:linear-gradient(90deg,#27ae60,#ffd23f)}
-#karIc{max-width:980px;margin:0 auto}
+#karIc{max-width:980px;margin:0 auto;padding-bottom:calc(90px + env(safe-area-inset-bottom))}
+.ekr{padding-bottom:calc(70px + env(safe-area-inset-bottom))!important;scroll-padding-bottom:80px}
 .fmUst{width:100%;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:10px;padding:10px 12px;border:2px solid #000;border-radius:8px;background:linear-gradient(90deg,var(--tc) 0 8px,var(--tc2) 8px 12px,#141a36 12px,#1d2654);box-shadow:0 4px 0 #000}
 .fmSol{display:flex;align-items:center;gap:10px}.fmArma{transform:scale(1.8);margin:0 10px 0 14px;display:inline-block}.fmAd{font-size:13px;color:#ffd23f}.fmAlt{font-size:7px;opacity:.85;line-height:1.7}
 .fmSag{display:flex;gap:6px;align-items:stretch;flex-wrap:wrap}.fmKut{background:#0b1028;border:1px solid #2b3560;border-radius:5px;padding:5px 8px;display:flex;flex-direction:column;gap:3px;min-width:70px}.fmKut small{font-size:6px;color:#8ab4ff}.fmKut b{font-size:9px}
@@ -1265,8 +1266,8 @@ function haftaninMaci(s){if(!s.fik||s.hafta>=s.fik.length)return null;const haft
   const zirve=s.hafta>=4&&sira(a)<=4&&sira(b)<=4;const p=(dr?100:0)+(b4?60:0)+(zirve?40:0)+(takimGucu(a,s)+takimGucu(b,s))/10;if((dr||b4||zirve)&&p>ep){ep=p;en={a,b,dr,b4,zirve};}});return en;}
 function haftaninMaciHtml(s){if(s.tatil>0)return '';const m=haftaninMaci(s);if(!m)return '';const key=s.sezon+'|'+s.hafta;
  const izlendi=s.izlenen&&s.izlenen.sezon===s.sezon&&s.izlenen.h===s.hafta;const et=m.dr?'🔥 DERBİ':m.zirve?'⛰️ ZİRVE MAÇI':'⭐ DEV MAÇ';
- if(s.hmBildir!==key){s.hmBildir=key;s.haber.push(`📺 Haftanın maçı: ${ALL[m.a].ad} - ${ALL[m.b].ad} (${et.replace(/^\S+ /,'')}). İstersen 90 dakika izleyebilirsin.`);krKaydet(s);}
- return `<div class="sonra" style="font-size:9px;border:2px solid #e74c3c;max-width:560px">📺 <b>HAFTANIN MAÇI</b> · ${et}<br>${chip(ALL[m.a])} ${ALL[m.a].ad} – ${ALL[m.b].ad} ${chip(ALL[m.b])}<br>${izlendi?`✅ İzledin: ${s.izlenen.r[0]}-${s.izlenen.r[1]}`:`<div class="row"><button class="btn" style="background:#c0392b" onclick="izleAnaliz(${m.a},${m.b})">🔭 ANALİZ + 90 DK İZLE</button></div>`}</div>`;}
+ if(s.hmBildir!==key){s.hmBildir=key;s.haber.push(`📺 Haftanın maçı (Cuma akşamı, senin maçından önce): ${ALL[m.a].ad} - ${ALL[m.b].ad} (${et.replace(/^\S+ /,'')}). İstersen 90 dakika izleyebilirsin.`);krKaydet(s);}
+ return `<div class="sonra" style="font-size:9px;border:2px solid #e74c3c;max-width:560px">📺 <b>HAFTANIN MAÇI</b> · ${et}<br>${chip(ALL[m.a])} ${ALL[m.a].ad} – ${ALL[m.b].ad} ${chip(ALL[m.b])}<br><span style="color:#8ab4ff">📅 ${(()=>{try{const d=new Date(haftaTarih(s,s.hafta));d.setDate(d.getDate()-1);return tarihYaz(d)+' · 20:00 (senin maçından 1 gün önce)';}catch(e){return 'Cuma akşamı (senin maçından önce)';}})()}</span><br>${izlendi?`✅ İzledin: ${s.izlenen.r[0]}-${s.izlenen.r[1]}`:`<div class="row"><button class="btn" style="background:#c0392b" onclick="izleAnaliz(${m.a},${m.b})">🔭 ANALİZ + 90 DK İZLE</button></div>`}</div>`;}
 function takimAnaliz(s,t){const F=((s.form&&s.form[t])||[]).slice(-5),K=takimKadro(t,s).slice().sort((a,b)=>b.g-a.g).slice(0,3),L=LEAGUES.find(l=>l.id===ALL[t].lig);
  const sir=L?sirala(s.tab,L.t.map(x=>x.i)).findIndex(r=>r.i===t)+1:0;const zayif=['Bek arkası boşluk veriyor','Duran toplarda zayıf','Son 20 dakikada kondisyonu düşüyor','Kontra ataklarda geç dönüyor','Kalecisi yüksek toplarda tedirgin','Sol kanat savunmada yalnız'];
  return `${chip(ALL[t])} <b>${ALL[t].ad}</b>${sir?` · ${sir}. sıra`:''} · güç ${takimGucu(t,s)}<br>👔 TD: ${hocaAdi(ALL[t])}<br>Form: ${F.length?F.map(x=>({G:'🟢',B:'🟡',M:'🔴'}[x.r])).join(''):'veri yok'}<br>⚠️ ${K.map(p=>`${p.ad} (${p.mv} ${p.g})`).join(', ')}<br>🩹 ${zayif[(t*7+s.hafta)%zayif.length]}`;}
@@ -2135,6 +2136,7 @@ addEventListener('keyup',e=>{if(KM[e.code])IN[KM[e.code]]=0;if(e.code==='KeyX')I
 function dikMi(){return matchMedia('(pointer:coarse)').matches&&innerHeight>innerWidth;}
 function yonGuncelle(){document.body.classList.toggle('dik',dikMi());if(typeof boyut==='function')boyut();}
 addEventListener('resize',yonGuncelle);addEventListener('orientationchange',()=>setTimeout(yonGuncelle,200));
+document.addEventListener('pointerdown',function _fs(e){if(!matchMedia('(pointer:coarse)').matches)return;if(document.fullscreenElement||document.webkitFullscreenElement)return;try{tamEkranYatay();}catch(x){}},{passive:true});
 function tamEkranYatay(){try{const d=document.documentElement,f=d.requestFullscreen||d.webkitRequestFullscreen;const p=f?f.call(d):null;const k=()=>{try{screen.orientation&&screen.orientation.lock&&screen.orientation.lock('landscape').catch(()=>{});}catch(e){}};if(p&&p.then)p.then(k).catch(k);else k();}catch(e){}}
 (function(){
  const alan=document.getElementById('joyAlan'),joy=document.getElementById('joy'),knob=document.getElementById('knob');let jid=null,ox=0,oy=0;
@@ -3342,6 +3344,7 @@ function anaSekme(i){$('anaModlar').style.display=i?'none':'flex';$('anaAyar').s
  const du=c.toDataURL();document.documentElement.style.setProperty('--stad','url('+du+')');const a=$('ana');if(a){a.style.backgroundImage='url('+du+')';a.style.imageRendering='pixelated';}}catch(e){}})();
 // 🆕 Yenilikler: sürüm geçmişi mini ekranı
 const SURUMLER=[
+ ['V10.0.43 · 12 Kasım 2026',['📱 Telefonda tam ekran: menülerde de ilk dokunuşta tam ekrana geçer (önceden sadece maçta)','⬇️ Kariyer ekranında en alttaki düğmeler artık kesilmiyor (alt boşluk + çentikli telefon payı)','📺 Haftanın maçı artık senin maçınla çakışmıyor: senin maçından 1 gün önce (Cuma 20:00) oynanır, tarihi kartta yazar']],
  ['V10.0.42 · 12 Kasım 2026',['🛡️ Veritabanı › Kulüp Profili listesi liglere ayrıldı: önce ülke bayrağı, sonra kademe seç, o ligin kulüpleri güç sırasıyla gelir']],
  ['V10.0.41 · 12 Kasım 2026',['🌍 Futbol Dünyası artık "Veritabanı": sezon 26/27 verisi, her sezon güncellenir, salt okunur (kariyerden bağımsız) · kariyerde üst şeritte küçük 🌍 VERİTABANI düğmesi']],
  ['V10.0.40 · 12 Kasım 2026',['🌍 Futbol Dünyası artık kariyerde de: sekmelerde "🌍 FUTBOL DÜNYASI" (ligler panosu, kulüp profilleri, oyuncu veritabanı) · "← KARİYERE DÖN" ile geri']],
