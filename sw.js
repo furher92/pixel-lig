@@ -1,6 +1,6 @@
 // Piksel Lig service worker — ÇEVRİMDIŞI MOD: ilk açılışta oyun dosyaları önbelleğe alınır; internet yoksa önbellekten açılır.
 // Sayfa: önce ağ (3 sn zaman aşımı) → yoksa önbellek. Diğer dosyalar ve yazı tipleri: önce önbellek → yoksa ağ (ve kaydet).
-const C='pikselig-v9b5';
+const C='pikselig-v9b6';
 const D=["./", "./index.html", "./PikselLig_Legacy.html", "./manifest.json", "./icon-192.png", "./icon-512.png", "./logo.svg"];
 self.addEventListener('install',e=>{e.waitUntil(caches.open(C).then(c=>Promise.all(D.map(u=>c.add(u).catch(()=>{})))).then(()=>self.skipWaiting()));});
 self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(k=>Promise.all(k.filter(x=>x!==C).map(x=>caches.delete(x)))).then(()=>self.clients.claim()));});
