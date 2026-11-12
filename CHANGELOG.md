@@ -1,5 +1,8 @@
 # Sürüm notları
 
+## V10.0.17 — 12 Kasım 2026
+- 📰 Kariyer ekranı FM tarzı Portal (üst şerit, tarih/sonraki maç/bütçe, DEVAM, 3 portal kartı)
+
 ## V10.0.16 — 12 Kasım 2026
 - 🏆 Kartlı Avrupa Kupaları menüsü + kupa çizimleri
 - 🏅 Başarımlar ızgarası + ilerleme çubuğu
