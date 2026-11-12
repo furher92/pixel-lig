@@ -1,5 +1,9 @@
 # Sürüm notları
 
+## V10.0.4 — 12 Kasım 2026
+- 👕 Türkiye 1. kademesi: 18 kulübün 3 forması 26/27 renklerine güncellendi (arma/sponsor/marka yok)
+- 💚 Aslanlar 3. forma zümrüt yeşili kaldı
+
 ## V10.0.3 — 12 Kasım 2026
 - 🏃 Hücum desteği: takım topu taşıyanla birlikte ilerliyor, forvet tek kalmıyor
 - 🚩 Destek koşuları ofsayt çizgisini geçmiyor
