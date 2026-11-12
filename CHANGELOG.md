@@ -1,5 +1,8 @@
 # Sürüm notları
 
+## V10.0.5 — 12 Kasım 2026
+- 🟡 Gerçek hakem topu: hakem topa gelir, iki takımdan birer oyuncu yanına gelir, top sekerek bırakılır
+
 ## V10.0.4 — 12 Kasım 2026
 - 👕 Türkiye 1. kademesi: 18 kulübün 3 forması 26/27 renklerine güncellendi (arma/sponsor/marka yok)
 - 💚 Aslanlar 3. forma zümrüt yeşili kaldı

@@ -1559,7 +1559,7 @@ function varTekrarMi(){return G&&G.faz==='dur'&&/MONİTÖR|ÇİZGİ|ATAK BAŞ/.t
 function yhGuncelle(){if(!G.yh)G.yh=[{x:W*.7,y:MT-7,an:0},{x:W*.3,y:MB+7,an:0}];if(G.faz==='toren'||G.faz==='yazitura'||G.faz==='devre')return;
  const hx=[clamp(Math.max(ofsHat(0),G.top.x>W/2?Math.min(G.top.x,MR):W/2),W/2,MR),clamp(Math.min(ofsHat(1),G.top.x<W/2?Math.max(G.top.x,ML):W/2),ML,W/2)];
  G.yh.forEach((y,i)=>{const d=hx[i]-y.x,hy=i?MB+7:MT-7,e=hy-y.y;if(Math.abs(d)>1){y.x+=Math.sign(d)*Math.min(1.5,Math.abs(d));y.an+=.2;}if(Math.abs(e)>.5){y.y+=Math.sign(e)*Math.min(1.5,Math.abs(e));y.an+=.2;}});if(G.bayrak&&G.bayrak.t>0)G.bayrak.t--;}
-function hakemGuncelle(){if(G.faz==='devre'&&G.devreYuru)return;yhGuncelle();yanCizgiGuncelle();varSay();const h=G.hakem,t=G.top,v=varda();const gl=G.faz==='gol'||(G.faz==='dur'&&G.restart&&G.restart.tip==='SANTRA'),kv=G.faz==='dur'&&G.kavga;const tx=v?VAR_X-7:kv?G.kavga.x+8:gl?W/2+12:clamp(t.x+(t.x<W/2?22:-22),ML+10,MR-10),ty=v?VAR_Y:kv?G.kavga.y-6:gl?H/2+14:clamp(t.y+(t.y<H/2?26:-26),MT+8,MB-8);const dx=tx-h.x,dy=ty-h.y,d=Math.hypot(dx,dy);h.ekran=v&&d<=3;if(d>3){const hz=v?3.6:1.05;h.x+=dx/d*Math.min(hz,d);h.y+=dy/d*Math.min(hz,d);h.an+=.2;}if(G.hakemKart>0)G.hakemKart--;}
+function hakemGuncelle(){if(G.faz==='devre'&&G.devreYuru)return;yhGuncelle();yanCizgiGuncelle();varSay();const h=G.hakem,t=G.top,v=varda();const gl=G.faz==='gol'||(G.faz==='dur'&&G.restart&&G.restart.tip==='SANTRA'),kv=G.faz==='dur'&&G.kavga;const htp=G.faz==='dur'&&G.restart&&G.restart.tip==='HAKEM TOPU'&&!v&&!kv;const tx=htp?G.restart.x+2:v?VAR_X-7:kv?G.kavga.x+8:gl?W/2+12:clamp(t.x+(t.x<W/2?22:-22),ML+10,MR-10),ty=htp?G.restart.y-7:v?VAR_Y:kv?G.kavga.y-6:gl?H/2+14:clamp(t.y+(t.y<H/2?26:-26),MT+8,MB-8);const dx=tx-h.x,dy=ty-h.y,d=Math.hypot(dx,dy);h.ekran=v&&d<=3;if(d>3){const hz=v?3.6:1.05;h.x+=dx/d*Math.min(hz,d);h.y+=dy/d*Math.min(hz,d);h.an+=.2;}if(G.hakemKart>0)G.hakemKart--;}
 function restartKur(){G.ofs=null;G.ofsGec=null;G.htGol=null;
  const r=G.restart,t=G.top;t.x=r.x;t.y=r.y;t.z=t.vx=t.vy=t.vz=0;
  let taker;
@@ -1583,8 +1583,8 @@ function restartKur(){G.ofs=null;G.ofsGec=null;G.htGol=null;
   const bx=r.x<W/2?ML+30:MR-30;[...atk,...def].forEach((p,i)=>{p.x=bx+rnd(-14,14);p.y=H/2+rnd(-34,34);});}
  t.sahip=taker;t.son=r.k;r.taker=taker;r.bek=r.k===G.human&&(!G.tek||taker.oid===G.tek)?999:(r.tip==='PENALTI'?150:r.tip==='FRİKİK'?240:r.tip==='KORNER'?140:r.tip==='AUT'?120:110);
  if(r.tip==='PENALTI'||r.tip==='FRİKİK'){t.x=r.x;t.y=r.y;}
- G.P.forEach(p=>{if(p!==taker&&r.tip!=='KORNER'&&r.tip!=='PENALTI'&&!p.duvar&&!(p.disari>0)&&!p.sedye&&!p.sakatlik){const h=formHedef(p);const w=p.rol==='GK'?1:r.tip==='FRİKİK'?.85:r.tip==='HAKEM TOPU'?.9:.6;p.x+=(h[0]-p.x)*w;p.y+=(h[1]-p.y)*w;p.yer=0;}});
- if(r.tip==='HAKEM TOPU'){G.P.forEach(q=>{if(q===taker||q.rol==='GK'||q.disari>0||q.sedye||q.sakatlik)return;const dx=q.x-r.x,dy=q.y-r.y,d=Math.hypot(dx,dy)||1;if(d<18){q.x=clamp(r.x+dx/d*18,ML+4,MR-4);q.y=clamp(r.y+dy/d*18,MT+4,MB-4);}});}
+ G.P.forEach(p=>{if(p!==taker&&p!==r.rk&&r.tip!=='KORNER'&&r.tip!=='PENALTI'&&!p.duvar&&!(p.disari>0)&&!p.sedye&&!p.sakatlik){const h=formHedef(p);const w=p.rol==='GK'?1:r.tip==='FRİKİK'?.85:r.tip==='HAKEM TOPU'?.9:.6;p.x+=(h[0]-p.x)*w;p.y+=(h[1]-p.y)*w;p.yer=0;}});
+ G.ht=0;if(r.tip==='HAKEM TOPU'){G.P.forEach(q=>{if(q===taker||q===r.rk||q.rol==='GK'||q.disari>0||q.sedye||q.sakatlik)return;const dx=q.x-r.x,dy=q.y-r.y,d=Math.hypot(dx,dy)||1;if(d<18){q.x=clamp(r.x+dx/d*18,ML+4,MR-4);q.y=clamp(r.y+dy/d*18,MT+4,MB-4);}});}
  if(r.tip==='AUT'){const gl=r.k?MR:ML,dr=r.k?-1:1;G.P.forEach(q=>{if(q.rol==='GK'||q===taker||q.disari>0||q.sedye||q.sakatlik)return;const bx=q.k?W-(ML+(MR-ML)*q.fx):ML+(MR-ML)*q.fx,by=MT+(MB-MT)*q.fy;
   if(q.k!==r.k){let hx=bx+(gl-bx)*.3;if((hx-gl)*dr<78)hx=gl+dr*78;q.x=clamp(hx,ML+8,MR-8);q.y=clamp(by,MT+6,MB-6);}
   else{let hx=bx+(gl-bx)*.25;const lim=q.rol==='FW'?40:q.rol==='MF'?10:-40;if((hx-W/2)*dr>lim)hx=W/2+dr*lim;q.x=clamp(hx,ML+8,MR-8);q.y=clamp(by,MT+6,MB-6);}q.vx=q.vy=0;});}
@@ -1629,7 +1629,8 @@ function guncelle(){if(G.faz==='ozet'){ozetAdim();return;}
  if(G.faz==='yazitura'){if(G.hakem)ytDizil(true);return;}
  if(varPenDur())return;
  if(G.faz==='basla'||G.faz==='dur'||G.faz==='gol'||G.faz==='devre'){
-  G.fazT--;if(G.faz==='dur'||G.faz==='devre')degKuyUygula();if(G.faz==='devre'&&G.devre===2)yhSoyunma();if(G.saglik&&G.faz==='dur')G.saglik.t++;if(G.faz==='gol'){fizik();golSevinc();if((IN.pasE||IN.sutE)&&G.tekrarUz&&G.fazT<=G.tekrarUz)G.fazT=1;}yerHepsi();if(G.faz==='dur'&&degBekle())G.fazT=Math.max(G.fazT,2);if(G.faz==='basla'&&G.P.some(p=>p.gX!=null&&!p.atildi)){degBekle();G.fazT=Math.max(G.fazT,2);G.banner='OYUNCU DEĞİŞİKLİĞİ';}if(G.itiraz)itirazGuncelle();if(G.hocaItz&&G.faz!=='oyun'&&G.faz!=='dur')G.hocaItz=null;if(G.hakemIs&&--G.hakemIs.t<=0)G.hakemIs=null;if(G.faz==='dur'&&G.kavga)kavgaGuncelle();if(G.faz==='dur'&&G.kesinti)kesintiGuncelle();if(G.faz==='devre'&&G.devreYuru)devreYuruGuncelle();if(G.faz==='basla'&&G.ikinciCikis)ikinciCikisGuncelle();if(G.hakem)hakemGuncelle();
+  G.fazT--;if(G.faz==='dur'||G.faz==='devre')degKuyUygula();if(G.faz==='devre'&&G.devre===2)yhSoyunma();if(G.saglik&&G.faz==='dur')G.saglik.t++;if(G.faz==='gol'){fizik();golSevinc();if((IN.pasE||IN.sutE)&&G.tekrarUz&&G.fazT<=G.tekrarUz)G.fazT=1;}yerHepsi();if(G.faz==='dur'&&degBekle())G.fazT=Math.max(G.fazT,2);
+ if(G.faz==='dur'&&G.restart&&G.restart.tip==='HAKEM TOPU'&&!(G.kuy&&G.kuy.length)&&!G.kavga)hakemTopuSahne();if(G.faz==='basla'&&G.P.some(p=>p.gX!=null&&!p.atildi)){degBekle();G.fazT=Math.max(G.fazT,2);G.banner='OYUNCU DEĞİŞİKLİĞİ';}if(G.itiraz)itirazGuncelle();if(G.hocaItz&&G.faz!=='oyun'&&G.faz!=='dur')G.hocaItz=null;if(G.hakemIs&&--G.hakemIs.t<=0)G.hakemIs=null;if(G.faz==='dur'&&G.kavga)kavgaGuncelle();if(G.faz==='dur'&&G.kesinti)kesintiGuncelle();if(G.faz==='devre'&&G.devreYuru)devreYuruGuncelle();if(G.faz==='basla'&&G.ikinciCikis)ikinciCikisGuncelle();if(G.hakem)hakemGuncelle();
   if(G.fazT<=0){
    if(G.faz==='gol'){const gk=G.golK,d=1-gk;G.faz='dur';G.fazT=1;G.alt='';G.kuy=[];
     golVar(gk,d);golSonuYerde();}
@@ -3093,6 +3094,7 @@ function anaSekme(i){$('anaModlar').style.display=i?'none':'flex';$('anaAyar').s
  const a=$('ana');if(a){a.style.backgroundImage='url('+c.toDataURL()+')';a.style.imageRendering='pixelated';}}catch(e){}})();
 // 🆕 Yenilikler: sürüm geçmişi mini ekranı
 const SURUMLER=[
+ ['V10.0.5 · 12 Kasım 2026',['🟡 Gerçek hakem topu: hakem topun yerine yürür, iki takımdan birer oyuncu yanına gelir, hakem topu elinde tutup yere bırakır ve top sekerek düşer; sonra oyun başlar (fair play ise top rakibe geri verilir)']],
  ['V10.0.4 · 12 Kasım 2026',['👕 Türkiye 1. kademesindeki 18 kulübün iç saha / deplasman / 3. formaları 26/27 sezonu renklerine güncellendi (sadece renk ilhamı; arma, sponsor, marka yok)','💚 Aslanlar\'ın 3. forması zümrüt yeşili olarak kaldı']],
  ['V10.0.3 · 12 Kasım 2026',['🏃 Hücum desteği: top bizdeyken forvet topun önünde, kanatlar yanında, orta saha arkasında koşuyor; defans da yukarı çıkıyor — forvet artık tek kalmıyor','🚩 Destek koşuları ofsayt çizgisini geçmiyor']],
  ['V10.0.2 · 12 Kasım 2026',['⏱️ Penaltı (ya da VAR penaltı incelemesi) beklerken devre/maç bitmiyor — önce penaltı kullanılıyor','🚑 Devre arasında kenarda tedavi bekleyen oyuncu artık tribüne ışınlanmıyor','👻 Hayalet sakatlık kaldırıldı: temas yokken rastgele "ikili mücadelede yerde kaldı" olayı silindi; yerde kalma artık sadece gerçek sert müdahaleden sonra']],
@@ -3153,5 +3155,18 @@ function hakkindaAc(){if(document.getElementById('hakkinda'))return;const d=docu
  document.body.appendChild(d);}
 function hakkindaKapat(){const d=document.getElementById('hakkinda');if(d)d.remove();try{localStorage.setItem('pl_aciklama_v10','1');}catch(e){}}
 window.addEventListener('load',()=>{let g=null;try{g=localStorage.getItem('pl_aciklama_v10');}catch(e){}if(!g)setTimeout(hakkindaAc,1800);});
+
+// 🟡 V10.0.5: gerçek hakem topu — hakem topa gelir, iki takımdan birer oyuncu yanına gelir, hakem topu yere bırakır/sektirir
+function hakemTopuSahne(){const r=G.restart,t=G.top,dir=r.k?-1:1;G.ht=(G.ht||0)+1;
+ const uygun=k=>G.P.filter(p=>p.k===k&&p.rol!=='GK'&&!(p.disari>0)&&!p.sedye&&!p.sakatlik&&!p.yer).sort((a,b)=>Math.hypot(a.x-r.x,a.y-r.y)-Math.hypot(b.x-r.x,b.y-r.y))[0];
+ if(!r.al)r.al=uygun(r.k);if(!r.rk)r.rk=uygun(1-r.k);
+ const git=(p,x,y)=>{if(!p)return;const dx=x-p.x,dy=y-p.y,d=Math.hypot(dx,dy);if(d>1){const sp=Math.min(1.3,d);p.x+=dx/d*sp;p.y+=dy/d*sp;p.dx=dx/d;p.dy=dy/d;p.an+=.25;}else{p.dx=dir*(p===r.al?1:-1);p.dy=0;}};
+ git(r.al,r.x-dir*8,r.y+2);git(r.rk,r.x+dir*9,r.y+2);
+ t.sahip=null;t.vx=t.vy=0;t.x=r.x;t.y=r.y;
+ const gel=G.ht>40&&(!G.hakem||Math.hypot(G.hakem.x-r.x-2,G.hakem.y-r.y+7)<5)&&(!r.al||Math.hypot(r.al.x-(r.x-dir*8),r.al.y-(r.y+2))<3)&&(!r.rk||Math.hypot(r.rk.x-(r.x+dir*9),r.rk.y-(r.y+2))<3);
+ if(!r.bas&&(gel||G.ht>260))r.bas=G.ht;
+ if(!r.bas){t.z=7;G.fazT=Math.max(G.fazT,2);return;}
+ const k=G.ht-r.bas;if(k<45){t.z=Math.abs(Math.sin(k/7))*7*Math.max(0,1-k/45);G.fazT=Math.max(G.fazT,2);}else{t.z=0;}
+}
 </script>
 </body></html>
