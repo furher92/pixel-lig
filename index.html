@@ -201,7 +201,7 @@ function simMac(h,a){const d=(h.rt-a.rt)/18;return[poisson(Math.max(.2,1.35*Math
 const W=640,H=400,ML=24,MR=W-24,MT=24,MB=H-24,GW=50,GY1=H/2-GW/2,GY2=H/2+GW/2;
 const VW=384,VH=216;
 const cv=document.getElementById('cv'),cx=cv.getContext('2d');cv.addEventListener('pointerdown',()=>{try{onIsinmaAtla();}catch(e){}});cx.imageSmoothingEnabled=false;
-let CS=0;function cozunurluk(){const k=GRAFIK===0?2:3;if(k!==CS){CS=k;cv.width=VW*k;cv.height=VH*k;}cx.setTransform(CS,0,0,CS,0,0);cx.imageSmoothingEnabled=false;}
+let CS=0;function cozunurluk(){const dpr=window.devicePixelRatio||1,ek=(parseFloat(cv.style.width)||VW*2)/VW;const hd=Math.round(ek*dpr);const k=GRAFIK===0?Math.max(2,Math.min(4,hd)):Math.max(3,Math.min(6,hd));if(k!==CS){CS=k;cv.width=VW*k;cv.height=VH*k;}cx.setTransform(CS,0,0,CS,0,0);cx.imageSmoothingEnabled=false;}
 const FORM=[["GK",.03,.5],["DF",.17,.14],["DF",.15,.38],["DF",.15,.62],["DF",.17,.86],["MF",.37,.16],["MF",.34,.4],["MF",.34,.6],["MF",.37,.84],["FW",.56,.38],["FW",.56,.62]];
 let G=null,saha=null,onMacBitti=null;
 const IN={u:0,d:0,l:0,r:0,pas:0,sut:0,pasE:0,sutE:0,araE:0,ortaE:0,kos:0,degE:0};
@@ -1341,9 +1341,10 @@ function topDesen(){const t=G&&G.tema;let u=null;try{u=ULK(t);}catch(e){}return 
 function topPiksel(x,y,don,D,sc){const S=TOP_SEKIL[D.s]||TOP_SEKIL.klasik,R=D.r,bz=D.taban?'#f4f4f4':'#ffffff';sc=sc||1;
  for(let j=0;j<5;j++)for(let i=0;i<5;i++){let a=i,b=j;if(don===1){a=4-j;b=i;}else if(don===2){a=4-i;b=4-j;}else if(don===3){a=j;b=4-i;}const ch=S[b][a];if(ch===' ')continue;
   cx.fillStyle=ch==='w'?(D.taban&&D.s==='yildizli'?bz:'#ffffff'):R[+ch]||'#fff';cx.fillRect(x+(i-2)*sc,y+(j-2)*sc,sc,sc);}}
-function cizTop(x,y){const D=topDesen(),t=G.top,don=Math.floor((G.kare*Math.min(3,Math.hypot(t.vx,t.vy)))/6)%4;
- if(GRAFIK===0){cx.fillStyle='#fff';cx.fillRect(x-1,y,2,2);cx.fillStyle=D.r[0];cx.fillRect(x,y,1,1);return;}
- cx.fillStyle='#ffffff';cx.fillRect(x-1,y-1,3,3);cx.fillStyle=D.r[0];cx.fillRect(x,y,1,1);const kz=[[-1,-1],[1,-1],[1,1],[-1,1]][don];cx.fillStyle=D.r[1]||D.r[0];cx.fillRect(x+kz[0],y+kz[1],1,1);}
+function cizTop(x,y){const D=topDesen(),t=G.top,a=(G.top.don=(G.top.don||0)+Math.min(3,Math.hypot(t.vx,t.vy))*.12);const r=GRAFIK===0?1.2:1.6,cx0=x+.5,cy0=y+.5;
+ cx.fillStyle='#ffffff';cx.beginPath();cx.arc(cx0,cy0,r,0,6.2832);cx.fill();if(GRAFIK===0){cx.fillStyle=D.r[0];cx.beginPath();cx.arc(cx0+Math.cos(a)*r*.5,cy0+Math.sin(a)*r*.5,r*.4,0,6.2832);cx.fill();return;}
+ for(let i=0;i<3;i++){const b=a+i*2.094;cx.fillStyle=D.r[i]||D.r[0];cx.beginPath();cx.arc(cx0+Math.cos(b)*r*.55,cy0+Math.sin(b)*r*.55,r*.33,0,6.2832);cx.fill();}
+ cx.strokeStyle='rgba(0,0,0,.55)';cx.lineWidth=.3;cx.beginPath();cx.arc(cx0,cy0,r,0,6.2832);cx.stroke();}
 function cizMacTopu(){if(!G||G.devre!==1||!(G.faz==='basla'||G.faz==='oyun'&&G.kare<120))return;const D=topDesen(),x=VW-58,y=40;cx.save();cx.fillStyle='rgba(12,14,24,.88)';cx.fillRect(x-6,y-2,62,34);
  topPiksel(x+8,y+14,Math.floor(G.kare/20)%4,D,3);cx.font='5px monospace';cx.textBaseline='top';cx.fillStyle='#8ab4ff';cx.fillText('MAÇ TOPU',x+25,y+4);cx.fillStyle='#fff';
  const w=D.ad.split(' ');cx.fillText(w[0],x+25,y+12);if(w[1])cx.fillText(w.slice(1).join(' '),x+25,y+19);cx.restore();}
@@ -3099,6 +3100,7 @@ function anaSekme(i){$('anaModlar').style.display=i?'none':'flex';$('anaAyar').s
  const a=$('ana');if(a){a.style.backgroundImage='url('+c.toDataURL()+')';a.style.imageRendering='pixelated';}}catch(e){}})();
 // 🆕 Yenilikler: sürüm geçmişi mini ekranı
 const SURUMLER=[
+ ['V10.0.9 · 12 Kasım 2026',['⚽ TOPLAR YUVARLAK — Part 1: maçtaki top artık kare değil, yuvarlak ve lig desenli (dönerken desen döner). Part 2 (detaylı lig desenleri, gölge) V10.1 ile','📱 Mobil HD: oyun ekranı telefonun piksel yoğunluğuna göre daha yüksek çözünürlükte çiziliyor (net görüntü)','📱 Mobilde ekran artık tam sığıyor (adres çubuğu/küçük ekranlarda kesilme düzeltildi)']],
  ['V10.0.8 · 12 Kasım 2026',['⚽ Yeni maç topları: Anadolu Kıvrım 26 (beyaz + kırmızı/siyah), Kutup Akış (kırmızı/mavi/lacivert), Akdeniz Dalga (turuncu/siyah)','📺 Kutup ve Akdeniz liglerine kendi skorbordu ve saha kenarı reklam panoları (kurgusal markalar)','🟥 Anadolu skorbordu kırmızı tonda']],
  ['V10.0.7 · 12 Kasım 2026',['👕 26/27 FORMALARI PART 1: İber, Ada, Çizme, Ren ve Gal ligleri 1. kademesindeki 96 kulübün iç saha / deplasman / 3. formaları güncellendi (sadece renk ilhamı; arma, sponsor, marka yok)','⏭️ Part 2 (Tartan, Lale, Luso, Flaman, Kutup, Akdeniz + alt ligler) V10.1 ile geliyor']],
  ['V10.0.6 · 12 Kasım 2026',['🧤 Kaleciye faul: gol öncesi hücumcu kaleciye çarptıysa hakem golü saymıyor, kaleci lehine frikik','🌧️ Yağmur/kar kesintisi sonrası da hakem topu sahnesi (hakem gelir, iki oyuncu yanına gelir, top sekerek bırakılır)']],
@@ -3125,8 +3127,8 @@ function yenilikAc(){let d=$('yenilik');if(d)d.remove();d=document.createElement
  d.onclick=bit;addEventListener('keydown',bit);setTimeout(()=>L[0].style.opacity='1',150);setTimeout(()=>L[1].style.opacity='1',700);setTimeout(()=>L[2].style.opacity='1',1300);setTimeout(bit,3200);})();
 function bakimUyar(){const d=$('bakimBant');if(d){d.style.borderColor='#ff3b3b';setTimeout(()=>d.style.borderColor='',600);}}
 
-function boyut(){const c=document.getElementById('cv');const dk=document.body.classList.contains('dik'),Wd=dk?innerHeight:innerWidth,Hd=dk?innerWidth:innerHeight;const s=Math.max(1,Math.min(Wd/VW,Hd/VH));c.style.width=VW*s+'px';c.style.height=VH*s+'px';}
-addEventListener('resize',boyut);yonGuncelle();boyut();
+function boyut(){const c=document.getElementById('cv');const dk=document.body.classList.contains('dik'),Wd=dk?innerHeight:innerWidth,Hd=dk?innerWidth:innerHeight;const vv=window.visualViewport,W2=vv&&!dk?vv.width:Wd,H2=vv&&!dk?vv.height:Hd;const s=Math.min(W2/VW,H2/VH);c.style.width=VW*s+'px';c.style.height=VH*s+'px';}
+addEventListener('resize',boyut);if(window.visualViewport)visualViewport.addEventListener('resize',()=>{boyut();CS=0;});yonGuncelle();boyut();
 </script>
 <script>
 /* 🐞 Catanadev mini hata bildirme sistemi: hataları kendiliğinden toplar, oyuncu tek tuşla rapor gönderir (e-posta / kopyala / indir) */

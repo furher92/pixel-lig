@@ -1,5 +1,9 @@
 # Sürüm notları
 
+## V10.0.9 — 12 Kasım 2026
+- ⚽ Yuvarlak top (Part 1)
+- 📱 Mobil HD çizim + ekran tam sığıyor
+
 ## V10.0.8 — 12 Kasım 2026
 - ⚽ Yeni toplar: Anadolu Kıvrım 26, Kutup Akış, Akdeniz Dalga
 - 📺 Kutup ve Akdeniz'e özel skorbord + reklam panoları
