@@ -892,12 +892,21 @@ function macBasarim(){try{if(!G||G.human==null||G.human<0)return;const h=G.human
 function sahipT(id,s){id=+id;if(s&&s.tr&&s.tr[id]!==undefined)return s.tr[id];if(id>=5000000)return s&&s.genc&&s.genc[id]?s.genc[id].t:-1;return Math.floor(id/100);}
 function akademiSezon(s,ilk){s.genc=s.genc||{};s.gencN=s.gencN||0;const T=ALL[s.ti];if(!T)return;
  if(!ilk)Object.values(s.genc).forEach(p=>{p.yas++;if(p.yas<=23)p.g=Math.min(p.pot,p.g+1+((Math.random()*5)|0));else if(p.yas>=31)p.g=Math.max(45,p.g-((Math.random()*3)|0));p.deger=degerHesap(p.g,p.yas);});
- const n=ilk?2:2+((Math.random()*3)|0),ul=ISIM[ULK(T.lig)]?ULK(T.lig):'DIG',P=ISIM[ul],ad=[];
- for(let i=0;i<n;i++){const mv=['KL','DF','DF','OS','OS','OS','FV','FV'][(Math.random()*8)|0],yas=16+((Math.random()*3)|0),g=Math.round(clamp(T.rt-16+Math.random()*12,45,74)),pot=Math.round(clamp(g+8+Math.random()*18,58,93)),id=5000000+(s.gencN++);
-  const p={id,ad:P[0][(Math.random()*P[0].length)|0]+' '+P[1][(Math.random()*P[1].length)|0],mv,yas,g,pot,ul,t:s.ti,deger:degerHesap(g,yas)};s.genc[id]=p;ad.push(`${p.ad} (${mv}, ${yas}, ${g})`);}
- s.haber=s.haber||[];s.haber.push(`🎓 Altyapıdan A takıma yükseldi: ${ad.join(', ')}`);}
-function akademiHtml(s){const L=Object.values(s.genc||{}).filter(p=>sahipT(p.id,s)===s.ti).sort((a,b)=>b.pot-a.pot);const yi=p=>'⭐'.repeat(clamp(Math.round((p.pot-55)/8),1,5));
- return `<div class="ligad">🎓 ALTYAPI AKADEMİSİ</div><div class="sonra" style="font-size:8px;max-width:520px">Her yeni sezonda altyapıdan 2-4 genç oyuncu A takıma yükselir. 23 yaşına kadar her sezon gelişirler. Kadro listesinde 🎓 ile görünürler, istersen satabilirsin.</div><table><tr><th>Mv</th><th style="text-align:left">Oyuncu</th><th>Yaş</th><th>Güç</th><th>Potansiyel</th><th>Değer</th></tr>${L.map(p=>`<tr><td>${p.mv}</td><td style="text-align:left">${p.ad} 🎓</td><td>${p.yas}</td><td><b>${p.g}</b></td><td>${yi(p)}</td><td>${para(p.deger)}</td></tr>`).join('')||'<tr><td colspan="6">Henüz altyapı oyuncusu yok</td></tr>'}</table>`;}
+ const n=ilk?6:2+((Math.random()*3)|0),ul=ISIM[ULK(T.lig)]?ULK(T.lig):'DIG',P=ISIM[ul],ad=[];const akSay=m=>Object.values(s.genc).filter(q=>q.a===false&&q.t===s.ti&&q.mv===m).length;
+ for(let i=0;i<n;i++){const ad8=['KL','DF','DF','OS','OS','OS','FV','FV'].filter(m=>akSay(m)<AKADEMI_MAX);if(!ad8.length)break;const mv=ad8[(Math.random()*ad8.length)|0],yas=16+((Math.random()*3)|0),g=Math.round(clamp(T.rt-16+Math.random()*12,45,74)),pot=Math.round(clamp(g+8+Math.random()*18,58,93)),id=5000000+(s.gencN++);
+  const p={id,ad:P[0][(Math.random()*P[0].length)|0]+' '+P[1][(Math.random()*P[1].length)|0],mv,yas,g,pot,ul,t:s.ti,a:false,deger:degerHesap(g,yas)};s.genc[id]=p;ad.push(`${p.ad} (${mv}, ${yas}, ${g})`);}
+ s.haber=s.haber||[];if(ad.length)s.haber.push(`🎓 Altyapı akademisine yeni gençler katıldı: ${ad.join(', ')} — Akademi sekmesinden A takıma alabilirsin`);}
+const AKADEMI_MAX=9;
+function gencA(id,a){const s=KRY();const p=s.genc&&s.genc[id];if(!p)return;if(a){const k=takimKadro(s.ti,s).length;if(k>=40){alert('A takım kadrosu dolu (40).');return;}}p.a=!!a;if(a)s.haber.push(`⬆️ ${p.ad} (${p.mv}, ${p.yas}) altyapıdan A takıma alındı`);krKaydet(s);kariyerEkran('akademi');}
+function akademiHtml(s){const T=Object.values(s.genc||{}).filter(p=>sahipT(p.id,s)===s.ti);const yi=p=>'⭐'.repeat(clamp(Math.round((p.pot-55)/8),1,5));
+ const ak=T.filter(p=>p.a===false),at=T.filter(p=>p.a!==false);const MV=['KL','DF','OS','FV'],MA={KL:'🧤 Kaleci',DF:'🛡️ Defans',OS:'⚙️ Orta saha',FV:'⚽ Forvet'};
+ const sat=(p,b)=>`<tr><td>${p.mv}</td><td style="text-align:left">${p.ad} 🎓</td><td>${p.yas}</td><td><b>${p.g}</b></td><td>${yi(p)}</td><td>${para(p.deger)}</td><td>${b}</td></tr>`;
+ const bas='<tr><th>Mv</th><th style="text-align:left">Oyuncu</th><th>Yaş</th><th>Güç</th><th>Potansiyel</th><th>Değer</th><th></th></tr>';
+ let h=`<div class="ligad">🎓 ALTYAPI AKADEMİSİ</div><div class="sonra" style="font-size:8px;max-width:560px">Her sezon akademiye 2-4 genç katılır (her mevkide en fazla ${AKADEMI_MAX}). 23 yaşına kadar gelişirler. İstediğini <b>⬆ A TAKIMA AL</b> ile kadroya eklersin; A takımdakileri geri akademiye gönderebilir ya da satabilirsin.</div>`;
+ h+=`<div class="ligad" style="font-size:10px">📚 AKADEMİ (${ak.length})</div>`;
+ MV.forEach(m=>{const L=ak.filter(p=>p.mv===m).sort((a,b)=>b.pot-a.pot);h+=`<div style="font-size:8px;margin:6px 0 2px;color:#8ab4ff">${MA[m]} · ${L.length}/${AKADEMI_MAX}</div><table>${bas}${L.map(p=>sat(p,`<button class="tab" style="background:#1e7a3a" onclick="gencA(${p.id},1)">⬆ A TAKIMA AL</button>`)).join('')||'<tr><td colspan="7">Bu mevkide genç yok</td></tr>'}</table>`;});
+ h+=`<div class="ligad" style="font-size:10px;margin-top:10px">⭐ A TAKIMDAKİ ALTYAPILILAR (${at.length})</div><table>${bas}${at.sort((a,b)=>b.pot-a.pot).map(p=>sat(p,`<button class="tab" onclick="gencA(${p.id},0)">⬇ AKADEMİYE</button>`)).join('')||'<tr><td colspan="7">Henüz yok</td></tr>'}</table>`;
+ return h;}
 function kondUyg(s,p){const k=s&&s.kond&&s.kond[p.id]!=null?s.kond[p.id]:100;return k>=97?p:Object.assign({},p,{g:Math.round(p.g-(100-k)*.12)});}
 // --- transfer son günü ---
 function sonGunModal(){const s=KRY();if(!s||!s.men)return;const pw=pencere(s);if(!pw.acik)return;const k=takimKadro(s.ti,s).filter(x=>s.kira[x.id]===undefined);if(k.length<=15){sonGunFirsat();return;}const pl=k[(Math.random()*k.length)|0];
@@ -2358,7 +2367,7 @@ function krKaydet(s){kayit('kariyer',s);}
 function adTekil(L){const g={};L.forEach(p=>{if(g[p.ad]){const ad=p.ad.split(' ');const harf='ABCDEFGHİKMNRST'[p.id%15];p.ad=ad.length>1?ad[0]+' '+harf+'. '+ad.slice(1).join(' '):p.ad+' '+harf+'.';}g[p.ad]=1;});return L;}
 function takimKadro(ti,s){s=s||KRY();const baz=bazKadro(ti).filter(p=>!(s&&s.tr&&s.tr[p.id]!==undefined&&s.tr[p.id]!==ti));
  const gelen=s&&s.tr?Object.keys(s.tr).filter(id=>id<5000000&&s.tr[id]===ti&&Math.floor(id/100)!==ti).map(id=>{const p=bazKadro(Math.floor(id/100)).find(x=>x.id==id);return p;}).filter(Boolean):[];
- const gc=s&&s.genc?Object.values(s.genc).filter(p=>sahipT(p.id,s)===ti):[];return adTekil(baz.concat(gelen,gc));}
+ const gc=s&&s.genc?Object.values(s.genc).filter(p=>sahipT(p.id,s)===ti&&p.a!==false):[];return adTekil(baz.concat(gelen,gc));}
 function ilk11(kadro){const al=(m,n)=>kadro.filter(p=>p.mv===m).sort((a,b)=>b.g-a.g).slice(0,n);
  let x=[...al('KL',1),...al('DF',4),...al('OS',4),...al('FV',2)];
  const kalan=kadro.filter(p=>!x.includes(p)).sort((a,b)=>b.g-a.g);while(x.length<11&&kalan.length)x.push(kalan.shift());
@@ -3272,6 +3281,7 @@ function anaSekme(i){$('anaModlar').style.display=i?'none':'flex';$('anaAyar').s
  const du=c.toDataURL();document.documentElement.style.setProperty('--stad','url('+du+')');const a=$('ana');if(a){a.style.backgroundImage='url('+du+')';a.style.imageRendering='pixelated';}}catch(e){}})();
 // 🆕 Yenilikler: sürüm geçmişi mini ekranı
 const SURUMLER=[
+ ['V10.0.35 · 12 Kasım 2026',['🎓 Altyapı akademisi yenilendi: gençler artık otomatik A takıma çıkmıyor, akademide bekliyor; her mevkide (kaleci/defans/orta saha/forvet) en fazla 9 genç; "⬆ A TAKIMA AL" ile kadroya eklersin, "⬇ AKADEMİYE" ile geri gönderirsin; ilk sezon akademi 6 gençle açılır']],
  ['V10.0.34 · 12 Kasım 2026',['📺 Kariyerde maç başı YAYIN GELİRİ: lig maçında galibiyet tam pay, beraberlik yarım pay bütçeye eklenir (Anadolu ≈0.2 M€/galibiyet — 26/27 Süper Lig ≈9.8 M TL; Ada, İber, Çizme, Ren daha yüksek; alt kademeler daha düşük); Avrupa galibiyet/beraberlik primi artık haberlerde de görünüyor']],
  ['V10.0.33 · 12 Kasım 2026',['🌧️ Hakem saha kontrolü / sağanak / kar molasında oyuncular kenara çekilirken artık üst üste binmiyor: her biri çizgi boyunca kendi yerine dizilir','📩 Transfer son günü teklifi artık ekrana birden fırlamıyor: Kulüp sekmesinde "📩 SON GÜN TEKLİFİ" düğmesi çıkar, istediğinde açarsın']],
  ['V10.0.32 · 12 Kasım 2026',['🆕 Yenilikler penceresi ekrana sığıyor: başlık üstte, KAPAT altta sabit, liste kendi içinde kayıyor']],
