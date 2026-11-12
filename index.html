@@ -1332,7 +1332,7 @@ const TOP_SEKIL={
  ucgen:[' 0ww ','001ww','w0w2w','ww110',' ww0 '],yarim:[' 000 ','wwwww','11211','wwwww',' 000 '],nokta:[' w0w ','1www1','0w2w0','1www1',' w0w '],
  halka:[' 000 ','0www0','0w1w0','0www0',' 000 '],yildizli:[' 0w0 ','00000','w010w','00020',' 0w0 '],alev:[' 011 ','0w12w','1ww21','w12ww',' 1ww '],
  klasik:[' w0w ','wwwww','0w0w0','wwwww',' w0w ']};
-const TOP_DESEN={TR:{ad:'Anadolu Yıldız 26',s:'yildiz',r:['#e8322b','#1c2a5a','#ffd200']},ENG:{ad:'Ada Işıltı',s:'serit',r:['#5b2a86','#ff3fa4','#2ec8d6']},ESP:{ad:'İber Kapsül',s:'kapsul',r:['#111111','#8a3ffc','#24c7e8']},
+const TOP_DESEN={TR:{ad:'Anadolu Kıvrım 26',s:'serit',r:['#e8322b','#111111','#e8322b']},RUS:{ad:'Kutup Akış',s:'halka',r:['#d0102a','#1f5fd8','#1a2a6c']},KKTC:{ad:'Akdeniz Dalga',s:'serit',r:['#ff7a00','#111111','#ff7a00']},ENG:{ad:'Ada Işıltı',s:'serit',r:['#5b2a86','#ff3fa4','#2ec8d6']},ESP:{ad:'İber Kapsül',s:'kapsul',r:['#111111','#8a3ffc','#24c7e8']},
  ITA:{ad:'Çizme Üçgen',s:'ucgen',r:['#1f4fd8','#7cd3ff','#e83a3a']},GER:{ad:'Ren Fabrika',s:'yarim',r:['#d40000','#151515','#d4a017']},FRA:{ad:'Gal Akım',s:'nokta',r:['#151515','#e5004f','#7b3fd1']},
  NED:{ad:'Lale Halka',s:'halka',r:['#ff6a00','#0a3d91','#ff6a00']},POR:{ad:'Luso Rota',s:'serit',r:['#00843d','#d0102a','#ffcc00']},BEL:{ad:'Flaman Çizgi',s:'yarim',r:['#151515','#ffd400','#e1002a']},
  SCO:{ad:'Tartan Kuzey',s:'kapsul',r:['#002b7f','#7fd0ff','#e1002a']},UCL:{ad:'Yıldız Gecesi',s:'yildizli',r:['#16163a','#3dd6ff','#ffe03d'],taban:'#16163a'},UEL:{ad:'Kıta Alevi',s:'alev',r:['#111111','#ff4b1a','#ff9a1a']},
@@ -1360,6 +1360,8 @@ const REK_STIL={TR:{bg:['#b8000f','#ffffff','#0b1e5b'],fg:['#ffffff','#b8000f','
  UCL:{bg:['#06103a','#0b1e5b','#06103a'],fg:['#9fd4ff','#ffffff','#ffe03d'],ad:['YILDIZ TV','KRONOS BANK','NEXA AIR','GALAKSİ','EUROVİZYON+'],yildiz:1},
  UEL:{bg:['#111111','#ff6a00','#111111'],fg:['#ff9a1a','#111111','#ffffff'],ad:['KITA TV','TURBOGAZ','ROTA AIR','EUROVİZYON+']},
  UECL:{bg:['#111111','#25e06b','#111111'],fg:['#25e06b','#111111','#e04bd6'],ad:['UMUT TV','MAVİ SU','YELKA','EUROVİZYON+']},
+ RUS:{bg:['#1f5fd8','#ffffff','#14213d'],fg:['#ffffff','#1f5fd8','#9fd4ff'],ad:['KUTUP TV','TAYGA','BURAN OTO','NEVA BANK','CATANADEV']},
+ KKTC:{bg:['#14213d','#ffffff','#e8322b'],fg:['#ffffff','#14213d','#ffffff'],ad:['ADA TV','HELLİM EVİ','LİMAN KARGO','AKDENİZ SU','YELKA']},
  MILLI:{bg:['#1a1a1a','#c9a227','#ffffff'],fg:['#c9a227','#1a1a1a','#1a1a1a'],ad:['ULUSAL TV','KRONOS BANK','ATLAS SİGORTA']}};
 const REK_YEREL={TR:['YILMAZ NAKLİYAT','KARDEŞLER FIRIN','ÖZ YAPI','ŞEHİR ECZANE','DOĞAN OTO','ÇINAR KAFE','AKIN MOBİLYA'],INT:['SMITH & SONS','THE RED LION','HILLTOP MOTORS','CITY BAKERY','RIVERSIDE INN','NORTH TILES']};
 function rekStil(){if(!G)return REK_STIL.TR;const ev=G.T&&G.T[0]&&G.T[0].t,k=ev&&ev.lig?KADEME(ev.lig):1;
@@ -1467,7 +1469,7 @@ function torenGuncelle(){if(G.fazT===TOREN_T-235)G.hocaT=0;if(G.hocaT!=null&&++G
 function ytDizil(an){const [c0,c1]=G.kaptan||[],cy=H/2,L=[[G.hakem,W/2,cy-1,0,1],[G.yh[0],W/2-8,cy-5,0,1],[G.yh[1],W/2+8,cy-5,0,1],[c0,W/2-13,cy+3,1,0],[c1,W/2+13,cy+3,-1,0]];
  L.forEach(([o,x,y,dx,dy])=>{if(!o)return;if(an){o.x=x;o.y=y;}else if(!torenYuru(o,x,y,1.1))return;o.dx=dx;o.dy=dy;o.an=0;});}
 function kayitAl(){if(G.kare%2)return;const K=G.kay||(G.kay=[]);K.push({P:G.P.map(p=>[p.x,p.y,p.k,p.rol,p.an,p.kay,p.sers,p.dx,p.no]),t:[G.top.x,G.top.y,G.top.z],h:[G.hakem.x,G.hakem.y]});if(K.length>140)K.shift();G.kayN=(G.kayN||0)+1;}
-const SKB={KY:['#0b2a5c','#9fd4ff'],KR:['#2a1205','#ff8f3a'],AY:['#06302a','#7fe3c4'],TR:['#a8000e','#ffffff'],ENG:['#38003c','#00ff85'],ESP:['#d42a1e','#ffd200'],ITA:['#0b3c8c','#ffffff'],GER:['#b80d24','#111111'],FRA:['#091c3e','#dae025'],NED:['#e05600','#ffffff'],POR:['#006b3c','#ffd200'],BEL:['#6b1d32','#ffd200'],SCO:['#1d1b5c','#ffffff'],UCL:['#0b1e5b','#9fd4ff'],UEL:['#9a4500','#ffb15c'],UECL:['#006b3e','#7dffb9'],MILLI:['#1a1a1a','#ffd23f'],GENEL:['rgba(10,14,30,.88)','#3b6cff']};
+const SKB={KY:['#0b2a5c','#9fd4ff'],KR:['#2a1205','#ff8f3a'],AY:['#06302a','#7fe3c4'],TR:['#a8000e','#ffffff'],RUS:['#1f5fd8','#ffffff'],KKTC:['#14213d','#e8322b'],ENG:['#38003c','#00ff85'],ESP:['#d42a1e','#ffd200'],ITA:['#0b3c8c','#ffffff'],GER:['#b80d24','#111111'],FRA:['#091c3e','#dae025'],NED:['#e05600','#ffffff'],POR:['#006b3c','#ffd200'],BEL:['#6b1d32','#ffd200'],SCO:['#1d1b5c','#ffffff'],UCL:['#0b1e5b','#9fd4ff'],UEL:['#9a4500','#ffb15c'],UECL:['#006b3e','#7dffb9'],MILLI:['#1a1a1a','#ffd23f'],GENEL:['rgba(10,14,30,.88)','#3b6cff']};
 function kupaToreni(baslik,T,sonra){const d=document.createElement('div');d.style.cssText='position:fixed;inset:0;z-index:9999;background:#05070f;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px';
  const c=document.createElement('canvas');const TVK=GRAFIK>=1?3:1;c.width=384*TVK;c.height=216*TVK;const sc=Math.max(1,Math.min(innerWidth/384,(innerHeight-110)/216));c.style.width=Math.round(384*sc)+'px';c.style.height=Math.round(216*sc)+'px';c.style.imageRendering='pixelated';d.appendChild(c);
  const tx=document.createElement('div');tx.className='ligad';tx.style.fontSize='13px';tx.style.textAlign='center';tx.innerHTML='🏆 '+baslik+'<br><span style="font-size:10px;color:#fff">'+T.ad+'</span>';d.appendChild(tx);
@@ -3097,6 +3099,7 @@ function anaSekme(i){$('anaModlar').style.display=i?'none':'flex';$('anaAyar').s
  const a=$('ana');if(a){a.style.backgroundImage='url('+c.toDataURL()+')';a.style.imageRendering='pixelated';}}catch(e){}})();
 // 🆕 Yenilikler: sürüm geçmişi mini ekranı
 const SURUMLER=[
+ ['V10.0.8 · 12 Kasım 2026',['⚽ Yeni maç topları: Anadolu Kıvrım 26 (beyaz + kırmızı/siyah), Kutup Akış (kırmızı/mavi/lacivert), Akdeniz Dalga (turuncu/siyah)','📺 Kutup ve Akdeniz liglerine kendi skorbordu ve saha kenarı reklam panoları (kurgusal markalar)','🟥 Anadolu skorbordu kırmızı tonda']],
  ['V10.0.7 · 12 Kasım 2026',['👕 26/27 FORMALARI PART 1: İber, Ada, Çizme, Ren ve Gal ligleri 1. kademesindeki 96 kulübün iç saha / deplasman / 3. formaları güncellendi (sadece renk ilhamı; arma, sponsor, marka yok)','⏭️ Part 2 (Tartan, Lale, Luso, Flaman, Kutup, Akdeniz + alt ligler) V10.1 ile geliyor']],
  ['V10.0.6 · 12 Kasım 2026',['🧤 Kaleciye faul: gol öncesi hücumcu kaleciye çarptıysa hakem golü saymıyor, kaleci lehine frikik','🌧️ Yağmur/kar kesintisi sonrası da hakem topu sahnesi (hakem gelir, iki oyuncu yanına gelir, top sekerek bırakılır)']],
  ['V10.0.5 · 12 Kasım 2026',['🟡 Gerçek hakem topu: hakem topun yerine yürür, iki takımdan birer oyuncu yanına gelir, hakem topu elinde tutup yere bırakır ve top sekerek düşer; sonra oyun başlar (fair play ise top rakibe geri verilir)']],
