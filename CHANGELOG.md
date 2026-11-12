@@ -1,5 +1,8 @@
 # Sürüm notları
 
+## V10.0.19 — 12 Kasım 2026
+- 🧩 Kulüp sekmesi sütunlu düzen (PC'de kaydırma yok)
+
 ## V10.0.18 — 12 Kasım 2026
 - 🗂️ Sekmeler alt alta sarılıyor
 - 🏟️ Stadyumlu arka plan tüm ekranlarda
