@@ -1,5 +1,8 @@
 # Sürüm notları
 
+## V10.0.24 — 12 Kasım 2026
+- ❄️ Kupalar ekranında Doğu Kupaları (Rusya & KKTC)
+
 ## V10.0.23 — 12 Kasım 2026
 - ⚽ Doğu kupaları topları (Kutup Yıldızı / Kuzey Rüzgârı / Ayaz)
 
