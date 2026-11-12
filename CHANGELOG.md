@@ -1,5 +1,10 @@
 # Sürüm notları
 
+## V10.0.16 — 12 Kasım 2026
+- 🏆 Kartlı Avrupa Kupaları menüsü + kupa çizimleri
+- 🏅 Başarımlar ızgarası + ilerleme çubuğu
+- 👕 Renkli takım seçim kartları
+
 ## V10.0.15 — 12 Kasım 2026
 - ⚙️ Kart düzenli Ayarlar + çizim simgeler
 - ⚽ Menü topu küçüldü
