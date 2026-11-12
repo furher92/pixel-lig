@@ -1,5 +1,9 @@
 # Sürüm notları
 
+## V10.0.15 — 12 Kasım 2026
+- ⚙️ Kart düzenli Ayarlar + çizim simgeler
+- ⚽ Menü topu küçüldü
+
 ## V10.0.14 — 12 Kasım 2026
 - 🖥️ Maç önü / transfer / basın / toplantı ekranları HD
 
