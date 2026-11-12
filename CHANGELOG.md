@@ -1,5 +1,13 @@
 # Sürüm notları
 
+## V10.0.1 — 12 Kasım 2026
+- ⚽ Pas fiziği: hızlı top artık arkadaşının içinden geçip taca/auta gitmiyor
+- 🎯 İnsan pas gücü topun duracağı mesafeye göre ayarlandı
+- 🏁 Santrada X: en yakın arkadaşa kısa pas
+- 🏃 Hücumda forvetler ve bir orta saha ceza sahasına koşuyor
+- 🤝 Fair play hakem topu: yerde kalan oyuncunun takımı topu rakibin yarı sahasına uzun atar
+- 📱 Mobilde frikik/penaltı ipucu düğme adlarıyla
+
 ## V10 — 12 Kasım 2026
 - 📦 Tek dosya: Legacy ayrı sürümü kalktı, eski/zayıf cihazda HAFİF MOD kendiliğinden açılır (Ayarlar → Hafif mod: Otomatik / Açık / Kapalı)
 - 🔁 Oyuncu değişikliği bitmeden santra yapılmıyor
