@@ -305,7 +305,11 @@ function formHedef(p){
   if(p.rol!=='DF'&&Math.abs(p.fy-.5)>.3)hy=MT+(MB-MT)*(p.fy<.5?(p.rol==='FW'?.12:.2):(p.rol==='FW'?.88:.8));if(p.rol==='MF'&&Math.abs(p.fy-.5)<=.3)hy=hy+(H/2-hy)*.25;
   {const hk=k?ML:MR,il=dir*(t.x-W/2)/((MR-ML)/2);if(il>.25){const a=Math.min(1,(il-.25)*2.2),sira=(p.no||p.id||0)%3;
    if(p.rol==='FW'){const bx=hk-dir*(28+sira*14);hx=hx+(bx-hx)*a;hy=hy+((H/2+(p.fy-.5)*70)-hy)*a;}
-   else if(p.rol==='MF'&&Math.abs(p.fy-.5)<=.3&&sira===0){const bx=hk-dir*88;hx=hx+(bx-hx)*a*.6;}}}}
+   else if(p.rol==='MF'&&Math.abs(p.fy-.5)<=.3&&sira===0){const bx=hk-dir*88;hx=hx+(bx-hx)*a*.6;}}}
+  // (V10.0.3) destek: top bizdeyken takım topu taşıyanla birlikte ilerlesin, forvet tek kalmasın; ofsayt çizgisini geçmesin
+  {const bx=t.sahip?t.sahip.x:t.x,ileri=v=>dir>0?Math.max(hx,v):Math.min(hx,v),kanat=Math.abs(p.fy-.5)>.3,oh=ofsHat(k)-dir*3;
+   if(p.rol==='FW')hx=ileri(bx+dir*30);else if(p.rol==='MF')hx=ileri(bx+dir*(kanat?12:-22));else if(p.rol==='DF')hx=ileri(bx-dir*(kanat?70:105));
+   if(p.rol!=='DF'&&p!==t.sahip)hx=dir>0?Math.min(hx,Math.max(oh,bx)):Math.max(hx,Math.min(oh,bx));}}
  return[clamp(hx,ML+8,MR-8),clamp(hy,MT+6,MB-6)];
 }
 function kendiKale(k){return k?MR:ML;}
@@ -3088,6 +3092,7 @@ function anaSekme(i){$('anaModlar').style.display=i?'none':'flex';$('anaAyar').s
  const a=$('ana');if(a){a.style.backgroundImage='url('+c.toDataURL()+')';a.style.imageRendering='pixelated';}}catch(e){}})();
 // 🆕 Yenilikler: sürüm geçmişi mini ekranı
 const SURUMLER=[
+ ['V10.0.3 · 12 Kasım 2026',['🏃 Hücum desteği: top bizdeyken forvet topun önünde, kanatlar yanında, orta saha arkasında koşuyor; defans da yukarı çıkıyor — forvet artık tek kalmıyor','🚩 Destek koşuları ofsayt çizgisini geçmiyor']],
  ['V10.0.2 · 12 Kasım 2026',['⏱️ Penaltı (ya da VAR penaltı incelemesi) beklerken devre/maç bitmiyor — önce penaltı kullanılıyor','🚑 Devre arasında kenarda tedavi bekleyen oyuncu artık tribüne ışınlanmıyor','👻 Hayalet sakatlık kaldırıldı: temas yokken rastgele "ikili mücadelede yerde kaldı" olayı silindi; yerde kalma artık sadece gerçek sert müdahaleden sonra']],
  ['V10.0.1 · 12 Kasım 2026',['⚽ Pas fiziği: hızlı top artık arkadaşının içinden geçip taca/auta gitmiyor (pas tutma ~%35 → ~%66)','🎯 İnsan pas gücü topun duracağı mesafeye göre ayarlandı','🏁 Santrada X: en yakın arkadaşa kısa pas (artık taca gitmiyor)','🏃 Hücumda forvetler ve bir orta saha ceza sahasına koşuyor','🤝 Fair play hakem topu: yerde kalan oyuncunun takımı topu alır, rakibin yarı sahasına (kalecisine) uzun atar; diğerleri 4 m uzakta','📱 Mobilde frikik/penaltı ipucu klavye yerine düğme adlarıyla']],
  ['V10 · 12 Kasım 2026',['📦 Tek dosya: Legacy ayrı sürümü kalktı, eski/zayıf cihazda HAFİF MOD kendiliğinden açılır (Ayarlar → Hafif mod: Otomatik / Açık / Kapalı)','🔁 Oyuncu değişikliği bitmeden santra yapılmıyor','🏆 Kupa maçlarında orta sahada o kupanın adı yazıyor (Yıldızlar/Kıta/Umut Ligi, Kutup Yıldızı, Kuzey Rüzgârı, Ayaz, yerel kupalar)','🛡️ Türkiye ve KKTC büyüklerine yeni armalar + şampiyonluk yıldızları (her 5 şampiyonluk = 1★)','💚 Aslanlar\'ın yeni 3. forması: zümrüt yeşili-siyah','ℹ️ Açılışta lisans/açıklama ekranı (Ayarlar → Hakkında)','İtiraz eden oyuncuların elleri artık havada kalmıyor','Son dakika golünde teknik direktör takılı kalmıyor','Tedavi gören oyuncu kenara yürüyerek çıkıyor, santrada sahaya ışınlanmıyor','Değişiklikte çıkan oyuncu tribüne değil, kenar çizgisinden yedek kulübesine yürüyor','Giren oyuncu kulübeden 4. hakemin yanına yürüyerek geliyor','Hakem artık atak sürerken düdük çalmıyor: düdük top ölüyken, kaleci tutunca ya da tehlike bitince','Autta X kısa pas, D uzun top; frikikte X ve D artık auta gitmiyor','Oyuncun faulle yerdeyken rakip gol atarsa VAR faul kontrolü yapıp golü iptal ediyor','Penaltı atışlarındaki takılma giderildi','Uzaktan frikikte oyuncular ceza sahasına dizilmiyor','Hakemle sadece kaptan konuşabilir: itiraz eden diğer oyunculara sarı kart','⌚ Gol çizgisi teknolojisi (büyük liglerde ve Avrupa kupalarında)','Kadro ekranında oyuncu bayrağı ve sarı kart sınırı uyarısı','🎙️ Maç öncesi stüdyo ve yorumcular yeniden çizildi']],

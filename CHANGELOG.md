@@ -1,5 +1,9 @@
 # Sürüm notları
 
+## V10.0.3 — 12 Kasım 2026
+- 🏃 Hücum desteği: takım topu taşıyanla birlikte ilerliyor, forvet tek kalmıyor
+- 🚩 Destek koşuları ofsayt çizgisini geçmiyor
+
 ## V10.0.2 — 12 Kasım 2026
 - ⏱️ Penaltı beklerken devre/maç bitmiyor
 - 🚑 Devre arasında tedavideki oyuncu tribüne ışınlanmıyor
