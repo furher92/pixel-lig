@@ -173,16 +173,21 @@ body.dik #oyun{inset:auto;left:0;top:0;width:100vh;height:100vw;transform-origin
 .fmHaber{width:100%;background:rgba(10,14,34,.85);border:2px solid #000;border-radius:8px;padding:8px;font-size:8px}.fmHaber summary{cursor:pointer;color:#ffd23f}.fmHaber .gec{max-width:none!important;margin-top:6px;text-align:left;line-height:2;max-height:40vh;overflow-y:auto}.fmAlt2{justify-content:center;gap:8px;flex-wrap:wrap;width:100%}
 #karIc{gap:8px!important}
 </style>
-<style id="v10020">.basinOda{background:radial-gradient(ellipse at 50% 30%,rgba(40,70,160,.30),transparent 60%),linear-gradient(rgba(4,7,18,.86),rgba(4,7,18,.94)),var(--stad,none) center bottom/cover #05070f!important;justify-content:center;overflow-y:auto}
+<style id="v10020">#yenilik{padding:12px;box-sizing:border-box}
+#yenilik .kart{width:min(760px,94vw)!important;max-width:none!important;max-height:calc(100vh - 24px)!important;max-height:calc(100dvh - 24px)!important;overflow-y:auto;box-sizing:border-box;font-size:clamp(8px,1vw,11px)!important;line-height:1.9;padding:0 16px 0!important;position:relative}
+#yenilik .kart .ligad{position:sticky;top:0;background:rgba(10,16,40,.98);padding:12px 0;margin:0;z-index:2}
+#yenilik .kart h3{color:#ffd23f;margin:14px 0 4px;font-size:1.25em}
+#yenilik .kart .row{position:sticky;bottom:0;background:rgba(10,16,40,.98);padding:10px 0;margin:8px 0 0!important}
+.basinOda{background:radial-gradient(ellipse at 50% 30%,rgba(40,70,160,.30),transparent 60%),linear-gradient(rgba(4,7,18,.86),rgba(4,7,18,.94)),var(--stad,none) center bottom/cover #05070f!important;justify-content:center;overflow-y:auto}
 .basinOda>:not(canvas){max-width:min(760px,94vw)!important}
 @media(min-width:1100px) and (min-height:650px){.basinOda>:not(canvas){zoom:1.3}.basinOda>canvas{max-height:52vh;width:auto!important;height:52vh!important}}
 @media(min-width:1500px) and (min-height:850px){.basinOda>:not(canvas){zoom:1.55}}
 @media(min-width:2200px) and (min-height:1200px){.basinOda>:not(canvas){zoom:2}}
 
 .secModal,#ilk11,#macOnu{background:radial-gradient(ellipse at 50% 30%,rgba(40,70,160,.30),transparent 60%),linear-gradient(rgba(4,7,18,.86),rgba(4,7,18,.94)),var(--stad,none) center bottom/cover #05070f!important}
-@media(min-width:1100px) and (min-height:650px){.secModal>:not(canvas),#ilk11>*,#macOnu>:not(canvas),#yenilik>*{zoom:1.3}}
-@media(min-width:1500px) and (min-height:850px){.secModal>:not(canvas),#ilk11>*,#macOnu>:not(canvas),#yenilik>*{zoom:1.6}}
-@media(min-width:2200px) and (min-height:1200px){.secModal>:not(canvas),#ilk11>*,#macOnu>:not(canvas),#yenilik>*{zoom:2.1}}
+@media(min-width:1100px) and (min-height:650px){.secModal>:not(canvas),#ilk11>*,#macOnu>:not(canvas){zoom:1.3}}
+@media(min-width:1500px) and (min-height:850px){.secModal>:not(canvas),#ilk11>*,#macOnu>:not(canvas){zoom:1.6}}
+@media(min-width:2200px) and (min-height:1200px){.secModal>:not(canvas),#ilk11>*,#macOnu>:not(canvas){zoom:2.1}}
 .secModal .sonra{border:2px solid #000;box-shadow:0 3px 0 #000;background:linear-gradient(160deg,#18214a,#0e1430)}
 </style>
 </head><body>
@@ -3264,6 +3269,7 @@ function anaSekme(i){$('anaModlar').style.display=i?'none':'flex';$('anaAyar').s
  const du=c.toDataURL();document.documentElement.style.setProperty('--stad','url('+du+')');const a=$('ana');if(a){a.style.backgroundImage='url('+du+')';a.style.imageRendering='pixelated';}}catch(e){}})();
 // 🆕 Yenilikler: sürüm geçmişi mini ekranı
 const SURUMLER=[
+ ['V10.0.32 · 12 Kasım 2026',['🆕 Yenilikler penceresi ekrana sığıyor: başlık üstte, KAPAT altta sabit, liste kendi içinde kayıyor']],
  ['V10.0.31 · 12 Kasım 2026',['⚽ Ada Piksel Ligi topu yenilendi: beyaz zemin + koyu mor kanca şekilleri, içlerinde pembe/turkuaz parlak çizgiler (logosuz, özgün)']],
  ['V10.0.30 · 12 Kasım 2026',['🎤 Basın toplantısı ekranı büyük ekranda da büyüyor: soru ve cevap düğmeleri PC\'de 1.3–2 kat, salon çizimi ekranın yarısı; arkada kararmış stadyum']],
  ['V10.0.29 · 12 Kasım 2026',['📴 Çevrimdışı mod: oyun ilk açılışta cihaza kaydedilir, internet yokken de açılır ve oynanır (Normal + Legacy); internetsizken altta "Çevrimdışı mod" yazar']],
