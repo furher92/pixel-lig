@@ -3256,7 +3256,7 @@ function anaSekme(i){$('anaModlar').style.display=i?'none':'flex';$('anaAyar').s
  const du=c.toDataURL();document.documentElement.style.setProperty('--stad','url('+du+')');const a=$('ana');if(a){a.style.backgroundImage='url('+du+')';a.style.imageRendering='pixelated';}}catch(e){}})();
 // 🆕 Yenilikler: sürüm geçmişi mini ekranı
 const SURUMLER=[
- ['V10.0.28 · 12 Kasım 2026',['📱 Katlanabilir telefon desteği (Galaxy Z Fold/Flip, Huawei Mate X / Mate XT / Pocket, Pixel Pro Fold, Honor Magic V, Razr, Oppo Find N, Vivo X Fold, Xiaomi Mix Fold/Flip): kapak ekranında sıkışık düzen, kare iç ekranda 3 sütunlu menü ve 2 sütunlu kariyer portalı, menteşe varsa içerik ortaya bölünmüyor']],
+ ['V10.0.28 · 12 Kasım 2026',['📱 Katlanabilir telefon desteği (Galaxy Z Fold/Flip, Huawei Mate X / Mate XT / Pocket, Pixel Pro Fold, Honor Magic V, Razr, Oppo Find N, Vivo X Fold, Xiaomi Mix Fold/Flip, iPhone Duo): kapak ekranında sıkışık düzen, kare iç ekranda 3 sütunlu menü ve 2 sütunlu kariyer portalı, menteşe varsa içerik ortaya bölünmüyor']],
  ['V10.0.27 · 12 Kasım 2026',['⚽ Kutup topu düzeltildi: üç renkli nokta yerine kırmızı/mavi/lacivert akışkan kıvrımlar + gümüş detay','⚽ Kuzey Rüzgârı topunda turuncu paneller büyüdü (beyaz zeminde görünmüyordu)','🔵 Maç başındaki MAÇ TOPU kutusunda top artık kare pikseller yerine maçtaki gerçek yuvarlak çizim']],
  ['V10.0.26 · 12 Kasım 2026',['❄️ Doğu Kupaları artık kariyer açmadan da oynanıyor: Kupalar ekranından kupayı seç → ▶ OYNA → takımını seç → 2 grup, yarı final, final','⚽ Anadolu topu artık saf beyaz zemin (Yıldızlar Ligi topuyla karışmıyor); Yıldızlar Ligi topu gümüşi-mavi']],
  ['V10.0.25 · 12 Kasım 2026',['🧹 Haberler & Kulüp kutusu düzeltildi: Kariyeri Sıfırla / Ana Menü düğmeleri artık yazıların üstüne binmiyor, kutunun altında yan yana; haber listesi sola hizalı ve kendi içinde kayıyor']],
@@ -3356,15 +3356,15 @@ function hakemTopuSahne(){const r=G.restart,t=G.top,dir=r.k?-1:1;G.ht=(G.ht||0)+
  const k=G.ht-r.bas;if(k<45){t.z=Math.abs(Math.sin(k/7))*7*Math.max(0,1-k/45);G.fazT=Math.max(G.fazT,2);}else{t.z=0;}
 }
 </script>
-<style id="fold">/* 📱 Katlanabilir telefon ayarları (12 Kas 2026) — Galaxy Z Fold/Flip, Huawei Mate X/XT (3'lü), Pocket, Pixel Pro Fold, Honor Magic V, Razr, Oppo Find N, Vivo X Fold, Xiaomi Mix Fold/Flip */
+<style id="fold">/* 📱 Katlanabilir telefon ayarları (12 Kas 2026) — Galaxy Z Fold/Flip, Huawei Mate X/XT (3'lü), Pocket, Pixel Pro Fold, Honor Magic V, Razr, Oppo Find N, Vivo X Fold, Xiaomi Mix Fold/Flip, iPhone Duo (iç 7.6" ~626x890, dış 5.4") */
 /* 1) Kapak ekranı (Flip/Razr/Pocket dış ekran, ~3-4"): çok küçük ve kısa */
 @media (max-width:420px) and (max-height:520px){html{font-size:13px}button{min-height:36px}.fold-gizle{display:none!important}}
 /* 2) Kitap tipi iç ekran (Fold, Mate X, Pixel Fold, Magic V, Find N): neredeyse kare */
-@media (min-width:560px) and (min-aspect-ratio:4/5) and (max-aspect-ratio:5/4){html{--fold-kare:1}}
+@media (min-width:560px) and (min-aspect-ratio:4/5) and (max-aspect-ratio:5/4),(min-width:560px) and (max-width:960px) and (min-aspect-ratio:2/3) and (max-aspect-ratio:3/2) and (pointer:coarse){html{--fold-kare:1}}
 /* 3) Menteşe ortada (çift ekran açık, tarayıcı iki parça bildirirse): içeriği sol yarıya sığdır */
 @media (horizontal-viewport-segments:2){body{padding-right:calc(100vw - env(viewport-segment-right 0 0, 50vw))!important}}
 @media (vertical-viewport-segments:2){body{padding-bottom:calc(100vh - env(viewport-segment-bottom 0 0, 50vh))!important}}
-@media (min-width:560px) and (min-aspect-ratio:4/5) and (max-aspect-ratio:5/4){.modGrid{grid-template-columns:repeat(3,1fr)!important;width:min(720px,94vw)!important}.fmIzgara{grid-template-columns:repeat(2,minmax(0,1fr))!important}.fmAks{grid-column:1/-1}.fmSut{max-height:none!important}}
+@media (min-width:560px) and (min-aspect-ratio:4/5) and (max-aspect-ratio:5/4),(min-width:560px) and (max-width:960px) and (min-aspect-ratio:2/3) and (max-aspect-ratio:3/2) and (pointer:coarse){.modGrid{grid-template-columns:repeat(3,1fr)!important;width:min(720px,94vw)!important}.fmIzgara{grid-template-columns:repeat(2,minmax(0,1fr))!important}.fmAks{grid-column:1/-1}.fmSut{max-height:none!important}}
 @media (max-width:420px) and (max-height:520px){.modGrid{grid-template-columns:1fr 1fr!important;gap:5px!important}.mk{padding:6px!important;min-height:0!important}.mk .ma{display:none}.mk.buyuk{min-height:60px!important}.fmUst .fmSag{display:none}.fmPortal{grid-template-columns:1fr!important}}
 @media (min-width:1000px) and (max-aspect-ratio:3/2) and (pointer:coarse){.fmIzgara{grid-template-columns:repeat(3,minmax(0,1fr))!important}}
 </style>
