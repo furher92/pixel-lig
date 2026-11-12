@@ -910,7 +910,10 @@ function akademiSezon(s,ilk){s.genc=s.genc||{};s.gencN=s.gencN||0;const T=ALL[s.
  s.haber=s.haber||[];if(ad.length)s.haber.push(`🎓 Altyapı akademisine yeni gençler katıldı: ${ad.join(', ')} — Akademi sekmesinden A takıma alabilirsin`);}
 const AKADEMI_MAX=9;
 function gencA(id,a){const s=KRY();const p=s.genc&&s.genc[id];if(!p)return;if(a){const k=takimKadro(s.ti,s).length;if(k>=40){alert('A takım kadrosu dolu (40).');return;}}p.a=!!a;if(a)s.haber.push(`⬆️ ${p.ad} (${p.mv}, ${p.yas}) altyapıdan A takıma alındı`);krKaydet(s);kariyerEkran('akademi');}
-function akademiHtml(s){const T=Object.values(s.genc||{}).filter(p=>sahipT(p.id,s)===s.ti);const yi=p=>'⭐'.repeat(clamp(Math.round((p.pot-55)/8),1,5));
+function akademiDoldur(s){if(s.akDolu===s.sezon)return;s.akDolu=s.sezon;s.genc=s.genc||{};s.gencN=s.gencN||0;const T=ALL[s.ti];if(!T)return;const ul=ISIM[ULK(T.lig)]?ULK(T.lig):'DIG',P=ISIM[ul];
+ ['KL','DF','OS','FV'].forEach(mv=>{let n=Object.values(s.genc).filter(q=>q.a===false&&q.t===s.ti&&q.mv===mv).length;while(n<AKADEMI_MAX){const yas=15+((Math.random()*5)|0),g=Math.round(clamp(T.rt-22+Math.random()*14,42,72)),pot=Math.round(clamp(g+8+Math.random()*20,55,92)),id=5000000+(s.gencN++);
+  s.genc[id]={id,ad:P[0][(Math.random()*P[0].length)|0]+' '+P[1][(Math.random()*P[1].length)|0],mv,yas,g,pot,ul,t:s.ti,a:false,deger:degerHesap(g,yas)};n++;}});krKaydet(s);}
+function akademiHtml(s){akademiDoldur(s);const T=Object.values(s.genc||{}).filter(p=>sahipT(p.id,s)===s.ti);const yi=p=>'⭐'.repeat(clamp(Math.round((p.pot-55)/8),1,5));
  const ak=T.filter(p=>p.a===false),at=T.filter(p=>p.a!==false);const MV=['KL','DF','OS','FV'],MA={KL:'🧤 Kaleci',DF:'🛡️ Defans',OS:'⚙️ Orta saha',FV:'⚽ Forvet'};
  const sat=(p,b)=>`<tr><td>${p.mv}</td><td style="text-align:left">${p.ad} 🎓</td><td>${p.yas}</td><td><b>${p.g}</b></td><td>${yi(p)}</td><td>${para(p.deger)}</td><td>${b}</td></tr>`;
  const bas='<tr><th>Mv</th><th style="text-align:left">Oyuncu</th><th>Yaş</th><th>Güç</th><th>Potansiyel</th><th>Değer</th><th></th></tr>';
@@ -3329,6 +3332,7 @@ function anaSekme(i){$('anaModlar').style.display=i?'none':'flex';$('anaAyar').s
  const du=c.toDataURL();document.documentElement.style.setProperty('--stad','url('+du+')');const a=$('ana');if(a){a.style.backgroundImage='url('+du+')';a.style.imageRendering='pixelated';}}catch(e){}})();
 // 🆕 Yenilikler: sürüm geçmişi mini ekranı
 const SURUMLER=[
+ ['V10.0.37 · 12 Kasım 2026',['🎓 Akademi artık dolu: her sezon başında her mevki (kaleci/defans/orta saha/forvet) 9 gence tamamlanır — 15-19 yaş, farklı güç ve potansiyelde; eski kariyerlerde de ilk açılışta dolar']],
  ['V10.0.36 · 12 Kasım 2026',['🌍 YENİ: FUTBOL DÜNYASI (ana menüde) — 3 büyük özellik erken geldi:','🏆 Ligler Panosu: 12 ülkenin 1. kademe kartları (bayrak, lig renkleri, en çok şampiyonluk, en iyi oyuncu, ilk 5)','🛡️ Kulüp Profili: büyük arma, 26/27 formaları (iç/dep/3.) yan yana çizim, kupa dolabı, hoca, kaptan, kadro değeri ve tam kadro','👤 Oyuncu Veritabanı: tüm liglerin oyuncuları — isim/kulüp arama, mevki, uyruk, yaş (U21/U23) filtreleri; güç/değer/yaş sıralaması; gençlerde potansiyel yıldızı']],
  ['V10.0.35 · 12 Kasım 2026',['🎓 Altyapı akademisi yenilendi: gençler artık otomatik A takıma çıkmıyor, akademide bekliyor; her mevkide (kaleci/defans/orta saha/forvet) en fazla 9 genç; "⬆ A TAKIMA AL" ile kadroya eklersin, "⬇ AKADEMİYE" ile geri gönderirsin; ilk sezon akademi 6 gençle açılır']],
  ['V10.0.34 · 12 Kasım 2026',['📺 Kariyerde maç başı YAYIN GELİRİ: lig maçında galibiyet tam pay, beraberlik yarım pay bütçeye eklenir (Anadolu ≈0.2 M€/galibiyet — 26/27 Süper Lig ≈9.8 M TL; Ada, İber, Çizme, Ren daha yüksek; alt kademeler daha düşük); Avrupa galibiyet/beraberlik primi artık haberlerde de görünüyor']],
