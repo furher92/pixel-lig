@@ -2284,7 +2284,7 @@ function ligPanosu(){const L1=LEAGUES.filter(L=>L.id!=='DIG'&&KADEME(L.id)===1);
    <div class="lpS">👑 En çok şampiyonluk: ${sam?chip(ALL.find(t=>t.kod===sam[0]&&ULK(t.lig)===ul)||T[0])+' '+sam[0]+' ('+sam[1][0]+')':'—'}</div>
    <div class="lpS">⭐ En iyi oyuncu: ${yildiz?yildiz.ad+' ('+yildiz.g+') · '+yildiz.t.kod:'—'}</div>
    <div class="lpT">${T.slice(0,5).map((t,k)=>`<div onclick="dunyaAc('kulup',${t.i})">${k+1}. ${chip(t)} ${t.ad}<b>${t.rt}</b></div>`).join('')}</div></div>`;}).join('')}</div>`;}
-function kulupProfil(i){if(i==null){const L1=LEAGUES.filter(L=>L.id!=='DIG'&&KADEME(L.id)===1);return `<div class="sonra" style="font-size:9px">Bir kulüp seç:</div><div class="liste">${L1.flatMap(L=>L.t).sort((a,b)=>b.rt-a.rt).slice(0,120).map(t=>`<button class="tbtn" style="--tc:${t.c1};--tc2:${t.c2}" onclick="dunyaAc('kulup',${t.i})">${chip(t)}<span class="tad">${t.ad}</span><span class="grc">${t.rt}</span></button>`).join('')}</div>`;}
+function kulupProfil(i){if(i==null){const lg=window._kpLig||'TR',L=LEAGUES.find(l=>l.id===lg)||LEAGUES[0];return `${ligRaf(L.id,"window._kpLig='#';dunyaAc('kulup')",false)}<div class="ligad">${bayrakImg(ULK(L.id),12)} ${L.ad} · ${L.t.length} kulüp</div><div class="liste">${L.t.slice().sort((a,b)=>b.rt-a.rt).map(t=>`<button class="tbtn" style="--tc:${t.c1};--tc2:${t.c2}" onclick="dunyaAc('kulup',${t.i})">${chip(t)}<span class="tad">${t.ad}</span><span class="grc">${t.rt}</span></button>`).join('')}</div>`;}
  const t=ALL[i],ul=ULK(t.lig),K=bazKadro(i),F=formalar(t),M=(MUZE_V[ul]||{})[t.kod]||[],L=LEAGUES.find(l=>l.id===t.lig),kap=K.slice().sort((a,b)=>b.g-a.g)[0];
  const forma=f=>`<div class="kpF"><svg viewBox="0 0 40 40" width="64" height="64"><path d="M12 4l-9 6 4 8 5-3v21h16V15l5 3 4-8-9-6c-1 3-4 5-8 5s-7-2-8-5z" fill="${f.c1}" stroke="#000" stroke-width="1.5"/><path d="M12 4c1 3 4 5 8 5s7-2 8-5" fill="none" stroke="${f.c2}" stroke-width="2.5"/><path d="M12 15v21M28 15v21" stroke="${f.c2}" stroke-width="2" opacity=".7"/></svg><small>${f.ad}</small></div>`;
  const kupa=(n,ad,al)=>n?`<div class="kpC"><span style="font-size:26px;filter:${al?'hue-rotate(0)':'grayscale(1) brightness(1.4)'}">🏆</span><b>${n}×</b><small>${ad}</small></div>`:'';
@@ -3342,6 +3342,7 @@ function anaSekme(i){$('anaModlar').style.display=i?'none':'flex';$('anaAyar').s
  const du=c.toDataURL();document.documentElement.style.setProperty('--stad','url('+du+')');const a=$('ana');if(a){a.style.backgroundImage='url('+du+')';a.style.imageRendering='pixelated';}}catch(e){}})();
 // 🆕 Yenilikler: sürüm geçmişi mini ekranı
 const SURUMLER=[
+ ['V10.0.42 · 12 Kasım 2026',['🛡️ Veritabanı › Kulüp Profili listesi liglere ayrıldı: önce ülke bayrağı, sonra kademe seç, o ligin kulüpleri güç sırasıyla gelir']],
  ['V10.0.41 · 12 Kasım 2026',['🌍 Futbol Dünyası artık "Veritabanı": sezon 26/27 verisi, her sezon güncellenir, salt okunur (kariyerden bağımsız) · kariyerde üst şeritte küçük 🌍 VERİTABANI düğmesi']],
  ['V10.0.40 · 12 Kasım 2026',['🌍 Futbol Dünyası artık kariyerde de: sekmelerde "🌍 FUTBOL DÜNYASI" (ligler panosu, kulüp profilleri, oyuncu veritabanı) · "← KARİYERE DÖN" ile geri']],
  ['V10.0.39 · 12 Kasım 2026',['👕 Kadro ekranı 3 bölüm: ⭐ İLK 11 · 🪑 YEDEK KULÜBESİ (9 kişi) · 🚫 KADRO DIŞI — yedekleri sen seçersin (⬆ YEDEK / ⬇ DIŞI), maçta kulübede senin seçtiğin 9 oturur; seçmezsen en güçlü 9 otomatik']],
