@@ -1,5 +1,9 @@
 # Sürüm notları
 
+## V10.0.10 — 12 Kasım 2026
+- ⚽ Anadolu / Akdeniz topları ayrıldı, desen sabit
+- 🏷️ Lig panosunda doğru lig adı
+
 ## V10.0.9 — 12 Kasım 2026
 - ⚽ Yuvarlak top (Part 1)
 - 📱 Mobil HD çizim + ekran tam sığıyor
