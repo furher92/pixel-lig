@@ -1,5 +1,10 @@
 # Sürüm notları
 
+## V10.0.18 — 12 Kasım 2026
+- 🗂️ Sekmeler alt alta sarılıyor
+- 🏟️ Stadyumlu arka plan tüm ekranlarda
+- 📋 Yeni tablo görünümü
+
 ## V10.0.17 — 12 Kasım 2026
 - 📰 Kariyer ekranı FM tarzı Portal (üst şerit, tarih/sonraki maç/bütçe, DEVAM, 3 portal kartı)
 
