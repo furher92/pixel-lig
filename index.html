@@ -3256,6 +3256,7 @@ function anaSekme(i){$('anaModlar').style.display=i?'none':'flex';$('anaAyar').s
  const du=c.toDataURL();document.documentElement.style.setProperty('--stad','url('+du+')');const a=$('ana');if(a){a.style.backgroundImage='url('+du+')';a.style.imageRendering='pixelated';}}catch(e){}})();
 // 🆕 Yenilikler: sürüm geçmişi mini ekranı
 const SURUMLER=[
+ ['V10.0.29 · 12 Kasım 2026',['📴 Çevrimdışı mod: oyun ilk açılışta cihaza kaydedilir, internet yokken de açılır ve oynanır (Normal + Legacy); internetsizken altta "Çevrimdışı mod" yazar']],
  ['V10.0.28 · 12 Kasım 2026',['📱 Katlanabilir telefon desteği (Galaxy Z Fold/Flip, Huawei Mate X / Mate XT / Pocket, Pixel Pro Fold, Honor Magic V, Razr, Oppo Find N, Vivo X Fold, Xiaomi Mix Fold/Flip, iPhone Duo): kapak ekranında sıkışık düzen, kare iç ekranda 3 sütunlu menü ve 2 sütunlu kariyer portalı, menteşe varsa içerik ortaya bölünmüyor']],
  ['V10.0.27 · 12 Kasım 2026',['⚽ Kutup topu düzeltildi: üç renkli nokta yerine kırmızı/mavi/lacivert akışkan kıvrımlar + gümüş detay','⚽ Kuzey Rüzgârı topunda turuncu paneller büyüdü (beyaz zeminde görünmüyordu)','🔵 Maç başındaki MAÇ TOPU kutusunda top artık kare pikseller yerine maçtaki gerçek yuvarlak çizim']],
  ['V10.0.26 · 12 Kasım 2026',['❄️ Doğu Kupaları artık kariyer açmadan da oynanıyor: Kupalar ekranından kupayı seç → ▶ OYNA → takımını seç → 2 grup, yarı final, final','⚽ Anadolu topu artık saf beyaz zemin (Yıldızlar Ligi topuyla karışmıyor); Yıldızlar Ligi topu gümüşi-mavi']],
@@ -3368,4 +3369,5 @@ function hakemTopuSahne(){const r=G.restart,t=G.top,dir=r.k?-1:1;G.ht=(G.ht||0)+
 @media (max-width:420px) and (max-height:520px){.modGrid{grid-template-columns:1fr 1fr!important;gap:5px!important}.mk{padding:6px!important;min-height:0!important}.mk .ma{display:none}.mk.buyuk{min-height:60px!important}.fmUst .fmSag{display:none}.fmPortal{grid-template-columns:1fr!important}}
 @media (min-width:1000px) and (max-aspect-ratio:3/2) and (pointer:coarse){.fmIzgara{grid-template-columns:repeat(3,minmax(0,1fr))!important}}
 </style>
+<script>(function(){function g(){var e=document.getElementById('offRozet');if(!navigator.onLine){if(!e){e=document.createElement('div');e.id='offRozet';e.textContent='📴 Çevrimdışı mod';e.style.cssText='position:fixed;left:50%;bottom:8px;transform:translateX(-50%);z-index:99999;background:#222;color:#ffd23f;border:1px solid #ffd23f;border-radius:20px;padding:4px 12px;font:12px sans-serif;pointer-events:none;opacity:.9';document.body.appendChild(e);}}else if(e)e.remove();}addEventListener('online',g);addEventListener('offline',g);addEventListener('load',g);})();</script>
 </body></html>
