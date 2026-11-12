@@ -1,5 +1,25 @@
 # Sürüm notları
 
+## V10.0.32 — 12 Kasım 2026
+- 🆕 Yenilikler penceresi ekrana sığıyor: başlık üstte, KAPAT altta sabit, liste kendi içinde kayıyor
+
+## V10.0.31 — 12 Kasım 2026
+- ⚽ Ada Piksel Ligi topu yenilendi: beyaz zemin + koyu mor kanca şekilleri, içlerinde pembe/turkuaz parlak çizgiler (logosuz, özgün)
+
+## V10.0.30 — 12 Kasım 2026
+- 🎤 Basın toplantısı ekranı büyük ekranda da büyüyor: soru ve cevap düğmeleri PC'de 1.3–2 kat, salon çizimi ekranın yarısı; arkada kararmış stadyum
+
+## V10.0.29 — 12 Kasım 2026
+- 📴 Çevrimdışı mod: oyun ilk açılışta cihaza kaydedilir, internet yokken de açılır ve oynanır (Normal + Legacy); internetsizken altta "Çevrimdışı mod" yazar
+
+## V10.0.28 — 12 Kasım 2026
+- 📱 Katlanabilir telefon desteği (Galaxy Z Fold/Flip, Huawei Mate X / Mate XT / Pocket, Pixel Pro Fold, Honor Magic V, Razr, Oppo Find N, Vivo X Fold, Xiaomi Mix Fold/Flip, iPhone Duo): kapak ekranında sıkışık düzen, kare iç ekranda 3 sütunlu menü ve 2 sütunlu kariyer portalı, menteşe varsa içerik ortaya bölünmüyor
+
+## V10.0.27 — 12 Kasım 2026
+- ⚽ Kutup topu düzeltildi: üç renkli nokta yerine kırmızı/mavi/lacivert akışkan kıvrımlar + gümüş detay
+- ⚽ Kuzey Rüzgârı topunda turuncu paneller büyüdü (beyaz zeminde görünmüyordu)
+- 🔵 Maç başındaki MAÇ TOPU kutusunda top artık kare pikseller yerine maçtaki gerçek yuvarlak çizim
+
 ## V10.0.26 — 12 Kasım 2026
 - ❄️ Doğu Kupaları bağımsız oynanıyor
 - ⚽ Anadolu / Yıldızlar topları ayrıştı
@@ -207,3 +227,6 @@
 
 ## Kaldırılan özellikler
 - **Momentum sistemi:** oyunu bozduğu için tamamen çıkarıldı.
+
+## V9.1.0 — 30 Ekim 2026
+- İlk herkese açık sürüm (v77)
