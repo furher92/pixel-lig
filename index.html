@@ -1076,6 +1076,7 @@ function ligAmblem(x,y,tm){let t=G&&G.tema,u=null;try{u=ULK(t);}catch(e){}const 
 const KUPA_SKB={BAYRAK:['bay',0,'#e8322b','#3a4bd8'],DBAYRAK:['bay',1,'#1f5fd8','#e8322b'],UCL:['yil',0,'#1f2fbf','#ff8a00'],KY:['yil',1,'#1f2fbf','#ff8a00'],UEL:['kup',0,'#ff7a1a','#e01b24'],KR:['kup',1,'#ff7a1a','#e01b24'],UECL:['kup',0,'#1fd060','#e01b24'],AY:['kup',1,'#1fd060','#e01b24']};
 function kupaSkb(T0,T1,L0,dk){const K=KUPA_SKB[G.tema];if(!K)return;const [st,dogu,c,ek]=K,s0=String(G.skor[L0]),s1=String(G.skor[1-L0]),mm=(dk<10?'0':'')+Math.min(dk,120)+"'";
  cx.font='8px "Press Start 2P",monospace';cx.textBaseline='top';
+ cx.fillStyle=st==='yil'?'#0b1440':'#111216';cx.fillRect(2,2,160,19);
  if(st==='bay'){const rom=(x,col)=>{cx.fillStyle=col;cx.beginPath();cx.moveTo(x,4);cx.lineTo(x+7,11);cx.lineTo(x,18);cx.lineTo(x-7,11);cx.closePath();cx.fill();cx.fillStyle='#fff';cx.fillRect(x-4,10,8,2);};
   cx.font='5px monospace';cx.fillStyle='#d8ffd0';cx.fillText(dogu?'DOĞU BAYRAK LİGİ':'BAYRAK LİGİ',5,19);cx.font='8px "Press Start 2P",monospace';
   cx.fillStyle='#1c2236';cx.fillRect(4,4,38,14);cx.fillStyle='#fff';cx.fillText(mm,7,7);cx.fillStyle='#e6e8ef';cx.fillRect(42,4,108,14);rom(48,c);rom(150,ek);
@@ -3478,6 +3479,7 @@ function anaSekme(i){$('anaModlar').style.display=i?'none':'flex';$('anaAyar').s
  const du=c.toDataURL();document.documentElement.style.setProperty('--stad','url('+du+')');const a=$('ana');if(a){a.style.backgroundImage='url('+du+')';a.style.imageRendering='pixelated';}}catch(e){}})();
 // 🆕 Yenilikler: sürüm geçmişi mini ekranı
 const SURUMLER=[
+ ['V10.0.81 · 13 Kasım 2026',['📺 Kıta kupaları skorbordunda alttaki eski skorbordun renkli parçaları artık arkadan görünmüyor (takım renkleri karışmıyor)']],
  ['V10.0.80 · 13 Kasım 2026',['🏆 Ana menüdeki TURNUVALAR kartının simgesi artık Bayrak Ligi kupası (kıvrımlı gümüş kupa, renkli şeritler); diğer ikonlar aynen kaldı']],
  ['V10.0.79 · 13 Kasım 2026',['📱 Normal (katlanmayan) telefonlarda menü, kartlar ve pencereler %20 daha küçük; katlanabilir telefon, tablet ve PC eskisi gibi','🌍 Bazı oyuncularda bayrak yerine dünya simgesi çıkıyordu (Afrika/diğer Avrupa isimli oyuncular) — artık ülke bayrağı görünüyor','🏳️ Turnuvalar ekranında simgeler büyütüldü (Doğu Bayrak Ligi flaması net görünüyor)']],
  ['V10.0.78 · 13 Kasım 2026',['📱 Avrupa Kupaları ve Turnuvalar ekranı telefonda yine aşağı-yukarı kayıyor (V10.0.68 arka plan düzenlemesi kaydırmayı bozmuştu)','🏳️ Bayrak Ligi / Doğu Bayrak Ligi başlığındaki beyaz bayrak emojisi kaldırıldı (bazı telefon ve tarayıcılarda boş görünüyordu), yerine kendi logosu']],
