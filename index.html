@@ -3174,8 +3174,8 @@ ESP:{MDB:[36,15],BRS:[29,5],MDK:[11],BİL:[8],VAL:[6],SSB:[2],COR:[1],SVB:[1],SV
 ITA:{ZBR:[36,2],MMS:[21,3],MŞY:[19,7],CEN:[9],TRB:[7],BLG:[7],NAP:[4],RMK:[3],FLR:[2],RMG:[2],CAG:[1]},
 GER:{MÜN:[35,6],DRT:[8,1],GEL:[7],HAM:[6,1],STU:[5],MGB:[5],BRE:[4],KÖL:[3],LEV:[1],FRA:[1]},
 FRA:{PAR:[14,2],MRS:[10,1],MON:[8],LYO:[7],LİL:[6],NİC:[4],HAV:[3],LNS:[1],STR:[1],AUX:[1]},
-NED:{AMS:[36,4],EİN:[27,1],ROT:[16,1],SPR:[6],DEV:[4],WİL:[3],ALK:[2],ADO:[2],ENS:[1]},
-POR:{BNF:[38,2],POR:[31,2],SPO:[21]},
+NED:{AMS:[36,4],EİN:[27,1],ROT:[16,1],SPR:[6],DEV:[4],WİL:[3],ALK:[2],ADO:[2],ENS:[2],UTR:[1]},
+POR:{BNF:[38,2],POR:[31,2],SPO:[20]},
 BEL:{BRÜ:[34],BRU:[20],USG:[12],LİÈ:[10],ANV:[5],GNK:[4],MEC:[4],CER:[3],BEV:[2],GNT:[1]},
 SCO:{GLY:[56,1],GLM:[55],EDK:[4],EDY:[4],ABE:[4],MOT:[1],KİL:[1],DDU:[1],DDE:[1]},
 RUS:{NEV:[11],MKR:[10],MSO:[6],MDY:[3],KZN:[2],KUB:[1]},
@@ -3510,6 +3510,7 @@ function anaSekme(i){$('anaModlar').style.display=i?'none':'flex';$('anaAyar').s
  const du=c.toDataURL();document.documentElement.style.setProperty('--stad','url('+du+')');const a=$('ana');if(a){a.style.backgroundImage='url('+du+')';a.style.imageRendering='pixelated';}}catch(e){}})();
 // 🆕 Yenilikler: sürüm geçmişi mini ekranı
 const SURUMLER=[
+ ['V10.0.91 · 13 Kasım 2026',['📜 Lig şampiyonlukları 2025/26 sonu itibarıyla kontrol edildi: Lale Ligi\'nde Enschede Tukker 2, Utrecht Kale 1; Luso Ligi\'nde Lizbon Aslan 20 olarak düzeltildi (diğer ligler zaten doğruydu)']],
  ['V10.0.90 · 13 Kasım 2026',['📜 Tarihçe\'ye TURNUVA GEÇMİŞİ: Yıldızlar Ligi (1955/56\'dan), Kıta Ligi (1971/72\'den) ve Umut Ligi (2021/22\'den) 2025/26\'ya kadar her sezonun şampiyonu','🏆 Kıta/Umut Ligi sayıları bu geçmişten hesaplanıyor; oyunda olmayan şampiyonlar da kurgusal adlarıyla listede (Pire Kırmızı, London Çekiçler…); 2025/26 Kıta Ligi şampiyonu Birmingham Bordo']],
  ['V10.0.89 · 13 Kasım 2026',['🏆 Akdeniz Kupası şampiyonları eklendi (Lefkoşa Kartal 17, Gönyeli Mavi 8, Yenicami Kırmızı 8, Kaymaklı 7, Mağusa Kırmızı-Lacivert 7, Limasol Ocak 6, Lefke 3, Girne Doğan 2, Lefkoşa Gençlik 2)','🥇 Yerel kupalarda madalya yerine her ülkenin kendi yerel kupa çizimi (ülke renklerinde, farklı biçimlerde)']],
  ['V10.0.88 · 13 Kasım 2026',['🏛️ Kupa Müzesi rafları: lig kupası, yerel kupa, süper kupa, Yıldızlar / Kıta / Umut Ligi ve Avrupa Süper Kupası — her biri kendi özgün kupa çizimiyle (sayılar gerçek karşılıklardan, yaklaşık)']],
