@@ -2047,7 +2047,7 @@ function cizIc(){
   cx.fillStyle=gom;cx.fillRect(x-2,y-7,4,4);if(T.cz&&gom===T.c1){cx.fillStyle=T.cz;cx.fillRect(x-1,y-7,1,4);cx.fillRect(x+1,y-7,1,4);}
   if(p.rol!=='GK'){cx.fillStyle=T.c2;cx.fillRect(x-2,y-7,4,1);}if(p.madalya){cx.fillStyle=p.madalya==='a'?'#ffd23f':'#d6d6d6';cx.fillRect(x,y-5,1,2);}
   cx.fillStyle=TN;cx.fillRect(x-1,y-9,3,2);cx.fillStyle=SC;cx.fillRect(x-1,y-10,3,1);
-  {const R=G.restart;if((R&&R.tip==='TAÇ'&&R.taker===p)||p.tacKol>0){if(p.tacKol>0)p.tacKol--;const u=p.tacKol>0&&p.tacKol<8?2:0;cx.fillStyle=TN;cx.fillRect(x-3,y-12+u,1,4);cx.fillRect(x+2,y-12+u,1,4);}}
+  {const R=G.restart;if((R&&R.tip==='TAÇ'&&R.taker===p)||p.tacKol>0){if(p.tacKol>0)p.tacKol--;const u=p.tacKol>0&&p.tacKol<8?2:0;cx.fillStyle=TN;cx.fillRect(x-3,y-12+u,1,4);cx.fillRect(x+2,y-12+u,1,4);if(R&&R.tip==='TAÇ'&&R.taker===p)cizTop(x,y-13);}}
   if(G.faz==='dur'&&G.itiraz&&G.itiraz.L.includes(p)){const sg=p.dx>=0?1:-1,u=(G.kare+p.id*5)%24<12;cx.fillStyle=TN;cx.fillRect(sg>0?x+2:x-5,y-(u?7:6),3,1);cx.fillRect(sg>0?x-3:x+2,y-6,1,3);}
   else if((G.faz==='gol'&&G.sevinc&&G.sevinc.has(p))||(G.faz==='macsonu'&&p.kazandi&&G.msE<100)){const u=(G.kare+G.fazT+p.id*3)%14<7?1:0;cx.fillStyle=TN;cx.fillRect(x-3,y-11-u,1,4);cx.fillRect(x+2,y-11-u,1,4);}
   if(p===kp){cx.fillStyle='#ffe14d';cx.fillRect(x-1,y-14,3,1);cx.fillRect(x,y-13,1,1);}if(G.iki&&p===G.kp2c&&G.faz==='oyun'){cx.fillStyle='#5ad1ff';cx.fillRect(x-1,y-14,3,1);cx.fillRect(x,y-13,1,1);}
@@ -2083,7 +2083,7 @@ function cizIc(){
   if(up){cx.fillRect(x+2,y-16,1,8);cx.fillStyle=G.kare%10<5?'#e30613':'#ffcc00';cx.fillRect(x+3,y-16,4,3);}else{cx.fillRect(x+2,y-6,1,5);cx.fillStyle='#e30613';cx.fillRect(x+3,y-3,2,2);}});
  // top
  if(GRAFIK>0){cx.fillStyle='rgba(0,0,0,.35)';cx.fillRect(Math.round(t.x)-1,Math.round(t.y),3,1);}
- {const R=G.restart,tk=R&&R.tip==='TAÇ'&&R.taker;if(tk&&G.faz!=='oyun'||tk&&Math.hypot(t.x-tk.x,t.y-tk.y)<6&&!t.vx&&!t.vy)cizTop(Math.round(tk.x),Math.round(tk.y)-14);else cizTop(Math.round(t.x),Math.round(t.y-t.z)-2);}
+ {const R=G.restart,tk=R&&R.tip==='TAÇ'&&R.taker;if(tk)cizTop(Math.round(tk.x),Math.round(tk.y)-14);else cizTop(Math.round(t.x),Math.round(t.y-t.z)-2);}
  saotCiz();
  cx.restore();
  cizHava();cizYayin();
@@ -3448,6 +3448,7 @@ function anaSekme(i){$('anaModlar').style.display=i?'none':'flex';$('anaAyar').s
  const du=c.toDataURL();document.documentElement.style.setProperty('--stad','url('+du+')');const a=$('ana');if(a){a.style.backgroundImage='url('+du+')';a.style.imageRendering='pixelated';}}catch(e){}})();
 // 🆕 Yenilikler: sürüm geçmişi mini ekranı
 const SURUMLER=[
+ ['V10.0.70 · 13 Kasım 2026',['🙌 Taç düzeltmesi: top artık atıştan önce gerçekten oyuncunun ellerinde, başının üstünde görünüyor (yerde kalmıyor)']],
  ['V10.0.69 · 13 Kasım 2026',['🙌 Taç artık elle atılıyor: atan oyuncu topu iki eliyle başının üstünde tutar, kollarıyla fırlatır, top baş hizasından havadan gider','🏆 Kupa töreninde kupa oyuncu boyuna göre küçüldü, kaptan gerçekten kaldırabileceği boyutta kupayı başının üstüne kaldırır']],
  ['V10.0.68 · 12 Kasım 2026',['🗑️ Avrupa ve Doğu kupalarında başlamış turnuvayı SİL düğmesi (onay sorar; yanlışlıkla açtıysan ya da oynamak istemiyorsan)','🏆 Avrupa Kupaları ekranının arka planında 9 turnuvanın kupaları (Avrupa 3, Doğu 3, Asya 3) silik desen olarak']],
  ['V10.0.67 · 12 Kasım 2026',['🏟️ Kupa kartlarında 2027 final şehirleri: Yıldızlar Ligi Madrid, Kıta Ligi Frankfurt, Umut Ligi İstanbul (gerçek 2027 ev sahipleri); Doğu kupaları: Kutup Yıldızı Sankt-Peterburg, Kuzey Rüzgârı Kazan, Ayaz Lefkoşa']],
