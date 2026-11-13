@@ -2112,7 +2112,7 @@ function cizIc(){
  cx.fillText(T0.t.kod,SX+3,6);cx.fillText(T1.t.kod,SX+69,6);cx.fillText(String(G.skor[L0]),SX+33,6);cx.fillText(String(G.skor[1-L0]),SX+55,6);cx.fillStyle='rgba(255,255,255,.6)';cx.fillRect(SX+47,7,1,7);
  for(let k=0;k<2;k++)for(let i=0;i<G.kirmizi[k===0?L0:1-L0];i++){cx.fillStyle='#e30613';cx.fillRect((k?SX+90:SX+2)-i*5*(k?1:-1),18,3,4);}
  const dk=G.devre>=3?Math.min(120,90+Math.floor((G.kare-G.top_kare)/(G.top_kare/90))):Math.min(90,Math.floor(G.kare/G.top_kare*90));
- {const tm3=skbAl();cx.fillStyle=koyu(tm3[0],.72);cx.fillRect(4,4,42,13);cx.fillStyle=tm3[1];cx.fillRect(4,16,42,1);cx.fillRect(6,5,9,9);cx.fillRect(7,14,7,1);cx.fillRect(9,15,3,1);cx.fillStyle=tm3[0];cx.fillRect(7,6,7,7);cx.fillRect(8,13,5,1);ligAmblem(7,6,tm3);}cx.fillStyle='#fff';if(G.uzT!=null){const ek=Math.min(G.uzDk,1+Math.floor(G.uzS/(G.top_kare/90*1.6)));const ut=([0,45,90,105,120][G.devre]||120)+'+'+ek;cx.fillText(ut,Math.max(16,16+(30-cx.measureText(ut).width)/2),6);
+ {const tm3=skbAl();cx.fillStyle=koyu(tm3[0],.72);cx.fillRect(4,4,42,13);cx.fillStyle=tm3[1];cx.fillRect(4,16,42,1);cx.fillRect(6,5,9,9);cx.fillRect(7,14,7,1);cx.fillRect(9,15,3,1);cx.fillStyle=tm3[0];cx.fillRect(7,6,7,7);cx.fillRect(8,13,5,1);ligAmblem(7,6,tm3);}cx.fillStyle='#fff';if(G.uzT!=null){const ek=Math.min(G.uzDk,1+Math.floor(G.uzS/(G.top_kare/90*1.6)));const ut=([0,45,90,105,120][G.devre]||120)+'+'+ek;const fo=cx.font;if(cx.measureText(ut).width>28)cx.font=cx.font.replace(/\d+px/,'6px');cx.fillText(ut,Math.max(16,16+(30-cx.measureText(ut).width)/2),cx.font===fo?6:7);cx.font=fo;
    if(G.uzG>0){G.uzG--;cx.fillStyle='#111';cx.fillRect(SX+98,4,30,13);cx.fillStyle='#2ecc71';cx.fillText('+'+G.uzDk,SX+102,6);}}
   else{const mm=Math.min(dk,120);const tx=(mm<10?'0':'')+mm+"'";cx.fillText(tx,16+(30-cx.measureText(tx).width)/2,6);}
  if(KUPA_SKB[G.tema]&&G.uzT==null)kupaSkb(T0,T1,L0,dk);
@@ -3479,6 +3479,7 @@ function anaSekme(i){$('anaModlar').style.display=i?'none':'flex';$('anaAyar').s
  const du=c.toDataURL();document.documentElement.style.setProperty('--stad','url('+du+')');const a=$('ana');if(a){a.style.backgroundImage='url('+du+')';a.style.imageRendering='pixelated';}}catch(e){}})();
 // 🆕 Yenilikler: sürüm geçmişi mini ekranı
 const SURUMLER=[
+ ['V10.0.82 · 13 Kasım 2026',['⏱️ Skorbordda uzatma dakikası (90+3 gibi) artık kutusuna sığıyor, takım adının üstüne taşmıyor']],
  ['V10.0.81 · 13 Kasım 2026',['📺 Kıta kupaları skorbordunda alttaki eski skorbordun renkli parçaları artık arkadan görünmüyor (takım renkleri karışmıyor)']],
  ['V10.0.80 · 13 Kasım 2026',['🏆 Ana menüdeki TURNUVALAR kartının simgesi artık Bayrak Ligi kupası (kıvrımlı gümüş kupa, renkli şeritler); diğer ikonlar aynen kaldı']],
  ['V10.0.79 · 13 Kasım 2026',['📱 Normal (katlanmayan) telefonlarda menü, kartlar ve pencereler %20 daha küçük; katlanabilir telefon, tablet ve PC eskisi gibi','🌍 Bazı oyuncularda bayrak yerine dünya simgesi çıkıyordu (Afrika/diğer Avrupa isimli oyuncular) — artık ülke bayrağı görünüyor','🏳️ Turnuvalar ekranında simgeler büyütüldü (Doğu Bayrak Ligi flaması net görünüyor)']],
