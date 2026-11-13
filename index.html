@@ -2689,10 +2689,11 @@ function kariyerEkran(sekme){{const s0=KRY();if(s0&&s0.toren){const tt=s0.toren;
   const top=(al,b)=>`<div class="ligad">${b}</div><table>${ligOy.filter(x=>x[2][al]>0).sort((a,b)=>b[2][al]-a[2][al]).slice(0,10).map(([p,t,r],i)=>`<tr class="${t.i===s.ti?'ben':''}"><td>${i+1}</td><td style="text-align:left">${p.ad}</td><td style="text-align:left">${chip(t)} ${t.kod}</td><td><b>${r[al]}</b></td></tr>`).join('')||'<tr><td>Henüz yok</td></tr>'}</table>`;
   h+=top('g','⚽ GOL KRALLIĞI')+top('a','🎯 ASİST')+top('s','🟨 SARI KART')+top('k','🟥 KIRMIZI KART');
   if(s.gecmis.length)h+=`<div class="ligad">GEÇMİŞ SEZONLAR</div><div class="gec">${s.gecmis.slice().reverse().join('<br>')}</div>`;}
- if(sekme==='kupa')h+=kupalarHtml(s)+`<details style="max-width:560px;margin:10px auto"><summary style="font-size:9px;cursor:pointer">🌍 Ülke puanı sıralaması</summary>${ulkePuanHtml(s)}</details>`;
+ if(sekme==='kupa')h+=kupalarHtml(s);
  if(sekme==='milli')h+=milliHtml(s);
  if(sekme==='men')h+=menajerHtml(s);
- if(sekme==='taktik')h+=taktikHtml('kar');if(sekme==='gundem')h+=gundemHtml(s);if(sekme==='forma')h+=formaKupaHtml(s);if(sekme==='mali')h+=maliHtml(s);if(sekme==='akademi')h+=akademiHtml(s);if(sekme==='lig'){const gl=(window._plLig&&LEAGUES.find(l=>l.id===window._plLig))||L;h+=ligRaf(gl.id,'window._plLig=\'#\';kariyerEkran(\'lig\')',false);const _sr=sirala(gl.id===s.lig?s.tab:digerTablo(s,gl.id),gl.t.map(t=>t.i));h+=`<div class="ligad">${gl.ad}</div>`+tabloHtml(_sr,s.ti,ligRenk(gl.id,_sr))+ligLej(gl.id);}
+ if(sekme==='taktik')h+=taktikHtml('kar');if(sekme==='gundem')h+=gundemHtml(s);if(sekme==='forma')h+=formaKupaHtml(s)+`<div class="ligad" style="margin-top:14px">🏛️ KUPA MÜZESİ & ŞAMPİYONLAR</div>`+kupaMuzeHtml(s)+`<details style="max-width:560px;margin:10px auto"><summary style="font-size:9px;cursor:pointer">🌍 Ülke puanı sıralaması</summary>${ulkePuanHtml(s)}</details>`;if(sekme==='mali')h+=maliHtml(s);if(sekme==='akademi')h+=akademiHtml(s);if(sekme==='lig'){const gl=(window._plLig&&LEAGUES.find(l=>l.id===window._plLig))||L;h+=ligRaf(gl.id,'window._plLig=\'#\';kariyerEkran(\'lig\')',false);const _sr=sirala(gl.id===s.lig?s.tab:digerTablo(s,gl.id),gl.t.map(t=>t.i));h+=`<div class="ligad">${gl.ad}</div>`+tabloHtml(_sr,s.ti,ligRenk(gl.id,_sr))+ligLej(gl.id);}
+ if(sekme==='lig'){const kt=kupalarHtml(s,1);if(kt)h+=`<div style="width:100%;max-width:560px;margin:14px auto 0"><div class="ligad">🏆 KUPA PUAN DURUMLARI</div>${kt}</div>`;}
  h+=`<button class="btn gri" onclick="ekran('ana')">ANA MENÜ</button>`;
  if(h.includes('<!--K4-->')){const P=h.split(/<!--K[1-4]-->/);const bos=x=>x&&x.replace(/<[^>]*>/g,'').trim()?x:'<div class="fmAlt" style="padding:8px">Henüz yok</div>';const _hb=P[4].indexOf('<button')<0?P[4]:P[4].slice(0,P[4].indexOf('<button'));h=P[0]+`<div class="fmIzgara"><div class="fmSut fmAks"><div class="fmKb2">⚽ MAÇ GÜNÜ</div>${bos(P[3])}<details class="fmHaber" open><summary>📰 HABERLER & KULÜP</summary>${_hb}</details></div><div class="fmSut"><div class="fmKb2">📊 SON MAÇ</div>${bos(P[1])}</div><div class="fmSut"><div class="fmKb2">🗓️ TAKVİM & OLAYLAR</div>${bos(P[2])}</div></div><div class="row fmAlt2">${P[4].indexOf('<button')<0?'':P[4].slice(P[4].indexOf('<button'))}</div>`;}
  $('karIc').innerHTML=h;
@@ -3190,7 +3191,7 @@ function kupaMuzeHtml(s){const T=TT(s.ti);if(!T)return '';const v=muzeV(T),M=(s.
  if(lig){const top=Object.entries(lig).sort((a,b)=>b[1][0]-a[1][0]).slice(0,5);h+=`<details style="max-width:560px;margin:4px auto"><summary style="font-size:8px;cursor:pointer">📜 ${bayrakImg(ul)} Ligin en çok şampiyon olanları</summary><table>${top.map(([k,x],i)=>{const t=ALL.find(z=>z.kod===k&&ULK(z.lig)===ul)||ALL.find(z=>z.kod===k);return `<tr class="${t&&t.i===s.ti?'ben':''}"><td>${i+1}</td><td style="text-align:left">${t?chip(t)+' '+t.ad:k}</td><td>🏆 ${x[0]}</td><td>${x[1]?'⭐ '+x[1]:''}</td></tr>`;}).join('')}</table></details>`;}
  h+=`<details style="max-width:560px;margin:4px auto"><summary style="font-size:8px;cursor:pointer">🌍 Tüm ligler · en başarılı kulüpler</summary><div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:4px;font-size:7px;text-align:left">${Object.keys(MUZE_V).map(u=>{const e=Object.entries(MUZE_V[u]).sort((a,b)=>b[1][0]-a[1][0]).slice(0,3);return `<div style="background:#141c38;border-radius:4px;padding:4px"><b>${bayrakImg(u,8)} ${ULKE_AD[u]||u}</b><br>${e.map(([k,x])=>{const t=ALL.find(z=>z.kod===k&&ULK(z.lig)===u);return (t?t.ad:k)+' · '+x[0]+(x[1]?' ⭐'+x[1]:'');}).join('<br>')}</div>`;}).join('')}</div><div class="kat" style="font-size:6px">Kurgusal kulüplerin gerçek karşılıklarının lig şampiyonlukları (⭐ = Şampiyonlar Kupası/Ligi). Kaynak: Wikipedia şampiyonlar listeleri, UEFA. 2025/26 sonu. İst. Kanaryalar: 1959 öncesi şampiyonluklar dahil 28.</div></details>`;
  return h;}
-function kupalarHtml(s){const c=Object.values(s.kp||{});
+function kupalarHtml(s,tb){const c=Object.values(s.kp||{});
  const kita=k=>!k.milli&&((k.lig&&k.lig.ids&&!k.lig.gruplar)||/Yıldızlar|Avrupa|Konferans|Kutup|Doğu/i.test(k.ad||''));
  const kart=k=>{const a=k.adim[k.ai];const sampiyon=k.kazanan!=null,elendi=!sampiyon&&!k.ben&&!(k.eleme&&k.bitti);
   const durum=k.eleme&&k.bitti?`Grubu ${k.sonuc+1}. bitirdin`:sampiyon?`🏆 ${TT(k.kazanan).ad}`:elendi?'Elendin / yoksun':a?adimAd(k,a):'Bitti';
@@ -3207,11 +3208,11 @@ function kupalarHtml(s){const c=Object.values(s.kp||{});
   return t?`<details style="max-width:560px;margin:4px auto"><summary style="font-size:8px;cursor:pointer;color:${k.renk}">📊 ${k.ad} · tablo</summary>${t}</details>`:'';};
  const grid=L=>`<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:8px;width:100%;max-width:560px;margin:0 auto">${L.map(kart).join('')}</div>`;
  const yi=c.filter(k=>!kita(k)),kt=c.filter(kita);
+ if(tb){const dg=k=>/Kutup|Doğu|Kuzey|Ayaz/i.test(k.ad||''),ka=kt.filter(k=>!dg(k)),kd=kt.filter(dg);let t='';const bl=(b,L)=>{const x=L.map(tablo).join('');return x?`<div class="ligad" style="margin-top:12px">${b}</div><div style="width:100%;max-width:560px;margin:0 auto">${x}</div>`:'';};t+=bl('🏠 YURT İÇİ KUPALAR',yi)+bl('🌍 AVRUPA KUPALARI',ka)+bl('❄️ DOĞU KUPALARI',kd);return t;}
  let h='';
  if(!c.length)h+='<div class="sonra">Bu sezon kupa yok.</div>';
- if(yi.length)h+=`<div class="ligad" style="margin-top:4px">🏠 YURT İÇİ & MİLLİ</div>`+grid(yi)+yi.map(tablo).join('');
- if(kt.length)h+=`<div class="ligad" style="margin-top:12px">🌍 KITA KUPALARI</div>`+grid(kt)+`<div style="width:100%;max-width:560px;margin:6px auto 0">${kt.map(tablo).join('')}</div>`;
- h+=kupaMuzeHtml(s);
+ if(yi.length)h+=`<div class="ligad" style="margin-top:4px">🏠 YURT İÇİ & MİLLİ</div>`+grid(yi);
+ if(kt.length)h+=`<div class="ligad" style="margin-top:12px">🌍 KITA KUPALARI</div>`+grid(kt)+`<div class="sonra" style="font-size:8px">📊 Kupa tabloları PUAN DURUMU sekmesinde · 🏆 kupa müzesi FORMA+KUPALAR sekmesinde</div>`;
  return h;}
 function menajerHtml(s){const m=s.men,u=MILLI[m.ul];return `<div class="sonra" style="font-size:9px;width:100%;max-width:560px">👔 ${m.ad} ${m.soy} · ${chip(u)} ${u.ad} · ${m.yas+(s.sezon-2026)} yaş<br>İtibar: ${m.itibar}/100<div class="bar"><i style="width:${m.itibar}%;background:#ffd23f"></i></div>
  Kulüp: ${ALL[s.ti].ad}${s.milli?'<br>Milli takım: '+MILLI[s.milli.n].ad:''}</div><div class="ligad">KUPALAR (${m.kupalar.length})</div><div class="gec">${m.kupalar.slice().reverse().map(kupaSatir).join('<br>')||'Henüz kupa yok'}</div>
@@ -3479,6 +3480,7 @@ function anaSekme(i){$('anaModlar').style.display=i?'none':'flex';$('anaAyar').s
  const du=c.toDataURL();document.documentElement.style.setProperty('--stad','url('+du+')');const a=$('ana');if(a){a.style.backgroundImage='url('+du+')';a.style.imageRendering='pixelated';}}catch(e){}})();
 // 🆕 Yenilikler: sürüm geçmişi mini ekranı
 const SURUMLER=[
+ ['V10.0.83 · 13 Kasım 2026',['🧹 Kariyer sekmeleri toparlandı: KUPALAR sadece bu sezonun kupa kartları; Avrupa ve Doğu kupalarının tabloları PUAN DURUMU sekmesinde (Yurt içi / Avrupa / Doğu başlıklarıyla); kupa müzesi, en çok şampiyonlar ve ülke puanı FORMA+KUPALAR sekmesinde']],
  ['V10.0.82 · 13 Kasım 2026',['⏱️ Skorbordda uzatma dakikası (90+3 gibi) artık kutusuna sığıyor, takım adının üstüne taşmıyor']],
  ['V10.0.81 · 13 Kasım 2026',['📺 Kıta kupaları skorbordunda alttaki eski skorbordun renkli parçaları artık arkadan görünmüyor (takım renkleri karışmıyor)']],
  ['V10.0.80 · 13 Kasım 2026',['🏆 Ana menüdeki TURNUVALAR kartının simgesi artık Bayrak Ligi kupası (kıvrımlı gümüş kupa, renkli şeritler); diğer ikonlar aynen kaldı']],
