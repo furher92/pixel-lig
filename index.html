@@ -1647,8 +1647,8 @@ function kupaToreni(baslik,T,sonra){const d=document.createElement('div');d.styl
   g.fillStyle='#e8e8e8';g.fillRect(86,134,212,16);g.fillStyle='#b5b5b5';g.fillRect(86,148,212,3);g.fillStyle=T.c1;g.fillRect(86,140,212,2);
   for(let i=0;i<11;i++){const x=100+i*18,zp=Math.max(0,Math.sin(fr*.16+i*.9))*6,y=134-zp,kap=i===5;
    g.fillStyle='#222';g.fillRect(x-2,y-1,1,2);g.fillRect(x+1,y-1,1,2);g.fillStyle=T.c2;g.fillRect(x-2,y-3,4,2);g.fillStyle=T.c1;g.fillRect(x-2,y-7,4,4);g.fillStyle='#f1c27d';g.fillRect(x-1,y-9,3,2);g.fillRect(x-3,y-12,1,4);g.fillRect(x+2,y-12,1,4);g.fillStyle='#3b2416';g.fillRect(x-1,y-10,3,1);
-   if(kap){const ky=Math.round(y-14-Hh.length*2-Math.abs(Math.sin(fr*.08))*5),w=Hh[0].length;Hh.forEach((row,yy)=>{for(let xx=0;xx<row.length;xx++){const C={A:kr[0],B:kr[1],C:'#5a3d1e'}[row[xx]];if(C){g.fillStyle=C;g.fillRect(x-w+xx*2,ky+yy*2,2,2);}}});
-    if(fr%40<20){g.fillStyle='rgba(255,255,255,.8)';g.fillRect(x-w-3,ky-2,1,1);g.fillRect(x+w+2,ky+4,1,1);}}}
+   if(kap){const ky=Math.round(y-11-Hh.length-Math.abs(Math.sin(fr*.08))*3),w=Hh[0].length,hw=w>>1;Hh.forEach((row,yy)=>{for(let xx=0;xx<row.length;xx++){const C={A:kr[0],B:kr[1],C:'#5a3d1e'}[row[xx]];if(C){g.fillStyle=C;g.fillRect(x-hw+xx,ky+yy,1,1);}}});
+    if(fr%40<20){g.fillStyle='rgba(255,255,255,.8)';g.fillRect(x-hw-2,ky-1,1,1);g.fillRect(x+hw+2,ky+3,1,1);}}}
   kon.forEach(k=>{k.y+=k.v;k.x+=Math.sin((fr+k.y)*.05)*.5;if(k.y>216){k.y=-4;k.x=Math.random()*384;}g.fillStyle=k.c;g.fillRect(Math.round(k.x),Math.round(k.y),2,2);});
   const fp=fr%70;if(fp<40){const n=(fr/70)|0,fx=50+(n*97)%284,fy=30+(n*23)%30,rr=fp*1.1;for(let a=0;a<14;a++){g.fillStyle=['#ffd23f','#ff4fa3','#4aa3ff','#7dffb9'][n%4];g.fillRect(Math.round(fx+Math.cos(a/14*6.283)*rr),Math.round(fy+Math.sin(a/14*6.283)*rr),2,2);}}
   requestAnimationFrame(kare);};
@@ -1772,7 +1772,7 @@ function restartAt(p,sut,ortaMi){G.restKilit=30;
   const gk=G.P.find(q=>q.k!==p.k&&q.rol==='GK'),tx=gk?clamp(gk.x+(p.k?40:-40),ML+20,MR-20):(p.k?ML+40:MR-40),ty=gk?clamp(gk.y,MT+20,MB-20):H/2;
   vurus(p,tx,ty,clamp(Math.hypot(tx-p.x,ty-p.y)*.032+1.6,2.6,5.4),true);G.alt='Fair play: '+(p.ad||'oyuncu')+' topu rakibe geri verdi';G.degB={t:120,txt:'FAIR PLAY 🤝'};return;}G.golKaynak={tip:r.tip,k:p.k};if(r.tip==='PENALTI')G.penKayN=G.kayN||0;G.htGol=r.tip==='HAKEM TOPU'?{id:p.id}:null;
  if(r.tip==='KORNER'){{const kx=r.x<W/2?ML:MR,sx=kx+(r.x<W/2?42:-42);let bq=null,bd=1e9;G.P.forEach(q=>{if(q.k!==p.k||q===p||q.rol==='GK')return;const d=Math.hypot(q.x-sx,q.y-H/2);if(d<bd){bd=d;bq=q;}});const ok=bq&&bd<70,tx=ok?bq.x:sx+rnd(-8,8),ty=ok?bq.y:H/2+rnd(-28,28),d=Math.hypot(tx-p.x,ty-p.y);vurus(p,tx,ty,ortaGuc(d)+rnd(-.1,.1),true);if(ok&&p.k===G.human){G.kont=bq;G.kontT=45;}}const rr=Math.random();if(rr<.08)G.kornerOlay={t:26,tip:rr<.035?'cek':rr<.05?'el':'hucum',k:p.k};return;}
- if(r.tip==='TAÇ'){ofsKaydet(p);let b=null,bs=-1e9;const ix=p.k===G.human?(IN.r-IN.l):0,iy=p.k===G.human?(IN.d-IN.u):0;G.P.forEach(q=>{if(q.k!==p.k||q===p||q.rol==='GK'||q.disari>0||q.sedye||q.sakatlik)return;const dx=q.x-p.x,dy=q.y-p.y,d=Math.hypot(dx,dy);if(d<8||d>110)return;let sk=-d*.6;G.P.forEach(o=>{if(o.k===p.k)return;const od=Math.hypot(o.x-q.x,o.y-q.y);if(od<16)sk-=(16-od)*3;const tt=clamp(((o.x-p.x)*dx+(o.y-p.y)*dy)/(d*d),0,1);if(Math.hypot(o.x-(p.x+dx*tt),o.y-(p.y+dy*tt))<7)sk-=25;});if(ix||iy)sk+=((dx*ix+dy*iy)/d)*40;if(sk>bs){bs=sk;b=q;}});if(!b){pasVer(p,true);return;}const tx=clamp(b.x+(b.vx||0)*4,ML+4,MR-4),ty=clamp(b.y+(b.vy||0)*4,MT+4,MB-4),d=Math.hypot(tx-p.x,ty-p.y);vurus(p,tx,ty,clamp(d*.042+1.5,1.8,4.2),false);G.top.vz=1.3;if(p.k===G.human){G.kont=b;G.kontT=45;G.pasAlici=b;G.pasAliciT=90;}return;}
+ if(r.tip==='TAÇ'){ofsKaydet(p);let b=null,bs=-1e9;const ix=p.k===G.human?(IN.r-IN.l):0,iy=p.k===G.human?(IN.d-IN.u):0;G.P.forEach(q=>{if(q.k!==p.k||q===p||q.rol==='GK'||q.disari>0||q.sedye||q.sakatlik)return;const dx=q.x-p.x,dy=q.y-p.y,d=Math.hypot(dx,dy);if(d<8||d>110)return;let sk=-d*.6;G.P.forEach(o=>{if(o.k===p.k)return;const od=Math.hypot(o.x-q.x,o.y-q.y);if(od<16)sk-=(16-od)*3;const tt=clamp(((o.x-p.x)*dx+(o.y-p.y)*dy)/(d*d),0,1);if(Math.hypot(o.x-(p.x+dx*tt),o.y-(p.y+dy*tt))<7)sk-=25;});if(ix||iy)sk+=((dx*ix+dy*iy)/d)*40;if(sk>bs){bs=sk;b=q;}});if(!b){pasVer(p,true);return;}const tx=clamp(b.x+(b.vx||0)*4,ML+4,MR-4),ty=clamp(b.y+(b.vy||0)*4,MT+4,MB-4),d=Math.hypot(tx-p.x,ty-p.y);vurus(p,tx,ty,clamp(d*.042+1.5,1.8,4.2),false);G.top.z=10;G.top.vz=.6;p.tacKol=14;if(p.k===G.human){G.kont=b;G.kontT=45;G.pasAlici=b;G.pasAliciT=90;}return;}
  if(r.tip==='AUT'){if(ortaMi){G.restart=null;orta(p,1);return;}restartPas(p,p.k!==G.human);return;}
  if(r.tip==='PENALTI'){const gx=p.k?ML-4:MR+4;let yon=p.k===G.human?(IN.u?-1:IN.d?1:0):[-1,0,1][(Math.random()*3)|0];
   const ty=H/2+yon*(GW/2-6)+(Math.random()<.07?(yon||1)*16:0);
@@ -2047,6 +2047,7 @@ function cizIc(){
   cx.fillStyle=gom;cx.fillRect(x-2,y-7,4,4);if(T.cz&&gom===T.c1){cx.fillStyle=T.cz;cx.fillRect(x-1,y-7,1,4);cx.fillRect(x+1,y-7,1,4);}
   if(p.rol!=='GK'){cx.fillStyle=T.c2;cx.fillRect(x-2,y-7,4,1);}if(p.madalya){cx.fillStyle=p.madalya==='a'?'#ffd23f':'#d6d6d6';cx.fillRect(x,y-5,1,2);}
   cx.fillStyle=TN;cx.fillRect(x-1,y-9,3,2);cx.fillStyle=SC;cx.fillRect(x-1,y-10,3,1);
+  {const R=G.restart;if((R&&R.tip==='TAÇ'&&R.taker===p)||p.tacKol>0){if(p.tacKol>0)p.tacKol--;const u=p.tacKol>0&&p.tacKol<8?2:0;cx.fillStyle=TN;cx.fillRect(x-3,y-12+u,1,4);cx.fillRect(x+2,y-12+u,1,4);}}
   if(G.faz==='dur'&&G.itiraz&&G.itiraz.L.includes(p)){const sg=p.dx>=0?1:-1,u=(G.kare+p.id*5)%24<12;cx.fillStyle=TN;cx.fillRect(sg>0?x+2:x-5,y-(u?7:6),3,1);cx.fillRect(sg>0?x-3:x+2,y-6,1,3);}
   else if((G.faz==='gol'&&G.sevinc&&G.sevinc.has(p))||(G.faz==='macsonu'&&p.kazandi&&G.msE<100)){const u=(G.kare+G.fazT+p.id*3)%14<7?1:0;cx.fillStyle=TN;cx.fillRect(x-3,y-11-u,1,4);cx.fillRect(x+2,y-11-u,1,4);}
   if(p===kp){cx.fillStyle='#ffe14d';cx.fillRect(x-1,y-14,3,1);cx.fillRect(x,y-13,1,1);}if(G.iki&&p===G.kp2c&&G.faz==='oyun'){cx.fillStyle='#5ad1ff';cx.fillRect(x-1,y-14,3,1);cx.fillRect(x,y-13,1,1);}
@@ -2082,7 +2083,7 @@ function cizIc(){
   if(up){cx.fillRect(x+2,y-16,1,8);cx.fillStyle=G.kare%10<5?'#e30613':'#ffcc00';cx.fillRect(x+3,y-16,4,3);}else{cx.fillRect(x+2,y-6,1,5);cx.fillStyle='#e30613';cx.fillRect(x+3,y-3,2,2);}});
  // top
  if(GRAFIK>0){cx.fillStyle='rgba(0,0,0,.35)';cx.fillRect(Math.round(t.x)-1,Math.round(t.y),3,1);}
- cizTop(Math.round(t.x),Math.round(t.y-t.z)-2);
+ {const R=G.restart,tk=R&&R.tip==='TAÇ'&&R.taker;if(tk&&G.faz!=='oyun'||tk&&Math.hypot(t.x-tk.x,t.y-tk.y)<6&&!t.vx&&!t.vy)cizTop(Math.round(tk.x),Math.round(tk.y)-14);else cizTop(Math.round(t.x),Math.round(t.y-t.z)-2);}
  saotCiz();
  cx.restore();
  cizHava();cizYayin();
@@ -3447,6 +3448,7 @@ function anaSekme(i){$('anaModlar').style.display=i?'none':'flex';$('anaAyar').s
  const du=c.toDataURL();document.documentElement.style.setProperty('--stad','url('+du+')');const a=$('ana');if(a){a.style.backgroundImage='url('+du+')';a.style.imageRendering='pixelated';}}catch(e){}})();
 // 🆕 Yenilikler: sürüm geçmişi mini ekranı
 const SURUMLER=[
+ ['V10.0.69 · 13 Kasım 2026',['🙌 Taç artık elle atılıyor: atan oyuncu topu iki eliyle başının üstünde tutar, kollarıyla fırlatır, top baş hizasından havadan gider','🏆 Kupa töreninde kupa oyuncu boyuna göre küçüldü, kaptan gerçekten kaldırabileceği boyutta kupayı başının üstüne kaldırır']],
  ['V10.0.68 · 12 Kasım 2026',['🗑️ Avrupa ve Doğu kupalarında başlamış turnuvayı SİL düğmesi (onay sorar; yanlışlıkla açtıysan ya da oynamak istemiyorsan)','🏆 Avrupa Kupaları ekranının arka planında 9 turnuvanın kupaları (Avrupa 3, Doğu 3, Asya 3) silik desen olarak']],
  ['V10.0.67 · 12 Kasım 2026',['🏟️ Kupa kartlarında 2027 final şehirleri: Yıldızlar Ligi Madrid, Kıta Ligi Frankfurt, Umut Ligi İstanbul (gerçek 2027 ev sahipleri); Doğu kupaları: Kutup Yıldızı Sankt-Peterburg, Kuzey Rüzgârı Kazan, Ayaz Lefkoşa']],
  ['V10.0.66 · 12 Kasım 2026',['🌏 Avrupa Kupaları ekranına kilitli ASYA KULÜP KUPALARI bölümü: Asya Elit Ligi (mor), Asya Ligi 2 (mavi), Asya Meydan Okuma Ligi (turuncu) — V10.1.1\'de açılacak']],
