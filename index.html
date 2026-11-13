@@ -1069,9 +1069,13 @@ const DOGU_AMB_RENK={KY:'#ffd23f',KR:'#ff3b2a',AY:'#ffd23f'};
 function ligAmblem(x,y,tm){let t=G&&G.tema,u=null;try{u=ULK(t);}catch(e){}const M=LIG_AMB[t]||LIG_AMB[u]||LIG_AMB.GENEL;cx.fillStyle=DOGU_AMB_RENK[t]||tm[1];for(let j=0;j<7;j++)for(let i=0;i<7;i++)if(M[j][i]==='1')cx.fillRect(x+i,y+j,1,1);}
 
 // 🏆 Kıta kupaları skorbordları: Avrupa (26/27 tasarımı) ve Doğu (eski tasarım)
-const KUPA_SKB={UCL:['yil',0,'#1f2fbf','#ff8a00'],KY:['yil',1,'#1f2fbf','#ff8a00'],UEL:['kup',0,'#ff7a1a','#e01b24'],KR:['kup',1,'#ff7a1a','#e01b24'],UECL:['kup',0,'#1fd060','#e01b24'],AY:['kup',1,'#1fd060','#e01b24']};
+const KUPA_SKB={BAYRAK:['bay',0,'#e8322b','#3a4bd8'],DBAYRAK:['bay',1,'#1f5fd8','#e8322b'],UCL:['yil',0,'#1f2fbf','#ff8a00'],KY:['yil',1,'#1f2fbf','#ff8a00'],UEL:['kup',0,'#ff7a1a','#e01b24'],KR:['kup',1,'#ff7a1a','#e01b24'],UECL:['kup',0,'#1fd060','#e01b24'],AY:['kup',1,'#1fd060','#e01b24']};
 function kupaSkb(T0,T1,L0,dk){const K=KUPA_SKB[G.tema];if(!K)return;const [st,dogu,c,ek]=K,s0=String(G.skor[L0]),s1=String(G.skor[1-L0]),mm=(dk<10?'0':'')+Math.min(dk,120)+"'";
  cx.font='8px "Press Start 2P",monospace';cx.textBaseline='top';
+ if(st==='bay'){const rom=(x,col)=>{cx.fillStyle=col;cx.beginPath();cx.moveTo(x,4);cx.lineTo(x+7,11);cx.lineTo(x,18);cx.lineTo(x-7,11);cx.closePath();cx.fill();cx.fillStyle='#fff';cx.fillRect(x-4,10,8,2);};
+  cx.font='5px monospace';cx.fillStyle='#d8ffd0';cx.fillText(dogu?'DOĞU BAYRAK LİGİ':'BAYRAK LİGİ',5,19);cx.font='8px "Press Start 2P",monospace';
+  cx.fillStyle='#1c2236';cx.fillRect(4,4,38,14);cx.fillStyle='#fff';cx.fillText(mm,7,7);cx.fillStyle='#e6e8ef';cx.fillRect(42,4,108,14);rom(48,c);rom(150,ek);
+  cx.fillStyle='#1c2236';cx.fillText(T0.t.kod,58,7);cx.fillText(s0+'-'+s1,89,7);cx.fillText(T1.t.kod,118,7);return;}
  if(st==='yil'){cx.fillStyle=c;cx.fillRect(4,4,14,14);cx.fillStyle='#fff';cx.beginPath();cx.arc(11,11,5,0,7);cx.fill();cx.fillStyle=c;cx.beginPath();for(let i=0;i<10;i++){const a=-Math.PI/2+i*Math.PI/5,r=i%2?1.6:4;cx.lineTo(11+Math.cos(a)*r,11+Math.sin(a)*r);}cx.fill();
   cx.fillStyle='#fff';cx.fillRect(18,4,dogu?28:30,14);cx.fillStyle='#16204a';cx.fillText(mm,21,7);if(!dogu){cx.fillStyle='#ffd23f';cx.fillRect(50,7,2,7);}
   const bx=dogu?48:54;cx.fillStyle=c;cx.fillRect(bx,4,100,14);cx.fillStyle=ek;cx.fillRect(bx+100,4,3,14);cx.fillStyle='#fff';cx.fillText(T0.t.kod,bx+4,7);cx.fillText(s0,bx+42,7);cx.fillText(s1,bx+58,7);cx.fillText(T1.t.kod,bx+72,7);cx.fillStyle='rgba(255,255,255,.55)';cx.fillRect(bx+52,6,1,10);return;}
@@ -3299,7 +3303,7 @@ function oyYeniSezon(yeni){const o=OYS();const L=LEAGUES.find(l=>l.id===o.lig);c
 function oyEmekli(){const o=OYS();ekran('kar');$('karIc').innerHTML=`<div class="ligad">👋 ${o.ad} ${o.soy} FUTBOLU BIRAKTI</div><div class="sonra">${o.top.m} maç · ${o.top.g} gol · ${o.top.a} asist<br>Milli takım: ${o.milli.m} maç · ${o.milli.g} gol</div><div class="gec">${o.kupa.map(x=>kupaSatir(x)).join('<br>')||'Kupa yok'}</div><div class="gec">${o.gecmis.join('<br>')}</div><button class="btn" onclick="kayit('oyuncu',{});oyuncuBasla()">YENİ OYUNCU</button><button class="btn gri" onclick="ekran('ana')">ANA MENÜ</button>`;}
 
 // ===================== PİKSEL KUPA İKONLARI =====================
-const KUPA_HAR={asya:[".A.AAAA.A.","AA.ABBA.AA","AA.ABBA.AA",".AAABBAAA.","..AABBAA..","..AABBAA..","...ABBA...","....AA....","....AA....","...BBBB...","..CCCCCC..","..CCCCCC.."],kupa:["..AAAAAA..","AAABBBBAAA","A.ABBBBA.A","A.ABBBBA.A",".AABBBBAA.","..ABBBBA..","...ABBA...","....AA....","....AA....","...AAAA...","..CCCCCC..","..CCCCCC.."],
+const KUPA_HAR={bayrak:["...BBA....","..BAAB....","..A..AB...","...AABA...","..BAAA....","...AAA....","....A.....","....A.....","...AAA....","..CCCCC...","..CCCCC..."],dbayrak:["BBAAAAAA..","BBAAAAAA..",".BAAAAA...",".AAAAAA...","..AAAA....","..AABA....","...AB.....","...AA.....","..AAAA....",".CCCCCC...",".CCCCCC..."],asya:[".A.AAAA.A.","AA.ABBA.AA","AA.ABBA.AA",".AAABBAAA.","..AABBAA..","..AABBAA..","...ABBA...","....AA....","....AA....","...BBBB...","..CCCCCC..","..CCCCCC.."],kupa:["..AAAAAA..","AAABBBBAAA","A.ABBBBA.A","A.ABBBBA.A",".AABBBBAA.","..ABBBBA..","...ABBA...","....AA....","....AA....","...AAAA...","..CCCCCC..","..CCCCCC.."],
  kulak:["AA.AAAA.AA","A.ABBBBA.A","A.ABBBBA.A","AA.ABBA.AA","...ABBA...","....AA....","....AA....","...AAAA...","..CCCCCC..","..CCCCCC.."],
  kalkan:[".AAAAAAAA.","AABBBBBBAA","ABBBAABBBA","ABBAAAABBA","ABBBAABBBA",".ABBBBBBA.",".AABBBBAA.","..AABBAA..","...AAAA...","....AA...."],
  dunya:["...AAAA...","..ABBAAA..",".ABBBAABA.","ABBAABBBBA","ABAAAABBBA","ABBBAAABBA",".ABBBABBA.","..AABBBA..","...AAAA...","..CCCCCC.."],
@@ -3307,7 +3311,7 @@ const KUPA_HAR={asya:[".A.AAAA.A.","AA.ABBA.AA","AA.ABBA.AA",".AAABBAAA.","..AAB
  yildiz:["....AA....","....AA....","...AAAA...","AAAAAAAAAA",".AAAAAAAA.","..AAAAAA..","..AAAAAA..",".AAA..AAA.","AA......AA"]};
 function kupaIkon(tur,renk){const h=KUPA_HAR[tur]||KUPA_HAR.kupa;const C={A:renk[0],B:renk[1],C:'#5a3d1e'};let r='';h.forEach((row,y)=>{for(let x=0;x<row.length;x++){const c=C[row[x]];if(c)r+=`<rect x="${x}" y="${y}" width="1" height="1" fill="${c}"/>`;}});
  return `<svg width="${h[0].length*2}" height="${h.length*2}" viewBox="0 0 ${h[0].length} ${h.length}" shape-rendering="crispEdges" style="vertical-align:middle">${r}</svg>`;}
-function kupaTur(t){if(/Asya Ulus/i.test(t))return ['asya',['#d9dde3','#2fd27a']];if(/Yıldızlar/.test(t))return ['kulak',['#d8dee9','#8fa3b8']];if(/Kıta Ligi/.test(t))return ['kupa',['#f39200','#ffd28a']];if(/Umut Ligi/.test(t))return ['kupa',['#2ecc71','#b6f2cf']];
+function kupaTur(t){{const U=String(t).toLocaleUpperCase('tr');if(U.includes('DOĞU BAYRAK'))return ['dbayrak',['#d9dde3','#ff8a1a']];if(U.includes('BAYRAK LİG'))return ['bayrak',['#d9dde3','#7cc4ff']];}if(0)return ['bayrak',['#d9dde3','#7cc4ff']];if(/Asya Ulus/i.test(t))return ['asya',['#d9dde3','#2fd27a']];if(/Yıldızlar/.test(t))return ['kulak',['#d8dee9','#8fa3b8']];if(/Kıta Ligi/.test(t))return ['kupa',['#f39200','#ffd28a']];if(/Umut Ligi/.test(t))return ['kupa',['#2ecc71','#b6f2cf']];
  if(/Süper Kupa/.test(t))return ['kalkan',['#ffd23f','#c0392b']];if(/Piksel Kupası|Milletler/.test(t))return ['dunya',['#3498db','#2ecc71']];if(/Gol Kralı/.test(t))return ['ayak',['#ffd23f','#7a5a00']];
  if(/Altın Piksel|Sezonun Oyuncusu/.test(t))return ['yildiz',['#ffd23f','#ffd23f']];if(/Kupası/.test(t))return ['kupa',['#ffd23f','#fff3a0']];return ['kupa',['#e0e0e0','#ffd23f']];}
 function kupaSatir(t){const [k,r]=kupaTur(t);return kupaIkon(k,r)+' '+t.replace(/^(🏆|👟|⭐|🥇)\s*/,'');}
@@ -3470,6 +3474,7 @@ function anaSekme(i){$('anaModlar').style.display=i?'none':'flex';$('anaAyar').s
  const du=c.toDataURL();document.documentElement.style.setProperty('--stad','url('+du+')');const a=$('ana');if(a){a.style.backgroundImage='url('+du+')';a.style.imageRendering='pixelated';}}catch(e){}})();
 // 🆕 Yenilikler: sürüm geçmişi mini ekranı
 const SURUMLER=[
+ ['V10.0.77 · 13 Kasım 2026',['📺 Bayrak Ligi ve Doğu Bayrak Ligi skorbordu hazır: koyu süre kutusu, iki yanında renkli eşkenar dörtgen rozet, açık gri takım şeridi, üstte lig adı','🏆 Bayrak Ligi kupası (kıvrımlı uzun gümüş, mavi şerit) ve Doğu Bayrak Ligi kupası (noktalı gümüş huni, turuncu-yeşil şeritler) — turnuvalar açılınca kullanılacak']],
  ['V10.0.76 · 13 Kasım 2026',['🏳️ Bayrak Ligi ve Doğu Bayrak Ligi\'nin kendi logoları (özgün)','🛡️ Tüm milli takımlara özgün arma: altın çerçeveli yuvarlak rozet, ülke renklerinde çapraz bant, yıldız ve kısa kod','⚽ Aslanlar kadrosuna iki yıldız: 45 numara Nijeryalı forvet Chidozie Okonmeh ve 10 numara Alman kanat Lennart Sahner (kurgusal isimler)']],
  ['V10.0.75 · 13 Kasım 2026',['🏳️ Bayrak Ligi 2026/27 gruplarına gerçek kura yerleşti (Lig A–D, 54 ülke; Türkiye A1\'de Fransa, İtalya, Belçika ile); Doğu Bayrak Ligi (Rusya + KKTC grupları) yerleşti — ikisi de KİLİTLİ, kartına basınca sadece gruplar görünür']],
  ['V10.0.74 · 13 Kasım 2026',['🏆 Ana menüde yeni TURNUVALAR bölümü: Bayrak Ligi, Doğu Bayrak Ligi, Asya Bayrak Ligi, Kıta Ulus Kupası 2028, Doğu Ulus Kupası 2028 ve Asya Ulus Kupası 2027 tek ekranda toplandı (ana menü sadeleşti)']],
