@@ -3185,13 +3185,13 @@ function muzeV(t){const L=MUZE_V[ULK(t.lig)]||MUZE_V[t.lig];return (L&&L[t.kod])
 // 📜 TARİHÇE verileri (gerçek karşılıkların kupa sayıları, 2024/25 sonu itibarıyla; Ocak 2027 kadro güncellemesinde gözden geçirilir)
 const YEREL_K={TR:{ASL:19,KRT:11,FRT:9,KAN:7},ENG:{LTP:14,MCK:13,LAS:8,LVK:8,LHR:8},ESP:{BRS:32,BİL:24,MDB:20,MDK:10},ITA:{ZBR:15,MMS:9,RMK:9,RMG:7},GER:{MÜN:20,BRE:6,FRA:5,GEL:5,DRT:5},FRA:{PAR:16,MRS:10},NED:{AMS:20,ROT:14,EİN:10,ALK:4},POR:{BNF:26,POR:20,SPO:18,BRA:3},BEL:{BRU:12,BRÜ:9,LİÈ:8,GNT:4},SCO:{GLY:42,GLM:34,ABE:8,EDK:8},RUS:{MDY:9,MSO:8,NEV:4,MKR:4},KKTC:{CTK:0,MTG:0,YCM:0}};
 const YEREL_AD={TR:'Anadolu Kupası',ENG:'Ada Kupası',ESP:'İber Kupası',ITA:'Çizme Kupası',GER:'Ren Kupası',FRA:'Gal Kupası',NED:'Lale Kupası',POR:'Luso Kupası',BEL:'Flaman Kupası',SCO:'Tartan Kupası',RUS:'Kutup Kupası',KKTC:'Akdeniz Kupası'};
-const AVR_K={uel:{SVY:7,MMS:3,ZBR:3,LVK:3,MDK:3,LHR:3,POR:2,LAS:2,ROT:2,FRA:2,MGB:2,PRM:2,MDB:2,ASL:1,MCK:1,AMS:1,EİN:1,MÜN:1,GEL:1,LEV:1,VAL:1,NAP:1,NEV:1,MSO:1,BRÜ:1,VİL:1},uecl:{RMK:1,LKR:1,LAS:1}};
+const AVR_K={uel:{SVY:7,MMS:3,ZBR:3,LVK:3,MDK:3,LHR:3,POR:2,LAS:2,ROT:2,FRA:2,MGB:2,PRM:2,MDB:2,ASL:1,MCK:1,AMS:1,EİN:1,MÜN:1,GEL:1,LEV:1,VAL:1,NAP:1,NEV:1,MSO:1,BRÜ:1,VİL:1},uecl:{RMK:1,LAS:1,LKR:1}};
 function tarihceHtml(s){const ULS=Object.keys(MUZE_V),tk=(k,u)=>ALL.find(z=>z.kod===k&&(!u||ULK(z.lig)===u))||ALL.find(z=>z.kod===k);
  const satir=(t,n,ik)=>`<div class="trS">${t?chip(t):''}<span>${t?t.ad:'?'}</span><b>${ik} ${n}</b></div>`;
  const kart=(u,bas,L,ik)=>`<div class="trK"><div class="trB">${bayrakImg(u,9)} ${bas}</div>${L.map(([k,n])=>satir(tk(k,u),n,ik)).join('')||'<div class="trS"><span>Kayıt yok</span></div>'}</div>`;
  const bolum=(id,bas,ikon,ic)=>`<details class="trD" ${window._trA===id?'open':''} ontoggle="if(this.open)window._trA='${id}'"><summary>${ikon}<span>${bas}</span></summary><div class="trG">${ic}</div></details>`;
  const ligIk=u=>{const L=LEAGUES.find(l=>ULK(l.id)===u&&!/\d/.test(l.id));const kt=L?kupaTur(L.ad):['kupa',['#d9dde3','#ffd23f']];return kupaIkon(kt[0],kt[1]);};
- let h=`<div class="sonra" style="font-size:8px">Kurgusal kulüplerin gerçek karşılıklarının kupaları · kariyerde kazandıkların da eklenir</div>`;
+ let h=`<div class="sonra" style="font-size:8px">Kurgusal kulüplerin gerçek karşılıklarının kupaları · kariyerde kazandıkların da eklenir · Umut Ligi 25/26 şampiyonu: London Kartallar</div>`;
  h+=bolum('lig','LİG ŞAMPİYONLUKLARI',ligIk('TR'),ULS.map(u=>kart(u,(LEAGUES.find(l=>ULK(l.id)===u&&!/\d/.test(l.id))||{}).ad||ULKE_AD[u],Object.entries(MUZE_V[u]).sort((a,b)=>b[1][0]-a[1][0]).slice(0,4).map(([k,x])=>[k,x[0]]),'🏆')).join(''));
  h+=bolum('yerel','YEREL KUPALAR',kupaIkon('kupa',['#d9dde3','#c0392b']),Object.keys(YEREL_K).map(u=>kart(u,YEREL_AD[u],Object.entries(YEREL_K[u]).filter(x=>x[1]>0).sort((a,b)=>b[1]-a[1]),'🥇')).join('')+'<div class="kat" style="font-size:6px;grid-column:1/-1">Akdeniz Kupası sayıları henüz eklenmedi (Ocak güncellemesi).</div>');
  const yl=[];ULS.forEach(u=>Object.entries(MUZE_V[u]).forEach(([k,x])=>{if(x[1])yl.push([k,x[1],u]);}));yl.sort((a,b)=>b[1]-a[1]);
@@ -3501,6 +3501,7 @@ function anaSekme(i){$('anaModlar').style.display=i?'none':'flex';$('anaAyar').s
  const du=c.toDataURL();document.documentElement.style.setProperty('--stad','url('+du+')');const a=$('ana');if(a){a.style.backgroundImage='url('+du+')';a.style.imageRendering='pixelated';}}catch(e){}})();
 // 🆕 Yenilikler: sürüm geçmişi mini ekranı
 const SURUMLER=[
+ ['V10.0.87 · 13 Kasım 2026',['🟢 Tarihçe: Umut Ligi 2025/26 şampiyonu London Kartallar eklendi']],
  ['V10.0.86 · 13 Kasım 2026',['📜 TARİHÇE sekmesi yenilendi: tıklanır 4 bölme — Lig şampiyonlukları, Yerel kupalar, Avrupa kupaları (Yıldızlar / Kıta / Umut Ligi ayrı ayrı) ve Ülke puanı; her bölmede kendi kupa çizimi, ülke kartları düzenli (yazılar artık üst üste binmiyor)']],
  ['V10.0.85 · 13 Kasım 2026',['📜 Kariyere yeni TARİHÇE sekmesi: ligin en çok şampiyon olanları, tüm liglerin en başarılı kulüpleri ve ülke puanı sıralaması burada (açık gelir); FORMA+KUPALAR\'da tekrar eden "Kupa Müzesi" başlığı kaldırıldı']],
  ['V10.0.84 · 13 Kasım 2026',['👕 Kol yamaları biraz küçüldü ve kolun ortasına alındı, kol kenarına ve dış çizgiye çarpmıyor']],
