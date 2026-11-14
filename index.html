@@ -2857,7 +2857,7 @@ function kariyerMac(sim){
   s.haber.push(`${dr?'🔥 ':''}${s.hafta+1}. hafta: ${ALL[m[0]].kod} ${sk[0]}-${sk[1]} ${ALL[m[1]].kod}`+(olay&&olay.length?' · '+olay.filter(o=>o.tip==='gol').map(o=>'⚽'+o.ad).join(' '):''));
   aiTransferler(s);
   scoutHaftalik(s);mutsuzHaber(s);if(s.guven<=8){s.kovuldu=true;s.haber.push('❌ Yönetim görevine son verdi.');}else if(s.guven<=22&&!s.uyari){s.uyari=1;s.haber.push('⚠️ Yönetim sabırsızlanıyor: sonuçlar düzelmezse görevine son verilecek!');}else if(s.guven>35)s.uyari=0;
-  s.hafta++;krKaydet(s);if(s.baskanBekle&&!s.kovuldu)baskanGorusme(s);else kariyerEkran();};
+  s.hafta++;try{ayKontrol(s);}catch(e){console.warn('ay',e);}krKaydet(s);if(s.baskanBekle&&!s.kovuldu)baskanGorusme(s);else{kariyerEkran();ayRaporGoster();}};
  if(sim){const iz=s.izle&&s.izle.h===s.hafta&&s.izle.sezon===s.sezon?1.5:0;bitir(simMac({rt:takimGucu(m[0],s)+(m[0]===ben?iz:0)},{rt:takimGucu(m[1],s)+(m[1]===ben?iz:0)}),null);return;}
  ekran(null);onMacBitti=(sk,terk,olay)=>{G=null;$('oyun').style.display='none';if(terk){kariyerEkran();return;}
   const son=m[0]===ben?sk:[sk[1],sk[0]];
@@ -3412,6 +3412,20 @@ async function kayitIndir(){const o=kayitVerisi();if(!Object.keys(o.veri).length
 function kayitYukle(){const i=document.createElement('input');i.type='file';i.accept='.plkayit,.json,application/json';i.onchange=()=>{const f=i.files&&i.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{const o=JSON.parse(r.result);if(!o||o.oyun!=='PikselLig'||!o.veri)throw 0;if(!confirm('Kayıt yüklenecek ('+(o.tarih||'').slice(0,10)+'). Mevcut ilerlemenin yerine geçer. Devam?'))return;Object.keys(o.veri).forEach(k=>{if(/^pl/.test(k))localStorage.setItem(k,o.veri[k]);});alert('✅ Kayıt yüklendi.');location.reload();}catch(e){alert('Bu dosya bir Piksel Lig kaydı değil.');}};r.readAsText(f);};i.click();}
 
 // 💰 MALİ DURUM: bütçe, FFP, tahmini maaş yükü + bonservis taksitleri (4 taksit: imzada %25, sonra 3 sezon başı %25)
+// 🤝 SPONSOR + AY SONU MALİ RAPOR (kurgusal sponsor adları)
+const SPONSOR_AD=['Kıvrım Enerji','Atlas Lojistik','Mavi Liman Sigorta','Zirve Telekom','Pusula Bankası','Yıldız Hava Yolları','Demir Yapı','Bulut Teknoloji','Çınar Gıda','Rüzgar Otomotiv'];
+function sponsorBilgi(s){const t=ALL[s.ti],k=KADEME(t.lig),r=Math.max(55,takimGucu(s.ti,s)||t.rt);const aylik=Math.round(Math.max(.2,Math.pow(r-50,1.5)*.03/(k>1?k*1.6:1))*10)/10;
+ return {ad:SPONSOR_AD[(s.ti*7)%SPONSOR_AD.length],kol:SPONSOR_AD[(s.ti*7+3)%SPONSOR_AD.length],aylik,ana:Math.round(aylik*.7*10)/10,kolP:Math.round(aylik*.3*10)/10};}
+function ayKontrol(s){if(!s.fik||!s.fik.length)return;const w=Math.min(s.hafta,s.fik.length-1),d=haftaTarih(s,w),key=d.getFullYear()*12+d.getMonth();
+ if(s.ayK==null){s.ayK=key;s.ayB=s.butce;s.ayW=s.hafta;s.aySz=s.sezon;return;}if(key===s.ayK)return;
+ const sp=sponsorBilgi(s),ayAd=AYLAR[s.ayK%12]+' '+Math.floor(s.ayK/12);const ic=x=>x.sz===s.aySz&&x.h>=s.ayW&&x.h<s.hafta;
+ const T=(s.trl||[]).filter(ic),alim=T.filter(x=>x.tip==='h').reduce((a,x)=>a+x.f,0),satis=T.filter(x=>x.tip==='g').reduce((a,x)=>a+x.f,0),tk=(s.taksitOdeme||[]).filter(ic).reduce((a,x)=>a+x.f,0);
+ const once=s.butce;s.butce=Math.round((s.butce+sp.aylik)*10)/10;const r1=x=>Math.round(x*10)/10;
+ const R={ay:ayAd,bas:r1(s.ayB),son:r1(s.butce),sp:sp.aylik,spAd:sp.ad,alim:r1(alim),satis:r1(satis),tk:r1(tk),diger:r1(once-s.ayB-satis+alim)};
+ s.ayRaporlar=(s.ayRaporlar||[]).concat([R]).slice(-24);s.ayRaporBekle=R;s.haber.push(`🤝 ${sp.ad} sponsorluk ödemesi kasaya girdi: +${para(sp.aylik)}`);s.haber.push(`📊 ${ayAd} mali raporu yayınlandı.`);
+ s.ayK=key;s.ayB=s.butce;s.ayW=s.hafta;s.aySz=s.sezon;}
+function ayRaporSatir(R){const sn=(v,c)=>`<b style="color:${c}">${v>=0?'+':''}${para(v)}</b>`;return `💼 Ay başı kasa: <b>${para(R.bas)}</b><br>🤝 Sponsor (${R.spAd}): ${sn(R.sp,'#7dffb9')}<br>📈 Oyuncu satışı: ${sn(R.satis,'#7dffb9')}<br>📉 Oyuncu alımı: ${sn(-R.alim,'#ff9a9a')}<br>💸 Erken taksit (bütçe dışı): <b style="color:#ffd23f">${para(R.tk)}</b><br>🏟️ Maç günü, ödüller, diğer: ${sn(R.diger,R.diger>=0?'#7dffb9':'#ff9a9a')}<br>━━━━━━━━━━<br>💰 Ay sonu kasa: <b>${para(R.son)}</b> (${sn(Math.round((R.son-R.bas)*10)/10,R.son>=R.bas?'#7dffb9':'#ff9a9a')})`;}
+function ayRaporGoster(){const s=KRY();const R=s&&s.ayRaporBekle;if(!R)return;delete s.ayRaporBekle;krKaydet(s);setTimeout(()=>secimModal(`📊 ${R.ay.toUpperCase()} · AY SONU MALİ RAPOR`,`<div style="text-align:left;font-size:9px;line-height:1.9">${ayRaporSatir(R)}</div>`,[{t:'TAMAM',f:()=>{}}]),300);}
 function trLog(s,tip,ad,fiyat,ti){s.trl=s.trl||[];s.trl.push({tip,ad,f:Math.round(fiyat*10)/10,ti,sz:s.sezon||2026,h:s.hafta||0});if(s.trl.length>80)s.trl=s.trl.slice(-80);}
 function maliHtml(s){const T=s.trl||[],sz=s.sezon||2026,K=takimKadro(s.ti,s)||[];const maas=Math.round(K.reduce((a,p)=>a+Math.max(.05,(p.deger||0)*.08),0)*10)/10;
  T.forEach(x=>{if(x.ti==null&&x.ad&&x.ad!=='Serbest oyuncu'&&!x.tiB){x.tiB=1;for(let i=0;i<ALL.length;i++){if(i===s.ti||ALL[i].lig==='DIG')continue;if(bazKadro(i).some(p=>p.ad===x.ad)){x.ti=i;break;}}}});
@@ -3419,7 +3433,7 @@ function maliHtml(s){const T=s.trl||[],sz=s.sezon||2026,K=takimKadro(s.ti,s)||[]
  const satir=(x,al)=>{const t=tk(x),i=T.indexOf(x);return `<tr><td style="text-align:left">${x.ad}</td><td>${x.ti!=null&&ALL[x.ti]?chip(ALL[x.ti])+' '+ALL[x.ti].kod:'-'}</td><td>${para(x.f)}</td><td>${t.n}/4</td><td>${para(t.od)}</td><td style="color:${t.kal>0?(al?'#ff9a9a':'#7dffb9'):'#888'}">${para(t.kal)}</td>${al?`<td>${t.kal>0?`<button class="tab" onclick="taksitOde(${i})">💸 ÖDE</button>`:'✅'}</td>`:''}</tr>`;};
  const A=T.filter(x=>x.tip==='h'),S=T.filter(x=>x.tip==='g'),kb=A.reduce((a,x)=>a+tk(x).kal,0),ka=S.reduce((a,x)=>a+tk(x).kal,0);
  const tab=(L,al)=>L.length?`<table><tr><th style="text-align:left">Oyuncu</th><th>${al?'Satan':'Alan'}</th><th>Bedel</th><th>Taksit</th><th>${al?'Ödenen':'Tahsil'}</th><th>Kalan</th>${al?'<th></th>':''}</tr>${L.slice().reverse().map(x=>satir(x,al)).join('')}</table>`:'<div class="sonra" style="font-size:8px">Kayıt yok</div>';
- return `<div class="sonra" style="font-size:9px;line-height:1.9">💰 Bütçe: <b>${para(s.butce)}</b><br>👔 Tahmini yıllık maaş yükü: <b>${para(maas)}</b> (${K.length} oyuncu)<br>📉 Kalan bonservis borcu: <b style="color:#ff9a9a">${para(Math.round(kb*10)/10)}</b> · 📈 Gelecek taksit alacağı: <b style="color:#7dffb9">${para(Math.round(ka*10)/10)}</b></div>`+ffpHtml(s)+
+ return `<div class="sonra" style="font-size:9px;line-height:1.9">💰 Bütçe: <b>${para(s.butce)}</b><br>👔 Tahmini yıllık maaş yükü: <b>${para(maas)}</b> (${K.length} oyuncu)<br>📉 Kalan bonservis borcu: <b style="color:#ff9a9a">${para(Math.round(kb*10)/10)}</b> · 📈 Gelecek taksit alacağı: <b style="color:#7dffb9">${para(Math.round(ka*10)/10)}</b></div>`+ffpHtml(s)+(()=>{const sp=sponsorBilgi(s),A=s.ayRaporlar||[];return `<div class="ligad">🤝 SPONSORLAR</div><div class="sonra" style="font-size:8px;text-align:left">👕 Göğüs sponsoru: <b>${sp.ad}</b> · aylık ${para(sp.ana)}<br>💪 Kol sponsoru: <b>${sp.kol}</b> · aylık ${para(sp.kolP)}<br>Her ay sonu toplam <b style="color:#7dffb9">${para(sp.aylik)}</b> kasaya (bütçeye) eklenir.</div><div class="ligad">📊 AYLIK MALİ RAPORLAR</div>${A.length?A.slice().reverse().map((R,i)=>`<details ${i?'':'open'} style="max-width:560px;margin:3px auto;font-size:8px;text-align:left;background:#141c38;border-radius:4px;padding:4px"><summary style="cursor:pointer">📊 ${R.ay} · ${para(R.bas)} → ${para(R.son)}</summary>${ayRaporSatir(R)}</details>`).join(''):'<div class="sonra" style="font-size:8px">İlk rapor ay sonunda gelir.</div>'}`;})()+
   `<div class="ligad">ALINAN OYUNCULAR · TAKSİTLER</div>${tab(A,1)}<div class="ligad">SATILAN OYUNCULAR · ALACAKLAR</div>${tab(S,0)}${(s.taksitOdeme||[]).length?`<div class="ligad">MALİ RAPOR · ERKEN ÖDENEN TAKSİTLER</div><div class="sonra" style="font-size:8px;text-align:left">${s.taksitOdeme.slice().reverse().map(o=>`💸 ${o.sz}/${(o.sz+1)%100} ${o.h+1}. hafta · ${o.ad} · ${o.n}. taksit · ${para(o.f)}`).join('<br>')}<br><b>Toplam: ${para(Math.round(s.taksitOdeme.reduce((a,o)=>a+o.f,0)*10)/10)}</b></div>`:''}<div class="kat" style="font-size:7px">Bonservisler 4 taksitte ödenir: imzada %25, sonraki 3 sezon başında %25. 💸 ÖDE ile sıradaki taksit erken ödenir; transfer bütçesinden düşmez, mali rapora işlenir.</div>`;}
 function taksitOde(i){const s=KRY();const x=(s.trl||[])[i];if(!x||x.tip!=='h')return;const sz=s.sezon||2026,n=Math.min(4,Math.max(sz-x.sz+1,x.ek||0));if(n>=4)return;
  x.ek=n+1;const f=Math.round(x.f/4*10)/10;s.taksitOdeme=s.taksitOdeme||[];s.taksitOdeme.push({ad:x.ad,n:n+1,f,sz,h:s.hafta||0});if(s.taksitOdeme.length>60)s.taksitOdeme=s.taksitOdeme.slice(-60);
@@ -3504,7 +3518,7 @@ function macErtele(s,hafta,m){try{if(!m||s.hafta>=s.fik.length-1)return false;if
  s.haber.push(`🎙️ Spiker: "${kar?'Kar küreme makinesi yine mi yolda kaldı? Federasyon hava durumuna bakmayı ne zaman öğrenecek?':'Kahvemi aldım, atkımı taktım, maç başlamadan bitti! Federasyonun takvimi su aldı...'}"`);
  alert(`⛈️ MAÇ ERTELENDİ\n\n${A.ad} - ${B.ad}\n${kar?'Yoğun kar':'Şiddetli sağanak'} nedeniyle hakem maçı oynatmadı.\nMaç sezon sonunda ${s.fik.length}. haftada oynanacak.`);
  s._hft=[];hafta.forEach(([a,b])=>{const r=simMac({rt:takimGucu(a,s)},{rt:takimGucu(b,s)});isle(s.tab,a,b,r);formEkle(s,a,b,r);s._hft.push([a,b,r[0],r[1]]);});
- s._hft.forEach(([a,b,x,y])=>derbiX(s,a,b,x,y));try{sakatHafta(s);}catch(e){}try{aiTransferler(s);}catch(e){}s.hafta++;krKaydet(s);kariyerEkran();return true;}catch(e){return false;}}
+ s._hft.forEach(([a,b,x,y])=>derbiX(s,a,b,x,y));try{sakatHafta(s);}catch(e){}try{aiTransferler(s);}catch(e){}s.hafta++;try{ayKontrol(s);}catch(e){}krKaydet(s);kariyerEkran();ayRaporGoster();return true;}catch(e){return false;}}
 
 // lig rafı (ülke bayrakları + kademeler) — takım seçimi, transfer ve puan durumu ortak
 function ligRaf(sec,cmd,tum){const ul=sec?ULK(sec):'',UL=[...new Set(LEAGUES.map(L=>ULK(L.id)))];const c=id=>cmd.replace('#',id);
@@ -3548,6 +3562,7 @@ function anaSekme(i){$('anaModlar').style.display=i?'none':'flex';$('anaAyar').s
  const du=c.toDataURL();document.documentElement.style.setProperty('--stad','url('+du+')');const a=$('ana');if(a){a.style.backgroundImage='url('+du+')';a.style.imageRendering='pixelated';}}catch(e){}})();
 // 🆕 Yenilikler: sürüm geçmişi mini ekranı
 const SURUMLER=[
+ ['V10.0.121 · 14 Kas 2026',['🤝 Sponsorlar: göğüs ve kol sponsoru, her ay sonu sponsor parası kasaya eklenir','📊 Her ay sonunda mini mali rapor ekranı: ay başı/sonu kasa, sponsor, alım, satış, erken taksit, diğer','Mali Durum\'da sponsorlar ve geçmiş aylık raporlar']],
  ['V10.0.120 · 14 Kas 2026',['💸 Mali Durum taksit tablosuna ÖDE düğmesi: sıradaki taksit erken ödenir, transfer bütçesinden düşmez, mali rapora işlenir','Taksit tablosunda satan kulüp artık görünüyor']],
  ['V10.0.119 · 14 Kas 2026',['📅 Takvim ve Sıradaki Maç artık yerel kupa, süper kupa ve kıta kupası maçlarını da gösteriyor (amblem, tur, rakip)']],
  ['V10.0.118 · 14 Kas 2026',['Aslanlar\'ın #17 Rafael Leonço\'su transfer listesinde ve kadroda yeniden görünüyor']],
