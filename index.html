@@ -2988,6 +2988,11 @@ function guc(s,i){if(i>=10000)return MILLI[i-10000].rt;return i===s.ti?takimGucu
 function kadroOf(s,i){return i>=10000?ilk11(milliKadro(i-10000)):i===s.ti?benimIlk11(s):ilk11(kadroUygun(s,i));}
 
 // ---------- genel turnuva motoru ----------
+// Avrupa eleme takvimi (gerçek 26/27 UEFA tarihleri): play-off 16-24 Şub, Son 16 9-17 Mar, ÇF 6-14 Nis, YF 27 Nis-5 May
+function wTarih(s,ay,gun){const y=ay>=7?s.sezon:s.sezon+1,h=new Date(y,ay,gun).getTime()-2*864e5,n=s.fik.length;for(let w=0;w<n;w++){if(haftaTarih(s,w).getTime()>=h)return w;}return n-1;}
+function avrKoW(s){return [['KPO',[1,16],[1,23]],['Son 16',[2,9],[2,16]],['Çeyrek Final',[3,6],[3,13]],['Yarı Final',[3,27],[4,4]]].map(([t,x,z])=>{const a=wTarih(s,x[0],x[1]);let b=wTarih(s,z[0],z[1]);if(b<=a)b=a+1;return [t,a,b];});}
+function avrKoDuzelt(s){for(const k of Object.keys(s.kp||{})){const c=s.kp[k];if(!c||c.bitti||c.koT||!/^(UCL|UEL|UECL)$/.test(c.kod))continue;c.koT=1;const W={};avrKoW(s).forEach(([t,a,b])=>{W[t]=[a,b];});
+ c.adim.forEach((a,i)=>{if(a.t!=='ko'||!W[a.tur]||i<c.ai||(i===c.ai&&c.es))return;a.w=W[a.tur][a.ayak===2?1:0];});}}
 function wHes(s,f){const n=s.fik.length;return Math.min(n,Math.max(0,Math.round(f*n)));}
 function kpYeni(kod,ad,renk,onc,adim,ek){return Object.assign({kod,ad,renk,onc,adim,ai:0,es:null,kalan:[],ben:true,kazanan:null,finalist:null,log:[],bitti:false},ek||{});}
 function koAdimlar(s,n,a,b){const ad=[];let P=1;while(P*2<=n)P*=2;if(P<n)ad.push({t:'ko',tur:'Ön Eleme',ayak:0,on:1});for(let k=P;k>=2;k/=2)ad.push({t:'ko',tur:KOAD(k),ayak:0});
@@ -3066,7 +3071,7 @@ function avrLigKur(s,c,gercek){if(c.lig)return;if(UEFA_PRIM[c.kod])para_ekle(s,U
 function avrAdimlar(s,kod,giris){const ad=[];const q=['Q2','Q3','PO'];const gi=giris==='L'?3:q.indexOf(giris);
  q.slice(gi).forEach(t=>{ad.push({t:'q',tur:t,ayak:1,w:0},{t:'q',tur:t,ayak:2,w:0});});
  const F=kod==='UECL'?[.10,.20,.30,.40,.50,.58]:[.08,.14,.22,.30,.38,.46,.55,.60];F.forEach((f,k)=>ad.push({t:'lig',gun:k,w:wHes(s,f)}));
- [['KPO',.64,.66],['Son 16',.70,.72],['Çeyrek Final',.78,.80],['Yarı Final',.86,.88]].forEach(([t,a,b])=>{ad.push({t:'ko',tur:t,ayak:1,w:wHes(s,a)},{t:'ko',tur:t,ayak:2,w:wHes(s,b)});});
+ avrKoW(s).forEach(([t,a,b])=>{ad.push({t:'ko',tur:t,ayak:1,w:a},{t:'ko',tur:t,ayak:2,w:b});});
  ad.push({t:'ko',tur:'Final',ayak:0,w:s.fik.length});return ad;}
 function avrOlustur(s,g,gercek){const [kod,giris]=g.split('-');const c=kpYeni(kod,AVR_AD[kod],AVR_RENK[kod],1,avrAdimlar(s,kod,giris),{giris:g});if(giris==='L')avrLigKur(s,c,gercek);return c;}
 function avrDus(s,c,tur){const k=c.kod+'-'+tur,y=DUS[k];
@@ -3136,7 +3141,7 @@ function doguKur(s){if(!['RUS','KKTC'].includes(s.lig))return;const Ru=doguSira(
 function siradakiOlay(s){hayalet(s);let en=null;
  for(const k of Object.keys(s.kp||{})){const c=s.kp[k];if(!c||c.bitti)continue;const a=c.adim[c.ai];if(!a||a.w>s.hafta)continue;if(!benimMi(s,c))continue;
   if(!en||a.w<en.a.w||(a.w===en.a.w&&c.onc<en.c.onc))en={k,c,a};}return en;}
-function hayalet(s){if(s.milli&&s.kp.MQ&&s.kp.MQ.bitti&&!s.kp.MT&&!s.milli.tKur){s.milli.tKur=1;milliTurnuvaKur(s);}
+function hayalet(s){try{avrKoDuzelt(s);}catch(e){}if(s.milli&&s.kp.MQ&&s.kp.MQ.bitti&&!s.kp.MT&&!s.milli.tKur){s.milli.tKur=1;milliTurnuvaKur(s);}
  if(s.milli&&s.milli.plan&&s.milli.plan.ortaSezon&&!s.kp.MT&&!s.milli.tKur&&s.hafta>=wHes(s,.40)){s.milli.tKur=1;milliTurnuvaKur(s);}
  for(let g=0;g<400;g++){let is=false;
   for(const k of Object.keys(s.kp||{})){const c=s.kp[k];if(!c||c.bitti)continue;const a=c.adim[c.ai];if(!a||a.w>s.hafta)continue;
@@ -3583,6 +3588,7 @@ function anaSekme(i){$('anaModlar').style.display=i?'none':'flex';$('anaAyar').s
  const du=c.toDataURL();document.documentElement.style.setProperty('--stad','url('+du+')');const a=$('ana');if(a){a.style.backgroundImage='url('+du+')';a.style.imageRendering='pixelated';}}catch(e){}})();
 // 🆕 Yenilikler: sürüm geçmişi mini ekranı
 const SURUMLER=[
+ ['V10.0.127 · 14 Kas 2026',['🏆 Yıldızlar, Kıta ve Umut Ligi eleme turları gerçek takvime göre: play-off Şubat\'ın 3. ve 4. haftası, Son 16 Mart\'ın 2. ve 3. haftası, Çeyrek Final Nisan başı, Yarı Final Nisan sonu-Mayıs başı; iki maç farklı haftalarda','Lig aşamasını ilk 8\'de bitiren takım play-off oynamadan Son 16\'ya geçer']],
  ['V10.0.125 · 14 Kas 2026',['📅 Takvim kura çekilmemiş turu atlamıyor (Son 16 doğru gösteriliyor)','📅 Kıta kupasında doğrudan üst tura kalınca (ör. lig aşamasını ilk 8\'de bitirince) takvimde sıradaki tur "rakip kurada belli olur" diye görünüyor']],
  ['V10.0.124 · 14 Kas 2026',['🗓️ MAÇLARIM: bu sezon daha önce oynanan lig ve kupa maçları da listeye eklendi','🏅 REKORLARIM: en farklı galibiyet, en ağır yenilgi, en gollü maç, en uzun yenilmezlik ve galibiyet serisi']],
  ['V10.0.123 · 14 Kas 2026',['🗓️ Yeni MAÇLARIM sekmesi: oynadığın tüm lig, kupa ve milli maçlar (tarih, yarışma, tur, skor, G/B/M) + sezon özeti ve filtreler']],
