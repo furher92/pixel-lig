@@ -2230,12 +2230,61 @@ function armaYildizli(ic,n){// gövdeyi biraz küçültüp üstüne altın yıld
  let st='';const w=n*6.2,x0=16-w/2+3.1;for(let i=0;i<n;i++){const cx=x0+i*6.2,cy=3.2;st+=`<polygon points="${[0,1,2,3,4,5,6,7,8,9].map(j=>{const a=-Math.PI/2+j*Math.PI/5,r=j%2?1.25:2.9;return (cx+Math.cos(a)*r).toFixed(2)+','+(cy+Math.sin(a)*r).toFixed(2);}).join(' ')}" fill="#ffd23f" stroke="#7a5a00" stroke-width=".4"/>`;}
  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 36">${st}<g transform="translate(2.4,6.6) scale(.85)">${ic}</g></svg>`;}
 
+// 🛡️ ARMA_REF: 1. kademe kulüplerin armaları — gerçek armalardan sadece ŞEKİL/DESEN/SEMBOL ilhamı (lisanssız, yazı = oyun kodu)
+// [şekil k=kalkan y=daire o=oval a=sivri d=eşkenar dörtgen, desen duz/dz/yz/ik/cp/bant/dama/ch, sembol]
+const ARMA_REF=(()=>{const R={},ek=(lig,s)=>s.split(' ').forEach(x=>{const [k,v]=x.split('=');R[lig+':'+k]=v.split(',');});
+ek('TR','TRN=k,duz,harf GÖZ=a,ik,top SAM=k,ust,at KSM=y,duz,capa EYP=k,cp,yildiz RİZ=y,duz,yaprak KON=y,duz,kartal KOC=k,dz,harf ALA=y,ch,harf GAZ=k,ik,kartal GEN=y,ik,yildiz ERZ=k,duz,kartal AMD=k,duz,kartal ÇOR=y,duz,kartal');
+ek('ENG','LTP=k,duz,topcu LVK=k,duz,kus MCM=y,duz,gemi LAS=y,duz,aslan MCK=k,ust,catal NWC=o,dz,kale BRB=k,duz,aslan LHR=o,duz,horoz BRM=y,duz,kus NTO=k,duz,agac LKR=k,ik,kartal BOU=k,dz,harf LAR=y,dz,ari FUL=k,duz,harf LVM=k,duz,kale SUN=k,dz,aslan LEE=y,duz,harf COV=k,duz,kale İPS=k,duz,at HUL=y,duz,aslan');
+ek('ESP','MDB=y,bant,tac BRS=a,dz,top MDK=k,dz,agac VİL=k,duz,harf SVY=y,dz,harf BİL=k,dz,agac SSB=y,duz,top VİG=k,duz,hac SVB=k,ik,harf VAL=k,duz,yarasa GET=k,duz,harf OSA=k,duz,harf RAY=k,cp,simsek ESP=o,dz,tac ALV=y,duz,kale ELC=k,bant,agac LVT=k,dz,yarasa COR=k,bant,tac MLG=k,duz,kale RAC=y,duz,tac');
+ek('ITA','MMS=y,duz,harf NAP=y,duz,harf ZBR=a,dz,harf MŞY=o,dz,hac RMK=k,duz,kurt BRG=y,duz,yildiz COM=k,duz,harf RMG=k,duz,kartal BLG=k,dz,hac FLR=k,duz,zambak TRB=k,duz,boga CEN=k,ik,kartal UDİ=k,dz,harf PRM=k,duz,hac CAG=o,ik,harf LEC=y,dz,kurt SAS=k,dz,harf MNZ=k,duz,tac VEN=k,ik,aslan FRO=k,duz,harf');
+ek('GER','MÜN=y,dama,harf LEV=y,duz,aslan DRT=y,duz,harf LEİ=y,duz,boga STU=k,bant,at FRA=y,duz,kartal FRB=k,duz,harf HOF=k,duz,harf MGB=d,duz,harf BRE=d,duz,harf MAİ=y,duz,harf UNİ=k,dz,harf AUG=k,duz,harf KÖL=y,duz,boga HAM=d,dama,harf GEL=y,duz,harf PAD=k,duz,harf ELV=k,duz,harf');
+ek('FRA','PAR=y,bant,kale MRS=k,duz,harf MON=k,dama,tac LİL=k,duz,kurt LYO=k,duz,aslan LNS=y,duz,harf NİC=k,dz,kartal REN=k,duz,harf STR=y,duz,harf TLS=y,duz,hac BRT=k,duz,harf PFC=k,duz,kale AUX=y,duz,kus ANG=k,dz,harf HAV=y,duz,harf LOR=o,duz,balik LMN=k,ik,harf TRO=k,duz,harf');
+ek('NED','EİN=y,dz,harf AMS=y,duz,harf ROT=y,ik,harf ALK=k,duz,harf ENS=k,duz,at UTR=k,cp,harf NİJ=o,yz,kartal DEV=k,dz,kartal HEE=k,dz,kalp GRO=y,duz,harf SPR=y,dz,harf ZWO=k,duz,harf SİT=o,duz,harf EXC=y,ik,harf TEL=k,duz,harf CAM=k,dz,harf WİL=k,dz,tac ADO=k,duz,kus');
+ek('POR','BNF=y,duz,kartal POR=k,duz,ejder SPO=k,yz,aslan BRA=k,duz,hac GUİ=k,duz,kale FAM=k,duz,harf SCL=k,duz,hac GİL=k,duz,horoz MOR=k,duz,harf RİO=y,duz,harf EST=k,duz,harf ARO=y,duz,harf CPİ=k,ik,harf ALC=y,duz,harf AMA=k,dz,yildiz NAC=y,duz,harf MAR=k,ik,hac VİS=k,duz,harf');
+ek('BEL','BRU=y,duz,harf USG=k,duz,harf BRÜ=y,duz,harf GNK=y,duz,harf GNT=y,duz,boga ANV=k,duz,harf LİÈ=k,duz,harf MEC=y,duz,harf STV=k,duz,harf WES=k,duz,harf CHA=k,dz,harf CER=k,dz,harf LEU=k,duz,harf ZWA=k,ik,harf KOR=y,duz,harf LAL=k,duz,harf LOM=y,duz,harf BEV=k,duz,harf');
+ek('SCO','GLY=y,duz,yonca GLM=y,duz,aslan EDK=k,duz,kalp EDY=k,duz,gemi ABE=y,duz,kale MOT=k,ik,kartal DDU=y,duz,harf FAL=k,duz,harf KİL=k,duz,harf PSL=k,dz,gemi DDE=k,duz,harf PER=k,duz,harf');
+ek('RUS','NEV=y,duz,harf MKR=d,duz,harf MSO=k,ik,yildiz MDY=o,ik,harf MDN=y,duz,harf KUB=y,duz,boga RSV=k,duz,harf KZN=k,duz,harf KFK=y,duz,kurt VLG=k,duz,kartal NJN=k,ik,harf KLN=k,duz,gemi MHD=y,duz,harf TLY=y,duz,harf URL=y,duz,harf SOÇ=y,duz,harf');
+ek('KKTC','ALY=k,duz,harf ASK=y,duz,aslan BAF=k,duz,yildiz GGC=y,duz,harf CHG=k,ik,harf DGR=y,duz,harf DMP=k,duz,harf ESN=y,duz,harf KSY=k,duz,harf KKM=k,dz,harf MSR=y,duz,harf');
+return R;})();
+const ARMA_SEM={yildiz:'<path d="M16 9l2.1 4.6 5 .5-3.8 3.3 1.1 4.9-4.4-2.6-4.4 2.6 1.1-4.9-3.8-3.3 5-.5z"/>',
+ kartal:'<path d="M16 11l2 3 6-3-2 5 3 1-5 2 1 4-5-3-5 3 1-4-5-2 3-1-2-5 6 3z"/>',
+ aslan:'<circle cx="16" cy="17" r="6.5"/><circle cx="16" cy="17" r="4" fill="var(--b)"/><path d="M14 16h1v1h-1zM17 16h1v1h-1zM15 19h2v1h-2z"/>',
+ top:'<circle cx="16" cy="17.5" r="6" fill="#fff" stroke="#111" stroke-width=".8"/><path d="M16 14.5l2.4 1.7-.9 2.8h-3l-.9-2.8z" fill="#111"/>',
+ tac:'<path d="M9 21l1-8 3 4 3-6 3 6 3-4 1 8z"/><rect x="9" y="21.5" width="14" height="2"/>',
+ kale:'<path d="M10 23v-9h2v2h2v-2h4v2h2v-2h2v9z"/><rect x="15" y="19" width="2" height="4" fill="var(--b)"/>',
+ kus:'<path d="M9 18c3-4 6-4 8-2l4-3-1 4c-1 3-5 5-9 4l-3 2z"/>',horoz:'<path d="M12 23l1-5-3-3 4-1 1-4 2 2 3-1-1 3 3 2-3 2v5z"/>',
+ at:'<path d="M12 24l2-6-3-1 2-5 4-2 3 3-1 4 1 7z"/>',boga:'<path d="M9 12l3 3h8l3-3-1 5-2 1v4l-4 2-4-2v-4l-2-1z"/>',
+ kurt:'<path d="M11 11l3 4h4l3-4v7l-5 6-5-6z"/>',capa:'<path d="M15 10h2v2h2v1.5h-2V21c2 0 3-1 4-3l1 1c-1 3-3 4.5-6 4.5S11 22 10 19l1-1c1 2 2 3 4 3v-7.5h-2V12h2z"/>',
+ agac:'<path d="M16 9l6 8h-3l4 5h-6v2h-2v-2H9l4-5h-3z"/>',kalp:'<path d="M16 23l-6-6c-2-3 1-6 3-5 1 0 2 1 3 2 1-1 2-2 3-2 2-1 5 2 3 5z"/>',
+ hac:'<path d="M14 10h4v5h5v4h-5v5h-4v-5H9v-4h5z"/>',gemi:'<path d="M9 19h14l-2 4H11zM15 10h1v8h-1zM16 11l5 5h-5z"/>',
+ catal:'<path d="M15 12h2v12h-2zM11 11h1.5v4c0 1 1 2 3.5 2s3.5-1 3.5-2v-4H21v4c0 2-2 3.5-5 3.5S11 17 11 15z"/>',
+ topcu:'<path d="M9 21l11-6 2 2-11 6zM10 22a2 2 0 1 0 0.1 0z"/><circle cx="11" cy="23" r="2"/>',
+ ari:'<ellipse cx="16" cy="18" rx="4" ry="5"/><path d="M12 14l-3-2 1 4zM20 14l3-2-1 4z"/><rect x="12" y="17" width="8" height="1.2" fill="var(--b)"/><rect x="12" y="20" width="8" height="1.2" fill="var(--b)"/>',
+ yarasa:'<path d="M16 15l-2-2v2l-6-1 3 3-2 3 4-1 3 3 3-3 4 1-2-3 3-3-6 1v-2z"/>',simsek:'<path d="M18 9l-6 9h4l-2 7 6-9h-4z"/>',
+ zambak:'<path d="M16 9c-2 3-2 6 0 9 2-3 2-6 0-9zM10 14c0 4 3 5 5 5-1-3-2-5-5-5zM22 14c0 4-3 5-5 5 1-3 2-5 5-5zM11 20h10v2H11z"/>',
+ balik:'<path d="M9 18c3-4 8-4 11 0-3 4-8 4-11 0zM20 18l4-3v6z"/>',ejder:'<path d="M10 22l3-6-3-3 5 1 3-4 1 5 4 1-4 2 2 5-5-3z"/>',
+ yaprak:'<path d="M16 9c5 3 5 9 0 14-5-5-5-11 0-14z"/><path d="M16 11v11" stroke="var(--b)" stroke-width=".8"/>',
+ yonca:'<circle cx="13" cy="15" r="3"/><circle cx="19" cy="15" r="3"/><circle cx="16" cy="20" r="3"/><rect x="15.5" y="20" width="1" height="5"/>'};
+function armaRef(t,sp){const [sek,des,sem]=sp,c1=t.c1||'#888',c2=t.c2||'#fff';
+ const lum=c=>{const v=(c||'#000').replace('#','');return (parseInt(v.substr(0,2),16)*299+parseInt(v.substr(2,2),16)*587+parseInt(v.substr(4,2),16)*114)/1000;};
+ const P={k:'M2 2H30V18C30 27 16 34 16 34C16 34 2 27 2 18Z',y:'M16 2A16 16 0 1 1 15.9 2Z',o:'M16 1C26 1 30 9 30 18S26 35 16 35 2 27 2 18 6 1 16 1Z',a:'M2 2H30V20L16 34L2 20Z',d:'M16 1L31 18L16 35L1 18Z'}[sek]||'M2 2H30V18C30 27 16 34 16 34C16 34 2 27 2 18Z';
+ const D={duz:'',dz:`<rect x="6" width="4" height="36" fill="${c2}"/><rect x="14" width="4" height="36" fill="${c2}"/><rect x="22" width="4" height="36" fill="${c2}"/>`,yz:`<rect y="7" width="32" height="4" fill="${c2}"/><rect y="15" width="32" height="4" fill="${c2}"/><rect y="23" width="32" height="4" fill="${c2}"/>`,
+  ik:`<rect x="16" width="16" height="36" fill="${c2}"/>`,cp:`<polygon points="0,26 32,6 32,14 0,34" fill="${c2}"/>`,bant:`<rect y="13" width="32" height="10" fill="${c2}"/>`,ust:`<rect width="32" height="9" fill="${c2}"/>`,
+  dama:[0,1,2,3].map(r=>[0,1,2,3].map(c=>(r+c)%2?`<rect x="${c*8}" y="${r*9}" width="8" height="9" fill="${c2}"/>`:'').join('')).join(''),ch:`<polygon points="0,4 16,20 32,4 32,12 16,28 0,12" fill="${c2}"/>`}[des]||'';
+ const halka=sek==='y'||sek==='o';const ic=halka?c1:(des==='duz'?c1:'rgba(10,14,30,.78)');const fg=lum(ic==='rgba(10,14,30,.78)'?'#111':ic)>150?'#111':'#fff';
+ const kod=String(t.kod||'').slice(0,3),fs=kod.length>2?7.5:9.5;
+ const ort=sem==='harf'?`<text x="16" y="21" font-family="monospace" font-weight="bold" font-size="${fs}" text-anchor="middle" fill="${fg}">${kod}</text>`:`<g fill="${fg}" style="--b:${ic}">${ARMA_SEM[sem]||ARMA_SEM.yildiz}</g>`;
+ const ic2=halka?`<circle cx="16" cy="18" r="11" fill="${c1}" stroke="${c2}" stroke-width="1.5"/>`:(des==='duz'?'':`<circle cx="16" cy="18" r="8.5" fill="${ic}"/>`);
+ const altYazi=halka&&sem!=='harf'?`<text x="16" y="33" font-family="monospace" font-weight="bold" font-size="4.2" text-anchor="middle" fill="${lum(c2)>150?'#111':'#fff'}">${kod}</text>`:'';
+ return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 36"><defs><clipPath id="k"><path d="${P}"/></clipPath></defs><g clip-path="url(#k)"><rect width="32" height="36" fill="${halka?c2:c1}"/>${halka?'':D}</g><path d="${P}" fill="none" stroke="${lum(c1)>200&&lum(c2)>200?'#555':(lum(c2)>130?'#d4af37':c2)}" stroke-width="1.6"/>${ic2}${halka&&D?`<g clip-path="url(#h)">${''}</g>`:''}${ort}${altYazi}</svg>`;}
+
 function arma(t,h){h=h||14;if(!t)return '';const key=(t.kod||'')+'|'+t.c1+'|'+t.c2;let u=ARMA_C[key];
  if(!u&&(t.lig==='TR'||t.lig==='KKTC')&&ARMA_YILDIZ[t.kod]){let ic='';if(ARMA_OZ[t.kod])ic=ARMA_OZ[t.kod]();else if(t.kod==='KAN'){ic=null;}
   if(ic){u=ARMA_C[key]='data:image/svg+xml,'+encodeURIComponent(armaYildizli(ic,ARMA_YILDIZ[t.kod]));}}
  if(!u&&t.kod==='KAN'){// 🎉 Kanarya 120. yıl özel arması (özgün tasarım)
   const svg=`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 36"><path d="M2 2H30V18C30 27 16 34 16 34C16 34 2 27 2 18Z" fill="#0b1f5c"/><path d="M16 2H30V18C30 27 16 34 16 34Z" fill="#f5d10a"/><path d="M2 2H30V18C30 27 16 34 16 34C16 34 2 27 2 18Z" fill="none" stroke="#d4af37" stroke-width="2"/><circle cx="16" cy="15" r="8.5" fill="#0b1f5c" stroke="#d4af37" stroke-width="1.2"/><text x="16" y="18.2" font-family="monospace" font-weight="bold" font-size="8.5" text-anchor="middle" fill="#f5d10a">120</text><rect x="6" y="25" width="20" height="5" fill="#d4af37"/><text x="16" y="29.2" font-family="monospace" font-weight="bold" font-size="4.2" text-anchor="middle" fill="#0b1f5c">1907·2027</text><polygon points="16,3.5 16.9,5.6 19.1,5.6 17.3,6.9 18,9 16,7.7 14,9 14.7,6.9 12.9,5.6 15.1,5.6" fill="#d4af37"/></svg>`;
   u=ARMA_C[key]='data:image/svg+xml,'+encodeURIComponent((t.lig==='TR'&&ARMA_YILDIZ.KAN)?armaYildizli(svg.replace(/^<svg[^>]*>/,'').replace(/<\/svg>$/,''),ARMA_YILDIZ.KAN):svg);}
+ if(!u&&t.i<10000){const sp=ARMA_REF[ULK(t.lig)+':'+t.kod]||ARMA_REF[t.lig+':'+t.kod];if(sp&&!(ARMA_OZ[t.kod]&&(t.lig==='TR'||t.lig==='KKTC'))&&t.kod!=='KAN'){let svg=armaRef(t,sp);if((t.lig==='TR'||t.lig==='KKTC')&&ARMA_YILDIZ[t.kod])svg=armaYildizli(svg.replace(/^<svg[^>]*>/,'').replace(/<\/svg>$/,''),ARMA_YILDIZ[t.kod]);u=ARMA_C[key]='data:image/svg+xml,'+encodeURIComponent(svg);}}
  if(!u&&t.i>=10000){// 🏳️ milli takım arması (özgün): yuvarlak rozet, iki renkli çapraz bant, yıldız + top
   const c1=t.c1||'#888',c2=t.c2||'#fff',lm=c=>{const v=c.replace('#','');return (parseInt(v.substr(0,2),16)*299+parseInt(v.substr(2,2),16)*587+parseInt(v.substr(4,2),16)*114)/1000;},yz=lm(c1)>150?'#111':'#fff',kod=String(t.kod||'').slice(0,3);
   const svg=`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 36"><circle cx="16" cy="17" r="15" fill="#d4af37"/><circle cx="16" cy="17" r="13" fill="${c1}"/><clipPath id="m"><circle cx="16" cy="17" r="13"/></clipPath><g clip-path="url(#m)"><polygon points="0,26 32,8 32,15 0,33" fill="${c2}"/></g><path d="M16 6l1.4 2.9 3.1.4-2.3 2.1.6 3.1-2.8-1.5-2.8 1.5.6-3.1-2.3-2.1 3.1-.4z" fill="#ffd23f" stroke="#111" stroke-width=".5"/><rect x="8" y="21.5" width="16" height="7" rx="2" fill="#0b1430" opacity=".85"/><text x="16" y="27" font-family="monospace" font-weight="bold" font-size="6.5" text-anchor="middle" fill="#fff">${kod}</text></svg>`;
@@ -3592,6 +3641,7 @@ function anaSekme(i){$('anaModlar').style.display=i?'none':'flex';$('anaAyar').s
  const du=c.toDataURL();document.documentElement.style.setProperty('--stad','url('+du+')');const a=$('ana');if(a){a.style.backgroundImage='url('+du+')';a.style.imageRendering='pixelated';}}catch(e){}})();
 // 🆕 Yenilikler: sürüm geçmişi mini ekranı
 const SURUMLER=[
+ ['V10.0.129 · 14 Kas 2026',['🛡️ 12 ligin 1. kademe kulüplerine yeni armalar: her kulübün kendi şekli (kalkan, daire, oval, sivri, eşkenar dörtgen), deseni ve sembolü (kartal, aslan, taç, kale, gemi, boğa, kurt…) — kariyerde ve Futbol Dünyası Veritabanı\'nda']],
  ['V10.0.128 · 14 Kas 2026',['👕 FORMA+KUPALAR: yeni YEREL KUPA, LİG KUPASI (Ada ve Tartan) ve SÜPER KUPA formaları — iki kolda o kupanın yaması']],
  ['V10.0.127 · 14 Kas 2026',['🏆 Yıldızlar, Kıta ve Umut Ligi eleme turları gerçek takvime göre: play-off Şubat\'ın 3. ve 4. haftası, Son 16 Mart\'ın 2. ve 3. haftası, Çeyrek Final Nisan başı, Yarı Final Nisan sonu-Mayıs başı; iki maç farklı haftalarda','Lig aşamasını ilk 8\'de bitiren takım play-off oynamadan Son 16\'ya geçer']],
  ['V10.0.125 · 14 Kas 2026',['📅 Takvim kura çekilmemiş turu atlamıyor (Son 16 doğru gösteriliyor)','📅 Kıta kupasında doğrudan üst tura kalınca (ör. lig aşamasını ilk 8\'de bitirince) takvimde sıradaki tur "rakip kurada belli olur" diye görünüyor']],
