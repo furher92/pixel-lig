@@ -2768,7 +2768,7 @@ function pzYilOlasilik(ilgi,istek,yil){return clamp(ilgi-Math.abs(istek-yil)*.12
 function teklif(id,ti){pzBasla(id,ti,'al');}
 function kirala(id,ti){pzBasla(id,ti,'kira');}
 function pzBasla(id,ti,tip){const s=KRY();if(!pencereKontrol(s))return;const p=pzOyuncu(id,ti,s);if(!p)return;if(!yabanciUygun(s,p))return;
- const ilgi=pzIlgi(s,ti),istek=pzIstekYil(p),ajan=AJAN_AD[(id*7)%AJAN_AD.length];
+ const trK=ULK(ALL[ti].lig)==='TR'&&ULK(s.lig)!=='TR',ilgi=trK?.95:pzIlgi(s,ti),istek=pzIstekYil(p),ajan=AJAN_AD[(id*7)%AJAN_AD.length];
  const ajanUcret=pzYuv(Math.max(.05,p.deger*(tip==='kira'?.02:(.04+((id%5)*.012)))));const imza=pzYuv(Math.max(.05,p.deger*.025*istek));
  const durum=ilgi>.7?'😊 Çok istekli':ilgi>.45?'🙂 Sıcak bakıyor':ilgi>.25?'😐 Kararsız':'🙁 Pek istekli değil';
  if(tip==='kira'){
@@ -2776,12 +2776,12 @@ function pzBasla(id,ti,tip){const s=KRY();if(!pencereKontrol(s))return;const p=p
    [{t:`✅ Kulüple görüş (%${Math.round(ilgi*100)})`,renk:'#27ae60',f:()=>{if(Math.random()>ilgi){pzRed(`${ajan}: "${p.ad} kiralık olarak gelmek istemiyor."`);return;}pzKulupKira(id,ti,ajanUcret);}},{t:'VAZGEÇ',f:()=>{}}]);return;}
  const yillar=[1,2,3,4,5].filter(y=>Math.abs(y-istek)<=2);
  pzM('🧑‍💼 TEMSİLCİ GÖRÜŞMESİ',`<b>${p.ad}</b> (${p.mv}, ${p.g}, ${p.yas} yaş) · ${ALL[ti].ad}<br>Temsilci: <b>${ajan}</b><br><br>Oyuncunun durumu: ${durum}<br>İsteği: <b>${istek} yıllık</b> sözleşme<br>İmza parası: <b>${para(imza)}</b> · Temsilci ücreti: <b>${para(ajanUcret)}</b><br><br>Sözleşme süresini seç — isteğinden uzaklaştıkça imzalama olasılığı düşer:`,
-  yillar.map(y=>{const o=pzYilOlasilik(ilgi,istek,y),im=pzYuv(imza*y/istek);return {t:`✍️ ${y} yıl · imza ${para(im)} · %${Math.round(o*100)}`,renk:y===istek?'#27ae60':'',f:()=>{if(Math.random()>o){pzRed(`${ajan}: "${p.ad} ${y} yıllık teklifi kabul etmedi."`);return;}pzKulup(id,ti,y,ajanUcret,im);}};}).concat([{t:'VAZGEÇ',f:()=>{}}]));}
+  yillar.map(y=>{const o=trK?.92:pzYilOlasilik(ilgi,istek,y),im=pzYuv(imza*y/istek);return {t:`✍️ ${y} yıl · imza ${para(im)} · %${Math.round(o*100)}`,renk:y===istek?'#27ae60':'',f:()=>{if(Math.random()>o){pzRed(`${ajan}: "${p.ad} ${y} yıllık teklifi kabul etmedi."`);return;}pzKulup(id,ti,y,ajanUcret,im);}};}).concat([{t:'VAZGEÇ',f:()=>{}}]));}
 function pzRed(m){pzM('❌ OLMADI',m,[{t:'TAMAM',f:()=>kariyerEkran('transfer')}]);}
 // ---- 2) KULÜP (bonservis pazarlığı + takas) ----
 function pzKulup(id,ti,yil,ajan,imza){const s=KRY();const p=pzOyuncu(id,ti,s);if(!p)return;
  const kilit=p.g>takimGucu(ti,s)+3,istek=pzYuv(p.deger*(1.05+((id*13)%25)/100)*(kilit?1.25:1));
- const kabul=r=>clamp((r>=1?.92:r>=.9?.6:r>=.8?.32:.1)-(kilit?.22:0),.03,.97);
+ const trK=ULK(ALL[ti].lig)==='TR'&&ULK(s.lig)!=='TR';const kabul=r=>trK?(r>=.9?.92:r>=.8?.7:.4):clamp((r>=1?.92:r>=.9?.6:r>=.8?.32:.1)-(kilit?.22:0),.03,.97);
  const tekl=k=>{const f=pzYuv(istek*k);return {t:`${k===1?'💶 İstenen bedel':'📉 %'+Math.round((1-k)*100)+' düşük'}: ${para(f)} (%${Math.round(kabul(k)*100)})`,f:()=>pzKulupCevap(id,ti,yil,ajan,imza,f,istek,kabul(k),null)};};
  pzM('🏟️ KULÜP GÖRÜŞMESİ',`<b>${p.ad}</b> ${yil} yıllık sözleşmeye "evet" dedi.<br><br>${ALL[ti].ad} bonservis olarak <b>${para(istek)}</b> istiyor${kilit?' (takımın kilit oyuncusu!)':''}.<br>Bütçen: ${para(s.butce)}`,
   [tekl(1),tekl(.9),tekl(.8),tekl(.7),{t:'🔄 Takas teklif et',f:()=>pzTakas(id,ti,yil,ajan,imza,istek)},{t:'VAZGEÇ',f:()=>{}}]);}
@@ -3540,6 +3540,7 @@ function anaSekme(i){$('anaModlar').style.display=i?'none':'flex';$('anaAyar').s
  const du=c.toDataURL();document.documentElement.style.setProperty('--stad','url('+du+')');const a=$('ana');if(a){a.style.backgroundImage='url('+du+')';a.style.imageRendering='pixelated';}}catch(e){}})();
 // 🆕 Yenilikler: sürüm geçmişi mini ekranı
 const SURUMLER=[
+ ['V10.0.117 · 14 Kas 2026',['Yabancı kulüpler Anadolu kulüplerinden oyuncu alırken oyuncu ve kulüp çok daha istekli: makul tekliflerde imza ve anlaşma olasılığı %92']],
  ['V10.0.116 · 14 Kas 2026',['Transfer dönemi açıkken kulüpler oyunculara düzenli teklif yapıyor; listede olmayan oyunculara da teklif gelebiliyor','Her yaz ve kış transfer döneminde Transfer ekranına girince yeni teklifler düşüyor']],
  ['V10.0.115 · 14 Kasım 2026',['🏷️ Futbol Dünyası › Turnuvalar\'a LİGLER sekmesi: 36 ligin amblemi','❗ Sekmede kilit uyarısı: düzenlenemez']],
  ['V10.0.114 · 14 Kasım 2026',['🏷️ Lig amblemleri (2. bölüm): Anadolu 1-2-3-4, Ada 1 ve 3, Tartan 1-2-3-4, Flaman 1, Luso 2, Kutup, Akdeniz 1. Lig — artık tüm ligler kendi amblemiyle']],
