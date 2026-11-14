@@ -3506,7 +3506,7 @@ function mgGeri(s){if(s.mgGeri)return;s.mgGeri=1;const L=LEAGUES.find(l=>l.id===
  const lig=U.filter(x=>x.tip==='lig').sort((x,y)=>parseInt(x.tur)-parseInt(y.tur));if(U.length)s.macGec=U.filter(x=>x.tip!=='lig').concat(lig).concat(s.macGec||[]).slice(-300);}
 function mgRekor(L){if(!L.length)return '';let ig=null,ik=null,ec=null,ser=0,enS=0,yS=0,enY=0;const bs=x=>[x.a===x.ben?x.sk[0]:x.sk[1],x.a===x.ben?x.sk[1]:x.sk[0]];
  L.slice().reverse().forEach(x=>{const [b,r]=bs(x),f=b-r;if(f>0&&(!ig||f>ig.f))ig={x,f};if(f<0&&(!ik||f<ik.f))ik={x,f};if(!ec||b+r>ec.t)ec={x,t:b+r};ser=f>=0?ser+1:0;enS=Math.max(enS,ser);yS=f>0?yS+1:0;enY=Math.max(enY,yS);});
- const y=o=>`${TT(o.x.a).kod} ${o.x.sk[0]}-${o.x.sk[1]} ${TT(o.x.b).kod} <small>(${o.x.yar} · ${o.x.tur})</small>`;const G=L.reduce((a,x)=>a+bs(x)[0],0);
+ const yl=x=>{const LL=LEAGUES.find(l=>l.ad===x.yar);try{return LL?ligLogo(LL.id,12):kpLogo(x.yar,12);}catch(e){return '';}};const y=o=>`${chip(TT(o.x.a))} ${TT(o.x.a).kod} ${o.x.sk[0]}-${o.x.sk[1]} ${TT(o.x.b).kod} ${chip(TT(o.x.b))} <small>(${yl(o.x)} ${o.x.yar} · ${o.x.tur})</small>`;const G=L.reduce((a,x)=>a+bs(x)[0],0);
  return `<div class="ligad">🏅 REKORLARIM</div><div class="sonra" style="font-size:8px;text-align:left;line-height:1.9">${ig?`💥 En farklı galibiyet: <b>${y(ig)}</b><br>`:''}${ik?`💔 En ağır yenilgi: <b>${y(ik)}</b><br>`:''}${ec?`🎆 En gollü maç: <b>${y(ec)}</b><br>`:''}🔥 En uzun yenilmezlik: <b>${enS} maç</b> · 🏆 En uzun galibiyet serisi: <b>${enY} maç</b><br>⚽ Toplam: <b>${L.length} maç · ${G} gol</b></div>`;}
 function macGecHtml(s){try{mgGeri(s);krKaydet(s);}catch(e){console.warn('mgGeri',e);}const L=(s.macGec||[]).slice().reverse(),f=window._mgF||'hepsi';const F=L.filter(x=>f==='hepsi'||x.tip===f);
  const S={};L.forEach(x=>{const b=x.a===x.ben?x.sk[0]:x.sk[1],r=x.a===x.ben?x.sk[1]:x.sk[0];const k=x.sz;S[k]=S[k]||{o:0,g:0,b:0,m:0,a:0,y:0};const o=S[k];o.o++;o.a+=b;o.y+=r;b>r?o.g++:b<r?o.m++:o.b++;});
@@ -3651,6 +3651,7 @@ function anaSekme(i){$('anaModlar').style.display=i?'none':'flex';$('anaAyar').s
  const du=c.toDataURL();document.documentElement.style.setProperty('--stad','url('+du+')');const a=$('ana');if(a){a.style.backgroundImage='url('+du+')';a.style.imageRendering='pixelated';}}catch(e){}})();
 // 🆕 Yenilikler: sürüm geçmişi mini ekranı
 const SURUMLER=[
+ ['V10.0.135 · 14 Kas 2026',['🏅 REKORLARIM satırlarında kulüp armaları ve lig/kupa amblemleri']],
  ['V10.0.134 · 14 Kas 2026',['👕 FORMA+KUPALAR sekme düğmelerinde lig kupası, Avrupa kupası, yerel kupa ve süper kupa amblemleri']],
  ['V10.0.133 · 14 Kas 2026',['🏆 Gal Piksel Ligi kupası (gümüş top + altın çapraz gövde) ve Luso Piksel Ligi kupası çizildi; Logolar sekmesinde "null" yazısı kalktı']],
  ['V10.0.132 · 14 Kas 2026',['🛡️ Futbol Dünyası Veritabanı\'na LOGOLAR sekmesi: ülke seç → her kademenin lig kupası, yerel kupa ve süper kupa amblemleri + tüm liglerin lig amblemi ve kulüp armaları (armaya tıkla → kulüp profili)']],
