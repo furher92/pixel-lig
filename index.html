@@ -1311,7 +1311,7 @@ function izleBaslat(a,b){const s=KRY();const h=s.hafta,sz=s.sezon;ekran(null);tr
 // Takvim: yaklaşan maçlar, milli aralar, transfer dönemi
 function fifaAralari(y){return [[new Date(y,8,5),'Eylül'],[new Date(y,9,10),'Ekim'],[new Date(y,10,14),'Kasım'],[new Date(y+1,2,22),'Mart']];}
 function milliAraSimdi(s){if(!s.fik||s.hafta<=0||s.hafta>=s.fik.length)return null;const once=haftaTarih(s,s.hafta-1),sonra=haftaTarih(s,s.hafta);return fifaAralari(s.sezon).find(([d])=>d>once&&d<=sonra)||null;}
-function kupaYakin(s,w0,w1){const R=[];for(const k of Object.keys(s.kp||{})){const c=s.kp[k];if(!c||c.bitti)continue;let a=c.adim[c.ai];if(!a)continue;const me=c.milli?(s.milli&&s.milli.id):s.ti;if(!(c.ben===true||(Array.isArray(c.ben)&&c.ben.includes(me))))continue;let es=null;try{es=benimEsles(s,c);}catch(e){}if(!es){if(a.on&&c.adim[c.ai+1])a=c.adim[c.ai+1];else continue;}
+function kupaYakin(s,w0,w1){const R=[];for(const k of Object.keys(s.kp||{})){const c=s.kp[k];if(!c||c.bitti)continue;let a=c.adim[c.ai];if(!a)continue;const me=c.milli?(s.milli&&s.milli.id):s.ti;if(!(c.ben===true||(Array.isArray(c.ben)&&c.ben.includes(me))))continue;let es=null;try{es=benimEsles(s,c);}catch(e){}if(!es){let j=c.ai+1;while(c.adim[j]&&c.adim[j].ayak===2)j++;if(c.adim[j]&&c.adim[j].t==='ko')a=c.adim[j];else continue;}
  const w=Math.max(a.w,w0);if(w>w1)continue;let r=null,ev=null;try{const m=benimEsles(s,c);if(m&&m.length>1){const me=m[0]===s.ti||m[0]===s.ben;ev=me;r=TT(me?m[1]:m[0]);}}catch(e){}R.push({w,c,a,r,ev});}return R.sort((x,y)=>x.w-y.w||(x.c.onc||0)-(y.c.onc||0));}
 function kupaTkSatir(s,o,d){return `🏆 ${tarihYaz(d)} · ${kpLogo(o.c.ad,12,ULK(s.lig))} <b style="color:${o.c.renk||'#ffd23f'}">${o.c.ad}</b> · ${adimAd(o.c,o.a)}${o.r?` · ${o.ev?'🏠':'✈️'} ${chip(o.r)} ${o.r.ad}`:' · rakip kurada belli olur'}`;}
 function takvimHtml(s){if(!s.fik||s.hafta>=s.fik.length)return '';const sat=[];const n=s.fik.length;let KY=[];try{KY=kupaYakin(s,s.hafta,s.hafta+4);}catch(e){}
@@ -3583,6 +3583,7 @@ function anaSekme(i){$('anaModlar').style.display=i?'none':'flex';$('anaAyar').s
  const du=c.toDataURL();document.documentElement.style.setProperty('--stad','url('+du+')');const a=$('ana');if(a){a.style.backgroundImage='url('+du+')';a.style.imageRendering='pixelated';}}catch(e){}})();
 // 🆕 Yenilikler: sürüm geçmişi mini ekranı
 const SURUMLER=[
+ ['V10.0.125 · 14 Kas 2026',['📅 Kıta kupasında doğrudan üst tura kalınca (ör. lig aşamasını ilk 8\'de bitirince) takvimde sıradaki tur "rakip kurada belli olur" diye görünüyor']],
  ['V10.0.124 · 14 Kas 2026',['🗓️ MAÇLARIM: bu sezon daha önce oynanan lig ve kupa maçları da listeye eklendi','🏅 REKORLARIM: en farklı galibiyet, en ağır yenilgi, en gollü maç, en uzun yenilmezlik ve galibiyet serisi']],
  ['V10.0.123 · 14 Kas 2026',['🗓️ Yeni MAÇLARIM sekmesi: oynadığın tüm lig, kupa ve milli maçlar (tarih, yarışma, tur, skor, G/B/M) + sezon özeti ve filtreler']],
  ['V10.0.122 · 14 Kas 2026',['Yeni transfer edilen oyuncular artık gelir gelmez mutsuz olmuyor; forma şansı katıldıkları haftadan itibaren hesaplanıyor']],
