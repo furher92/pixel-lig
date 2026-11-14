@@ -2803,7 +2803,7 @@ function pzSon(id,ti,yil,ajan,imza,fiyat,takas){const s=KRY();const p=pzOyuncu(i
  {const F=s.ffp||{h:0,g:0};if(F.h+fiyat-F.g>ffpSinir(s))not+=`⚠️ FFP: net harcama ${para(pzYuv(F.h+fiyat-F.g))} olacak (sınır ${para(ffpSinir(s))}).<br>`;}
  const tq=takas!=null?takimKadro(s.ti,s).find(q=>q.id===takas):null;
  pzM('✍️ SÖZLEŞME',`${not}<b>${p.ad}</b> · ${yil} yıl<br>Bonservis: ${para(fiyat)}${tq?' + '+tq.ad+' (takas)':''}<br>İmza parası: ${para(imza)}<br>Temsilci ücreti: ${para(ajan)}<br><b>TOPLAM: ${para(top)}</b>`,
-  [{t:'🖊️ İMZALA',renk:'#27ae60',f:()=>{const s=KRY();s.butce=pzYuv(s.butce-top);ffpE(s,'h',fiyat+imza);trLog(s,'h',(typeof p!=='undefined'&&p&&p.ad)||'Serbest oyuncu',fiyat+imza,null);s.tr[id]=s.ti;s.soz=s.soz||{};s.soz[id]=yil;pzListeSil(s,id);
+  [{t:'🖊️ İMZALA',renk:'#27ae60',f:()=>{const s=KRY();s.butce=pzYuv(s.butce-top);ffpE(s,'h',fiyat+imza);trLog(s,'h',(typeof p!=='undefined'&&p&&p.ad)||'Serbest oyuncu',fiyat+imza,(ti!=null&&ALL[ti])?ti:null);s.tr[id]=s.ti;s.soz=s.soz||{};s.soz[id]=yil;pzListeSil(s,id);
     if(tq){s.tr[tq.id]=ti;delete s.soz[tq.id];pzListeSil(s,tq.id);s.haber.push(`🔄 TAKAS: ${tq.ad} → ${ALL[ti].ad}`);}
     s.haber.push(`✅ TRANSFER: ${p.ad} (${ALL[ti].kod}) ${para(fiyat)}${tq?' + '+tq.ad:''} · ${yil} yıllık sözleşme`);s.haber.push(`📰 ${rs(BASIN_GZ)}: "${ALL[s.ti].ad}, ${p.ad} transferini resmen açıkladı"`);krKaydet(s);transferVideo(p,ALL[ti],fiyat,()=>imzaToreni(p,ALL[ti],fiyat,()=>kariyerEkran('transfer')));}},{t:'VAZGEÇ',f:()=>{}}]);}
 function pzKulupKira(id,ti,ajan){const s=KRY();const p=pzOyuncu(id,ti,s);if(!p)return;const ilkte=ilk11(takimKadro(ti,s)).includes(p);const ucret=pzYuv(Math.max(.1,p.deger*(.1+((id%7)*.008))));
@@ -3414,12 +3414,16 @@ function kayitYukle(){const i=document.createElement('input');i.type='file';i.ac
 // 💰 MALİ DURUM: bütçe, FFP, tahmini maaş yükü + bonservis taksitleri (4 taksit: imzada %25, sonra 3 sezon başı %25)
 function trLog(s,tip,ad,fiyat,ti){s.trl=s.trl||[];s.trl.push({tip,ad,f:Math.round(fiyat*10)/10,ti,sz:s.sezon||2026,h:s.hafta||0});if(s.trl.length>80)s.trl=s.trl.slice(-80);}
 function maliHtml(s){const T=s.trl||[],sz=s.sezon||2026,K=takimKadro(s.ti,s)||[];const maas=Math.round(K.reduce((a,p)=>a+Math.max(.05,(p.deger||0)*.08),0)*10)/10;
- const tk=x=>{const n=Math.min(4,sz-x.sz+1),od=Math.round(x.f*n/4*10)/10;return {n,od,kal:Math.round((x.f-od)*10)/10};};
- const satir=(x,al)=>{const t=tk(x);return `<tr><td style="text-align:left">${x.ad}</td><td>${x.ti!=null&&ALL[x.ti]?ALL[x.ti].kod:'-'}</td><td>${para(x.f)}</td><td>${t.n}/4</td><td>${para(t.od)}</td><td style="color:${t.kal>0?(al?'#ff9a9a':'#7dffb9'):'#888'}">${para(t.kal)}</td></tr>`;};
+ T.forEach(x=>{if(x.ti==null&&x.ad&&x.ad!=='Serbest oyuncu'&&!x.tiB){x.tiB=1;for(let i=0;i<ALL.length;i++){if(i===s.ti||ALL[i].lig==='DIG')continue;if(bazKadro(i).some(p=>p.ad===x.ad)){x.ti=i;break;}}}});
+ const tk=x=>{const n=Math.min(4,Math.max(sz-x.sz+1,x.ek||0)),od=Math.round(x.f*n/4*10)/10;return {n,od,kal:Math.round((x.f-od)*10)/10};};
+ const satir=(x,al)=>{const t=tk(x),i=T.indexOf(x);return `<tr><td style="text-align:left">${x.ad}</td><td>${x.ti!=null&&ALL[x.ti]?chip(ALL[x.ti])+' '+ALL[x.ti].kod:'-'}</td><td>${para(x.f)}</td><td>${t.n}/4</td><td>${para(t.od)}</td><td style="color:${t.kal>0?(al?'#ff9a9a':'#7dffb9'):'#888'}">${para(t.kal)}</td>${al?`<td>${t.kal>0?`<button class="tab" onclick="taksitOde(${i})">💸 ÖDE</button>`:'✅'}</td>`:''}</tr>`;};
  const A=T.filter(x=>x.tip==='h'),S=T.filter(x=>x.tip==='g'),kb=A.reduce((a,x)=>a+tk(x).kal,0),ka=S.reduce((a,x)=>a+tk(x).kal,0);
- const tab=(L,al)=>L.length?`<table><tr><th style="text-align:left">Oyuncu</th><th>${al?'Satan':'Alan'}</th><th>Bedel</th><th>Taksit</th><th>${al?'Ödenen':'Tahsil'}</th><th>Kalan</th></tr>${L.slice().reverse().map(x=>satir(x,al)).join('')}</table>`:'<div class="sonra" style="font-size:8px">Kayıt yok</div>';
+ const tab=(L,al)=>L.length?`<table><tr><th style="text-align:left">Oyuncu</th><th>${al?'Satan':'Alan'}</th><th>Bedel</th><th>Taksit</th><th>${al?'Ödenen':'Tahsil'}</th><th>Kalan</th>${al?'<th></th>':''}</tr>${L.slice().reverse().map(x=>satir(x,al)).join('')}</table>`:'<div class="sonra" style="font-size:8px">Kayıt yok</div>';
  return `<div class="sonra" style="font-size:9px;line-height:1.9">💰 Bütçe: <b>${para(s.butce)}</b><br>👔 Tahmini yıllık maaş yükü: <b>${para(maas)}</b> (${K.length} oyuncu)<br>📉 Kalan bonservis borcu: <b style="color:#ff9a9a">${para(Math.round(kb*10)/10)}</b> · 📈 Gelecek taksit alacağı: <b style="color:#7dffb9">${para(Math.round(ka*10)/10)}</b></div>`+ffpHtml(s)+
-  `<div class="ligad">ALINAN OYUNCULAR · TAKSİTLER</div>${tab(A,1)}<div class="ligad">SATILAN OYUNCULAR · ALACAKLAR</div>${tab(S,0)}<div class="kat" style="font-size:7px">Bonservisler 4 taksitte ödenir: imzada %25, sonraki 3 sezon başında %25.</div>`;}
+  `<div class="ligad">ALINAN OYUNCULAR · TAKSİTLER</div>${tab(A,1)}<div class="ligad">SATILAN OYUNCULAR · ALACAKLAR</div>${tab(S,0)}${(s.taksitOdeme||[]).length?`<div class="ligad">MALİ RAPOR · ERKEN ÖDENEN TAKSİTLER</div><div class="sonra" style="font-size:8px;text-align:left">${s.taksitOdeme.slice().reverse().map(o=>`💸 ${o.sz}/${(o.sz+1)%100} ${o.h+1}. hafta · ${o.ad} · ${o.n}. taksit · ${para(o.f)}`).join('<br>')}<br><b>Toplam: ${para(Math.round(s.taksitOdeme.reduce((a,o)=>a+o.f,0)*10)/10)}</b></div>`:''}<div class="kat" style="font-size:7px">Bonservisler 4 taksitte ödenir: imzada %25, sonraki 3 sezon başında %25. 💸 ÖDE ile sıradaki taksit erken ödenir; transfer bütçesinden düşmez, mali rapora işlenir.</div>`;}
+function taksitOde(i){const s=KRY();const x=(s.trl||[])[i];if(!x||x.tip!=='h')return;const sz=s.sezon||2026,n=Math.min(4,Math.max(sz-x.sz+1,x.ek||0));if(n>=4)return;
+ x.ek=n+1;const f=Math.round(x.f/4*10)/10;s.taksitOdeme=s.taksitOdeme||[];s.taksitOdeme.push({ad:x.ad,n:n+1,f,sz,h:s.hafta||0});if(s.taksitOdeme.length>60)s.taksitOdeme=s.taksitOdeme.slice(-60);
+ s.haber.push(`💸 ${x.ad} bonservisinin ${n+1}. taksiti (${para(f)}) ödendi.`);krKaydet(s);kariyerEkran('mali');}
 
 // 🌍 ÜLKE PUANI (kulüp katsayısı, son 5 sezon) — Avrupa/Doğu maçlarında galibiyet 2, beraberlik 1 puan; ülkedeki takım sayısına bölünür
 const ULKE_P0={ENG:106.463,ITA:90.732,ESP:85.868,GER:83.973,FRA:71.010,POR:67.350,BEL:62.450,NED:55.395,TR:52.275,GRE:46.612,CZE:45.725,POL:45.725,NOR:40.212,DEN:40.056,CYP:35.443,SCO:33.2,RUS:30.1,KKTC:6.5};
@@ -3544,6 +3548,7 @@ function anaSekme(i){$('anaModlar').style.display=i?'none':'flex';$('anaAyar').s
  const du=c.toDataURL();document.documentElement.style.setProperty('--stad','url('+du+')');const a=$('ana');if(a){a.style.backgroundImage='url('+du+')';a.style.imageRendering='pixelated';}}catch(e){}})();
 // 🆕 Yenilikler: sürüm geçmişi mini ekranı
 const SURUMLER=[
+ ['V10.0.120 · 14 Kas 2026',['💸 Mali Durum taksit tablosuna ÖDE düğmesi: sıradaki taksit erken ödenir, transfer bütçesinden düşmez, mali rapora işlenir','Taksit tablosunda satan kulüp artık görünüyor']],
  ['V10.0.119 · 14 Kas 2026',['📅 Takvim ve Sıradaki Maç artık yerel kupa, süper kupa ve kıta kupası maçlarını da gösteriyor (amblem, tur, rakip)']],
  ['V10.0.118 · 14 Kas 2026',['Aslanlar\'ın #17 Rafael Leonço\'su transfer listesinde ve kadroda yeniden görünüyor']],
  ['V10.0.117 · 14 Kas 2026',['Yabancı kulüpler Anadolu kulüplerinden oyuncu alırken oyuncu ve kulüp çok daha istekli: makul tekliflerde imza ve anlaşma olasılığı %92']],
