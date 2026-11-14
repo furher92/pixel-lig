@@ -2524,7 +2524,7 @@ function bazKadro(ti){
   const yas=18+((r()*16)|0),ilk=j%(m==='KL'?2:m==='FV'?4:6)<(m==='KL'?1:m==='FV'?2:4);
   const g=Math.round(clamp(t.rt+(ilk?2:-5)+(r()*10-5)-(yas<21?4:0),45,94));
   return {id:ti*100+j,ad,mv:m,yas,g,ul,deger:degerHesap(g,yas)};});
- if(t.kod==='ASL'){const g1=Math.round(clamp(t.rt+6,70,94)),g2=Math.round(clamp(t.rt+4,68,92));k.push({id:ti*100+45,ad:'Chidozie Okonmeh',mv:'FV',yas:27,g:g1,ul:'NGA',no:45,deger:degerHesap(g1,27)*1.6},{id:ti*100+10,ad:'Lennart Sahner',mv:'OS',yas:30,g:g2,ul:'GER',no:10,deger:degerHesap(g2,30)*1.2},{id:ti*100+17,ad:'Rafael Leonço',mv:'FV',yas:27,g:g1-1,ul:'POR',no:17,deger:degerHesap(g1-1,27)*1.5});}
+ if(t.kod==='ASL'){const g1=Math.round(clamp(t.rt+6,70,94)),g2=Math.round(clamp(t.rt+4,68,92));k.push({id:ti*100+45,ad:'Chidozie Okonmeh',mv:'FV',yas:27,g:g1,ul:'NGA',no:45,deger:degerHesap(g1,27)*1.6},{id:ti*100+10,ad:'Lennart Sahner',mv:'OS',yas:30,g:g2,ul:'GER',no:10,deger:degerHesap(g2,30)*1.2},{id:ti*100+47,ad:'Rafael Leonço',mv:'FV',yas:27,g:g1-1,ul:'POR',no:17,deger:degerHesap(g1-1,27)*1.5});}
  if(t.kod==='ASL')k.push({id:ti*100+83,ad:'Gleb Sarnovski',mv:'OS',yas:20,g:Math.round(clamp(t.rt-2,60,92)),ul:'RUS',no:83,yetenek:1,deger:degerHesap(Math.round(clamp(t.rt-2,60,92)),20)*1.4});
  KADRO_CACHE[ti]=k;return k;}
 // kariyer durumu
@@ -3540,6 +3540,7 @@ function anaSekme(i){$('anaModlar').style.display=i?'none':'flex';$('anaAyar').s
  const du=c.toDataURL();document.documentElement.style.setProperty('--stad','url('+du+')');const a=$('ana');if(a){a.style.backgroundImage='url('+du+')';a.style.imageRendering='pixelated';}}catch(e){}})();
 // 🆕 Yenilikler: sürüm geçmişi mini ekranı
 const SURUMLER=[
+ ['V10.0.118 · 14 Kas 2026',['Aslanlar\'ın #17 Rafael Leonço\'su transfer listesinde ve kadroda yeniden görünüyor']],
  ['V10.0.117 · 14 Kas 2026',['Yabancı kulüpler Anadolu kulüplerinden oyuncu alırken oyuncu ve kulüp çok daha istekli: makul tekliflerde imza ve anlaşma olasılığı %92']],
  ['V10.0.116 · 14 Kas 2026',['Transfer dönemi açıkken kulüpler oyunculara düzenli teklif yapıyor; listede olmayan oyunculara da teklif gelebiliyor','Her yaz ve kış transfer döneminde Transfer ekranına girince yeni teklifler düşüyor']],
  ['V10.0.115 · 14 Kasım 2026',['🏷️ Futbol Dünyası › Turnuvalar\'a LİGLER sekmesi: 36 ligin amblemi','❗ Sekmede kilit uyarısı: düzenlenemez']],
