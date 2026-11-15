@@ -2979,7 +2979,7 @@ function yeniSezon(odul,sira){const s=KRY();try{ulkePuanSezon(s);}catch(e){}cons
  const skHes=(lig,sr,w,f)=>{if(lig==='SCO'||KADEME(lig)>1)return [];if(SK4[lig]&&!(lig==='TR'&&yy>=2027)){const a=[];[sr[0],sr[1],w,f].concat(sr).forEach(x=>{if(x!=null&&!a.includes(x)&&a.length<4)a.push(x);});return a;}return [sr[0],w!=null&&w!==sr[0]?w:sr[1]];};
  s.skIds=skHes(s.lig,ids,kw,kf);s.avrGiris=erisim(s.lig,ids,kw)[s.ti]||null;s.doguSira={lig:s.lig,ids};
  const A=s.kp.AVR;const ucl=A&&A.kod==='UCL'&&A.kazanan!=null?A.kazanan:hizliSampiyon(s,'UCL')[0];let uel=A&&A.kod==='UEL'&&A.kazanan!=null?A.kazanan:hizliSampiyon(s,'UEL')[0];if(uel===ucl)uel=hizliSampiyon(s,'UEL')[1];
- s.usk=[ucl,uel];s.haber.push(`📰 ${s.sezon}/${(s.sezon+1)%100} Avrupa şampiyonları: YL ${ALL[ucl].ad} · KL ${ALL[uel].ad}`);
+ s.usk=[ucl,uel];try{sezonSampKaydet(s,s.sezon,KADEME(s.lig)===1?ids:null,kw,ucl,uel);}catch(e){console.warn('samp',e);}s.haber.push(`📰 ${s.sezon}/${(s.sezon+1)%100} Avrupa şampiyonları: YL ${ALL[ucl].ad} · KL ${ALL[uel].ad}`);
  if(s.milli){const m=MILLI[s.milli.n];s.milli.gecmis.push(`${s.sezon}/${(s.sezon+1)%100}: ${s.milli.plan?s.milli.plan.e:''}${s.milli.elemeSira?' · grupta '+s.milli.elemeSira+'.':''}${s.kp.MT?(s.kp.MT.kazanan===m.i?' · 🏆 '+s.kp.MT.ad:' · '+s.kp.MT.ad+' oynandı'):''}`);
   if(s.milli.guven<15){s.haber.push(`❌ ${m.ad} federasyonu görevine son verdi.`);s.men.itibar=clamp(s.men.itibar-6,0,100);s.milli=null;}}
  // kiralıklar döner
@@ -3181,6 +3181,16 @@ function avrOlustur(s,g,gercek){const [kod,giris]=g.split('-');const c=kpYeni(ko
 function avrDus(s,c,tur){const k=c.kod+'-'+tur,y=DUS[k];
  if(!y){c.ben=false;c.bitti=true;s.haber.push(`😢 ${c.ad} ${ASAMA_AD[tur]} turunda elendik, Avrupa defteri kapandı.`);return;}
  const n=avrOlustur(s,y);n.log=c.log.concat([`↘️ ${c.ad} ${ASAMA_AD[tur]} kaybedildi → ${GIRIS_AD(y)}`]);s.kp.AVR=n;s.haber.push(`↘️ ${c.ad} elemesini geçemedik. ${GIRIS_AD(y)} ile devam!`);}
+// 📜 Her sezonun şampiyonları (tüm ülkelerin üst ligi + Avrupa kupaları) kariyere yazılır → Tarihçe
+function sezonSampKaydet(s,yil,ids,kw,ucl,uel){s.samp=s.samp||{};if(s.samp[yil])return;const o={lig:{},yk:{},avr:{}},bu=ULK(s.lig);
+ Object.keys(MUZE_V).forEach(u=>{const L=LEAGUES.find(l=>ULK(l.id)===u&&!/\d/.test(l.id));if(!L)return;let w=null;
+  if(ids&&L.id===s.lig)w=ids[0];else{const g=i=>{try{return takimGucu(i,s);}catch(e){return ALL[i].rt;}};w=L.t.map(t=>[t.i,g(t.i)+Math.random()*7]).sort((a,b)=>b[1]-a[1])[0][0];}
+  if(w!=null&&ALL[w])o.lig[u]=ALL[w].kod;});
+ if(kw!=null&&ALL[kw])o.yk[bu]=ALL[kw].kod;
+ const hz=k=>{try{const x=hizliSampiyon(s,k)[0];return x!=null&&ALL[x]?ALL[x].kod:null;}catch(e){return null;}};
+ o.avr.ucl=ucl!=null&&ALL[ucl]?ALL[ucl].kod:hz('UCL');o.avr.uel=uel!=null&&ALL[uel]?ALL[uel].kod:hz('UEL');{const A=s.kp&&s.kp.AVR;o.avr.uecl=A&&A.kod==='UECL'&&A.kazanan!=null&&ALL[A.kazanan]?ALL[A.kazanan].kod:hz('UECL');}
+ if(o.avr.uel===o.avr.ucl)o.avr.uel=hz('UEL');
+ s.samp[yil]=o;}
 function hizliSampiyon(s,kod){const h=avrHavuz(s,kod,[]).sort((a,b)=>ALL[b].rt+Math.random()*6-ALL[a].rt-Math.random()*6).slice(0,16);let k=karistir(h);
  while(k.length>1){const y=[];for(let i=0;i<k.length;i+=2){const r=simMac({rt:guc(s,k[i])},{rt:guc(s,k[i+1])});y.push(r[0]>r[1]?k[i]:r[1]>r[0]?k[i+1]:penKazanan(s,k[i],k[i+1]));if(k.length===2)return [y[0],y[0]===k[0]?k[1]:k[0]];}k=y;}return [k[0],k[0]];}
 
@@ -3336,9 +3346,15 @@ function tarihceHtml(s){const ULS=Object.keys(MUZE_V),tk=(k,u)=>ALL.find(z=>z.ko
  // kariyerde kazanılan kupalar (s.muze) sayılara ve geçmiş listelerine eklenir
  const T0=s&&s.ti!=null?TT(s.ti):null,ul0=T0?ULK(T0.lig):null,szY=z=>`${z}/${String((z+1)%100).padStart(2,'0')}`;
  const kz={lig:{},yerel:{},sup:{},lk:{},ucl:{},uel:{},uecl:{},asup:{}},kzD=[{},{},{}],kzDG=[[],[],[]],kzG={lig:{},yerel:{},sup:{},ucl:[],uel:[],uecl:[]},ek=(o,k)=>{o[k]=(o[k]||0)+1;};
- ((s&&s.muze)||[]).forEach(m=>{if(!m||!m.ad)return;const k=m.k||(T0&&T0.kod),u=m.u||ul0,ad=m.ad;if(!k||!u)return;const sz=szY(m.sz||2026);
+ // kaynak: menajer kupa defteri (kulüp kodu yazılı) + tören kayıtları; kodsuz eski kayıt o sezonki kulübe yazılır
+ const kupL=[],gor={},szKlp={};
+ ((s&&s.men&&s.men.gecmis)||[]).forEach(x=>{const m=/^(\d{4})\/\d+: (.+?) (?:·|\()/.exec(x||'');if(m){const t=ALL.find(z=>z.ad===m[2]);if(t)szKlp[+m[1]]=t;}});
+ ((s&&s.men&&s.men.kupalar)||[]).forEach(x=>{const m=/^🏆 (.+?) (\d{4})\/\d+ \(([^)]+)\)$/u.exec(x||'');if(!m)return;const t=tk(m[3]);if(!t)return;kupL.push({ad:m[1],sz:+m[2],k:t.kod,u:ULK(t.lig)});gor[m[1]+'|'+m[2]]=1;});
+ ((s&&s.muze)||[]).forEach(m=>{if(!m||!m.ad)return;const z=m.sz||2026;if(gor[m.ad+'|'+z])return;gor[m.ad+'|'+z]=1;let k=m.k,u=m.u;if(!k){const t=(s&&z===s.sezon?T0:szKlp[z])||T0;if(!t)return;k=t.kod;u=ULK(t.lig);}kupL.push({ad:m.ad,sz:z,k,u});});
+ if(s&&s.sezon>2026){let deg=0;for(let y=2026;y<s.sezon;y++)if(!(s.samp&&s.samp[y])){try{sezonSampKaydet(s,y,null,null,null,null);deg=1;}catch(e){}}if(deg)try{krKaydet(s);}catch(e){}}
+ kupL.forEach(m=>{const k=m.k,u=m.u,ad=m.ad;if(!k||!u)return;const sz=szY(m.sz||2026);
   if(/Kıtalar Süper Kupası/.test(ad))ek(kz.asup,k);
-  else if(/^(Kutup Yıldızı|Kuzey Rüzgârı|Ayaz) Kupası/.test(ad)||((u==='RUS'||u==='KKTC')&&/^(Yıldızlar|Kıta|Umut) Ligi/.test(ad))){const di=/^Kutup|^Yıldızlar/.test(ad)?0:/^Kuzey|^Kıta/.test(ad)?1:2;ek(kzD[di],k);kzDG[di].push([sz,k]);}
+  else if(/^(Kutup Yıldızı|Kuzey Rüzgârı|Ayaz) Kupası/.test(ad)){const di=/^Kutup/.test(ad)?0:/^Kuzey/.test(ad)?1:2;ek(kzD[di],k);kzDG[di].push([sz,k]);}
   else if(/^Yıldızlar Ligi/.test(ad)){ek(kz.ucl,k);kzG.ucl.push([sz,k]);}
   else if(/^Kıta Ligi/.test(ad)){ek(kz.uel,k);kzG.uel.push([sz,k]);}
   else if(/^Umut Ligi/.test(ad)){ek(kz.uecl,k);kzG.uecl.push([sz,k]);}
@@ -3346,6 +3362,12 @@ function tarihceHtml(s){const ULS=Object.keys(MUZE_V),tk=(k,u)=>ALL.find(z=>z.ko
   else if(ad===YEREL_AD[u]){ek(kz.yerel[u]=kz.yerel[u]||{},k);(kzG.yerel[u]=kzG.yerel[u]||[]).push([sz,k]);}
   else if(LIG_KUPA[u]&&ad===LIG_KUPA[u][0])ek(kz.lk[u]=kz.lk[u]||{},k);
   else{const L=LEAGUES.find(l=>l.ad===ad&&!/\d/.test(l.id));if(L){ek(kz.lig[u]=kz.lig[u]||{},k);(kzG.lig[u]=kzG.lig[u]||[]).push([sz,k]);}}});
+ Object.entries((s&&s.samp)||{}).forEach(([y,o])=>{const sz=szY(+y),var_=(L,z)=>(L||[]).some(x=>x[0]===z);
+  Object.entries(o.lig||{}).forEach(([u,k])=>{if(var_(kzG.lig[u],sz))return;ek(kz.lig[u]=kz.lig[u]||{},k);(kzG.lig[u]=kzG.lig[u]||[]).push([sz,k]);});
+  Object.entries(o.yk||{}).forEach(([u,k])=>{if(var_(kzG.yerel[u],sz))return;ek(kz.yerel[u]=kz.yerel[u]||{},k);(kzG.yerel[u]=kzG.yerel[u]||[]).push([sz,k]);});
+  ['ucl','uel','uecl'].forEach(c=>{const k=(o.avr||{})[c];if(!k||var_(kzG[c],sz))return;ek(kz[c],k);kzG[c].push([sz,k]);});});
+ const szS=L=>L.sort((a,b)=>a[0]<b[0]?-1:a[0]>b[0]?1:0);Object.values(kzG.lig).forEach(szS);Object.values(kzG.yerel).forEach(szS);Object.values(kzG.sup).forEach(szS);[kzG.ucl,kzG.uel,kzG.uecl].forEach(szS);kzDG.forEach(szS);
+ const kkS=L=>(L||[]).map(([z,k])=>[z.slice(0,5)+(+z.slice(0,4)+1),k]),kkY=L=>(L||[]).map(([z,k])=>[String(+z.slice(0,4)+1),k]);
  const _css=[],_cls={},ikon=(key,fn)=>{if(!(key in _cls)){const svg=fn()||'';if(!/^<svg/.test(svg)){_cls[key]=null;}else{_cls[key]='ki'+Object.keys(_cls).length;_css.push(`.${_cls[key]}{background-image:url("data:image/svg+xml;charset=utf-8,${encodeURIComponent(/xmlns=/.test(svg)?svg:svg.replace('<svg ','<svg xmlns="http://www.w3.org/2000/svg" '))}")}`);}}return _cls[key]?`<i class="trKp ${_cls[key]}"></i>`:'🏆';};
  const bos=k=>/^!(—|.*(Düzenlenmedi|Verilmedi|Oynanmadı|ilan edilmedi|tamamlanamadı|düzenlenmedi|Ertelendi))/i.test(k||'');
  const gsay=L=>{const o={};(L||[]).forEach(([z,k])=>{if(k&&!bos(k))o[k]=(o[k]||0)+1;});return o;};
@@ -3370,7 +3392,7 @@ function tarihceHtml(s){const ULS=Object.keys(MUZE_V),tk=(k,u)=>ALL.find(z=>z.ko
  const gk2=(u,bas,L)=>`<div class="trK"><div class="trB">${bas}</div>${L.slice().reverse().map(([sz,k])=>{const t=k[0]!=='!'?tk(k,u):null;return `<div class="trS"><b style="color:#9fb3e8;min-width:44px">${sz}</b>${t?chip(t):yokArma(k.slice(1))}<span>${t?t.ad:k.slice(1)}</span></div>`;}).join('')}</div>`;
  const gk=(bas,L,ik)=>`<div class="trK"><div class="trB">${ik} ${bas}</div>${L.slice().reverse().map(([sz,k])=>{const t=k&&k[0]!=='!'?tk(k,'KKTC'):null,ad=(k||'!—').slice(1);return `<div class="trS"><b style="color:#9fb3e8;min-width:44px">${sz}</b>${t?chip(t):yokArma(ad)}<span>${t?t.ad:ad}</span></div>`;}).join('')}</div>`;
  h+=bolum('liggec','LİG GEÇMİŞİ',ligIk('TR'),Object.entries(LIG_GECMIS).map(([u,L0])=>{const L=L0.concat(kzG.lig[u]||[]);return gk2(u,`${bayrakImg(u,9)} ${lLogo(u,16)||''} ${ligAd(u)} · ${L[0][0]}–${L[L.length-1][0]}`,L);}).join(''));
- h+=bolum('kktc','AKDENİZ GEÇMİŞİ · KKTC',yKupa('KKTC',22),gk('Lig · 1955/56–',KKTC_GECMIS.lig.concat(kzG.lig.KKTC||[]),lLogo('KKTC',16)||'🏆')+gk('Akdeniz Kupası · 1956–',KKTC_GECMIS.kupa.concat(kzG.yerel.KKTC||[]),yKupa('KKTC',16))+gk('Akdeniz Süper Kupası · 1981–',KKTC_GECMIS.super.concat(kzG.sup.KKTC||[]),sKupa('KKTC',16)));
+ h+=bolum('kktc','AKDENİZ GEÇMİŞİ · KKTC',yKupa('KKTC',22),gk('Lig · 1955/56–',KKTC_GECMIS.lig.concat(kkS(kzG.lig.KKTC)),lLogo('KKTC',16)||'🏆')+gk('Akdeniz Kupası · 1956–',KKTC_GECMIS.kupa.concat(kkY(kzG.yerel.KKTC)),yKupa('KKTC',16))+gk('Akdeniz Süper Kupası · 1981–',KKTC_GECMIS.super.concat(kkY(kzG.sup.KKTC)),sKupa('KKTC',16)));
  h+=bolum('ulke','ÜLKE PUANI SIRALAMASI','🌍',`<div style="grid-column:1/-1">${ulkePuanHtml(s)}</div>`);
  return `<style>${_css.join('')}</style>`+h;}
 function kupaMuzeHtml(s,tm){const T=TT(s.ti);if(!T)return '';const v=muzeV(T),M=(s.muze||[]);
@@ -3716,6 +3738,7 @@ function anaSekme(i){$('anaModlar').style.display=i?'none':'flex';$('anaAyar').s
  const du=c.toDataURL();document.documentElement.style.setProperty('--stad','url('+du+')');const a=$('ana');if(a){a.style.backgroundImage='url('+du+')';a.style.imageRendering='pixelated';}}catch(e){}})();
 // 🆕 Yenilikler: sürüm geçmişi mini ekranı
 const SURUMLER=[
+ ['V10.0.145 · 15 Kas 2026',['📜 Tarihçe: kariyerde kazanılan kupalar artık kazanıldığı kulübe yazılıyor (kulüp değiştirince yeni takıma geçmiyor)','🏆 Her sezon sonunda bütün ülkelerin lig şampiyonu ile Yıldızlar, Kıta ve Umut Ligi şampiyonları Tarihçe\'ye işleniyor; geçmiş sezonlar da tamamlanıyor','❄️ Doğu kupaları yalnızca kendi adıyla kazanıldığında Doğu bölümüne yazılıyor']],
  ['V10.0.144 · 15 Kas 2026',['📜 Tarihçe: lig, Yıldızlar, Kıta ve Umut Ligi şampiyon listelerine yıllık geçmişteki bütün eski şampiyonlar geri eklendi (oyunda olmayan kulüpler baş harfli armayla)','❄️ Doğu kupaları (Kutup Yıldızı, Kuzey Rüzgârı, Ayaz) artık Avrupa kupalarına karışmıyor: Tarihçe\'de ayrı DOĞU KUPALARI ve TURNUVA GEÇMİŞİ · DOĞU bölümleri var']],
  ['V10.0.143 · 15 Kas 2026',['📜 Tarihçe: kariyerde kazanılan kupalar artık sayılara ve geçmiş listelerine ekleniyor (lig, yerel kupa, lig kupası, süper kupa, Yıldızlar/Kıta/Umut Ligi)','⭐ Tarihçe\'ye SÜPER KUPALAR bölümü: 11 süper kupa ve Kıtalar Süper Kupası','🏆 Tarihçe\'de simge yerine kupaların kendisi: lig kupaları, yerel kupalar, lig kupaları, süper kupalar ve Avrupa kupaları','🛡️ Oyunda yer almayan eski şampiyonlar baş harfli nötr armayla görünüyor']],
  ['V10.0.142 · 15 Kas 2026',['⭐ 11 süper kupaya kendi kupa çizimi (Anadolu, Ada, İber, Çizme, Ren, Lale, Luso, Flaman, Kutup, Akdeniz Süper Kupası ve Kıtalar Süper Kupası): veritabanı KUPALAR sırası ve şampiyonluk töreni','👕 Süper kupa şampiyonu bir sezon sağ kolda ek SÜP yaması, Kıtalar Süper Kupası şampiyonu Avrupa formasında sol kolda ek SÜP yaması taşır']],
