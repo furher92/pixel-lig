@@ -1657,7 +1657,7 @@ function kupaToreni(baslik,T,sonra){const d=document.createElement('div');d.styl
  const tx=document.createElement('div');tx.className='ligad';tx.style.fontSize='13px';tx.style.textAlign='center';tx.innerHTML='🏆 '+baslik+'<br><span style="font-size:10px;color:#fff">'+T.ad+'</span>';d.appendChild(tx);
  const bt=document.createElement('button');bt.className='btn';bt.textContent='DEVAM';d.appendChild(bt);document.body.appendChild(d);
  const g=c.getContext('2d');g.setTransform(TVK,0,0,TVK,0,0);g.imageSmoothingEnabled=false;const kon=[];for(let i=0;i<140;i++)kon.push({x:Math.random()*384,y:-Math.random()*216,v:.4+Math.random()*.9,c:[T.c1,T.c2,'#ffd23f','#ffffff'][i%4]});
- const kt=kupaTur(baslik),Hh=KUPA_HAR[kt[0]],kr=kt[1];const ark=(SKB[(LEAGUES.find(l=>baslik.includes(l.ad.toLocaleUpperCase('tr')))||{}).id]||[T.c1,T.c2]);let fr=0,bitti=false;try{sesGol();}catch(e){}
+ const kt=kupaTur(baslik),Hh=KUPA_HAR[kt[0]],kr=kt[1];const yU=typeof YEREL_AD!=='undefined'&&Object.keys(YEREL_AD).find(u=>baslik.includes(YEREL_AD[u].toLocaleUpperCase('tr')));let yImg=null;if(yU&&typeof YK_SVG!=='undefined'&&YK_SVG[yU]){yImg=new Image();yImg.src='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(yKupa(yU,56).replace('<svg ','<svg xmlns="http://www.w3.org/2000/svg" '));}const ark=(SKB[(LEAGUES.find(l=>baslik.includes(l.ad.toLocaleUpperCase('tr')))||{}).id]||[T.c1,T.c2]);let fr=0,bitti=false;try{sesGol();}catch(e){}
  const kare=()=>{if(bitti)return;fr++;g.fillStyle='#0b1226';g.fillRect(0,0,384,216);
   for(let i=0;i<90;i++){g.fillStyle=(i*7+fr)%29<2?'#ffffff':['#1d2747','#27325a','#151d38'][i%3];g.fillRect((i*37)%384,8+(i*13)%74,3,2);}
   g.fillStyle='#2f8a3a';g.fillRect(0,150,384,66);g.fillStyle='#38a145';for(let x=0;x<384;x+=32)g.fillRect(x,150,16,66);
@@ -1666,7 +1666,7 @@ function kupaToreni(baslik,T,sonra){const d=document.createElement('div');d.styl
   g.fillStyle='#e8e8e8';g.fillRect(86,134,212,16);g.fillStyle='#b5b5b5';g.fillRect(86,148,212,3);g.fillStyle=T.c1;g.fillRect(86,140,212,2);
   for(let i=0;i<11;i++){const x=100+i*18,zp=Math.max(0,Math.sin(fr*.16+i*.9))*6,y=134-zp,kap=i===5;
    g.fillStyle='#222';g.fillRect(x-2,y-1,1,2);g.fillRect(x+1,y-1,1,2);g.fillStyle=T.c2;g.fillRect(x-2,y-3,4,2);g.fillStyle=T.c1;g.fillRect(x-2,y-7,4,4);g.fillStyle='#f1c27d';g.fillRect(x-1,y-9,3,2);g.fillRect(x-3,y-12,1,4);g.fillRect(x+2,y-12,1,4);g.fillStyle='#3b2416';g.fillRect(x-1,y-10,3,1);
-   if(kap){const ky=Math.round(y-11-Hh.length-Math.abs(Math.sin(fr*.08))*3),w=Hh[0].length,hw=w>>1;Hh.forEach((row,yy)=>{for(let xx=0;xx<row.length;xx++){const C={A:kr[0],B:kr[1],C:'#5a3d1e'}[row[xx]];if(C){g.fillStyle=C;g.fillRect(x-hw+xx,ky+yy,1,1);}}});
+   if(kap&&yImg&&yImg.complete&&yImg.naturalWidth){const ky=Math.round(y-31-Math.abs(Math.sin(fr*.08))*3);g.drawImage(yImg,x-7,ky,14,20);}else if(kap){const ky=Math.round(y-11-Hh.length-Math.abs(Math.sin(fr*.08))*3),w=Hh[0].length,hw=w>>1;Hh.forEach((row,yy)=>{for(let xx=0;xx<row.length;xx++){const C={A:kr[0],B:kr[1],C:'#5a3d1e'}[row[xx]];if(C){g.fillStyle=C;g.fillRect(x-hw+xx,ky+yy,1,1);}}});
     if(fr%40<20){g.fillStyle='rgba(255,255,255,.8)';g.fillRect(x-hw-2,ky-1,1,1);g.fillRect(x+hw+2,ky+3,1,1);}}}
   kon.forEach(k=>{k.y+=k.v;k.x+=Math.sin((fr+k.y)*.05)*.5;if(k.y>216){k.y=-4;k.x=Math.random()*384;}g.fillStyle=k.c;g.fillRect(Math.round(k.x),Math.round(k.y),2,2);});
   const fp=fr%70;if(fp<40){const n=(fr/70)|0,fx=50+(n*97)%284,fy=30+(n*23)%30,rr=fp*1.1;for(let a=0;a<14;a++){g.fillStyle=['#ffd23f','#ff4fa3','#4aa3ff','#7dffb9'][n%4];g.fillRect(Math.round(fx+Math.cos(a/14*6.283)*rr),Math.round(fy+Math.sin(a/14*6.283)*rr),2,2);}}
@@ -3676,7 +3676,7 @@ function anaSekme(i){$('anaModlar').style.display=i?'none':'flex';$('anaAyar').s
  const du=c.toDataURL();document.documentElement.style.setProperty('--stad','url('+du+')');const a=$('ana');if(a){a.style.backgroundImage='url('+du+')';a.style.imageRendering='pixelated';}}catch(e){}})();
 // 🆕 Yenilikler: sürüm geçmişi mini ekranı
 const SURUMLER=[
- ['V10.0.139 · 15 Kas 2026',['🏆 12 yerel kupanın her birine kendi kupa çizimi: Anadolu, Ada, İber, Çizme, Ren, Gal, Lale, Luso, Flaman, Tartan, Kutup ve Akdeniz Kupası (Futbol Dünyası Veritabanı · KUPALAR)']],
+ ['V10.0.139 · 15 Kas 2026',['🏆 12 yerel kupanın her birine kendi kupa çizimi: Anadolu, Ada, İber, Çizme, Ren, Gal, Lale, Luso, Flaman, Tartan, Kutup ve Akdeniz Kupası (Futbol Dünyası Veritabanı · KUPALAR)','🙌 Yerel kupa şampiyonluk töreninde kaptan artık o kupanın kendisini kaldırıyor']],
  ['V10.0.138 · 15 Kas 2026',['🏆 Veritabanı ülke sayfasında KUPALAR sırası artık kupaların kendisini gösteriyor. Amblemler Logolar sekmesinde. Uzun adlar üst üste binmiyor, süper kupalar kendi adıyla (Ada Süper Kupası vb.)']],
  ['V10.0.137 · 15 Kas 2026',['🏆 Kutup Kupası yeni kimliğe geçti: yeşil-mor amblem ve gümüş kupa; FORMA, Turnuvalar/Logolar sekmeleri ve Futbol Dünyası Veritabanı\'nda']],
  ['V10.0.136 · 14 Kas 2026',['🥇 Ada Lig Kupası ve Tartan Lig Kupası\'na kendi amblemleri ve kupa çizimleri: FORMA (kol yamaları + düğme), Logolar sekmesi ve Tarihçe\'de']],
