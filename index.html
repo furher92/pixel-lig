@@ -3599,6 +3599,9 @@ const YEREL_GEC={"TR": [["2010/11", "KRT"], ["2011/12", "KAN"], ["2012/13", "KAN
 try{[['TR','FRT'],['ENG','MCM'],['ESP','SSB'],['ITA','MMS'],['GER','MÜN'],['FRA','LNS'],['NED','ALK'],['POR','TOG'],['SCO','GLY'],['RUS','MKR']].forEach(([u,k])=>{const L=YEREL_GEC[u];if(L&&!L.some(x=>x[0]==='2025/26'))L.push(['2025/26',k]);});
  SUPER_GEC.TR=SUPER_GEC.TR||[];[['TR','KAN'],['ESP','BRS'],['ITA','NAP'],['FRA','PAR'],['NED','EİN']].forEach(([u,k])=>{const L=SUPER_GEC[u];if(L&&!L.some(x=>x[0]==='2025/26'))L.push(['2025/26',k]);});}catch(e){}
 
+// 2026/27 yerel kupa şampiyonları (kariyer kaydında o sezon geçmişse ve kayıt yoksa)
+const YK26={TR:'KAN',ENG:'MCK',ESP:'MDB',ITA:'ZBR',GER:'MÜN',FRA:'PAR',NED:'EİN',POR:'BNF',SCO:'GLY',RUS:'NEV'};
+function yk26(u,H){const s=KRY();if(!s||!(s.sezon>2026)||!YK26[u]||H.some(x=>x[0]==='2026/27'))return H;return H.concat([['2026/27',YK26[u]]]);}
 function tarihceHtml(s){const ULS=Object.keys(MUZE_V),tk=(k,u)=>ALL.find(z=>z.kod===k&&(!u||ULK(z.lig)===u))||ALL.find(z=>z.kod===k);
  // oyunda olmayan kulüp → nötr arma (baş harf); kulüp değilse (oynanmadı vb.) nokta
  const yokArma=ad=>/Oynanmadı|Düzenlenmedi|Covid|tamamlan|Ertelendi|^—|^-|^$/i.test(ad||'')?'<span style="flex:none;width:15px;text-align:center">·</span>':`<svg viewBox="0 0 20 22" width="15" height="17" style="flex:none"><path d="M2 2h16v10q0 6-8 9-8-3-8-9z" fill="#3a4466" stroke="#9fb3e8" stroke-width="1.2"/><text x="10" y="13.5" font-size="9" font-weight="bold" text-anchor="middle" fill="#e8eeff" font-family="sans-serif">${(ad||'?').replace(/^[^A-Za-zÇĞİÖŞÜçğıöşü]+/,'').charAt(0).toLocaleUpperCase('tr')}</text></svg>`;
@@ -3650,7 +3653,7 @@ function tarihceHtml(s){const ULS=Object.keys(MUZE_V),tk=(k,u)=>ALL.find(z=>z.ko
   const L=srt(topla(mx(Object.entries(MUZE_V[u]).map(([k,x])=>[k,x[0]]).concat(Object.entries(GECMIS_EK.lig[u]||{})),gsay(u==='KKTC'?KKTC_GECMIS.lig:LIG_GECMIS[u])),kz.lig[u]));
   return cift(kart(u,`${lLogo(u,16)||''} ${ligAd(u)}`,L,ikon('l'+u,()=>lLogo(u,34)),H),hk(ligAd(u)+ara(H),'',H,u));}).join(''));
  // YEREL KUPALAR + LİG KUPALARI
- h+=bolum('yerel','YEREL KUPALAR · TARİH',yKupa('TR',22),Object.keys(YEREL_K).map(u=>{const H=u==='KKTC'?KKTC_GECMIS.kupa.concat(kkY(kzG.yerel.KKTC)):(YEREL_GEC[u]||[]).concat(kzG.yerel[u]||[]);
+ h+=bolum('yerel','YEREL KUPALAR · TARİH',yKupa('TR',22),Object.keys(YEREL_K).map(u=>{const H=u==='KKTC'?KKTC_GECMIS.kupa.concat(kkY(kzG.yerel.KKTC)):yk26(u,(YEREL_GEC[u]||[]).concat(kzG.yerel[u]||[]));
   return cift(kart(u,yKupa(u,16)+YEREL_AD[u],srt(topla(Object.entries(YEREL_K[u]).concat(Object.entries(GECMIS_EK.yerel[u]||{})),kz.yerel[u])),ikon('y'+u,()=>yKupa(u,34)),H),hk(YEREL_AD[u]+ara(H),'',H,u));}).join('')
   +Object.entries(LIG_KUPA).map(([u,[ad,o]])=>{const H=LKUPA_GEC[u]||[];return cift(kart(u,lkKupa(u,16)+ad,srt(topla(Object.entries(o),kz.lk[u])),ikon('k'+u,()=>lkKupa(u,34)),H),hk(ad+ara(H),'',H,u));}).join(''));
  // SÜPER KUPALAR
