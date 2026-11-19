@@ -1,5 +1,8 @@
 # Sürüm notları
 
+## V10.1 (puan durumu) — 19 Kasım 2026
+- Panel düzeninde puan durumu, geçmiş sezon tabloları, Doğu kupalarında 3.'nün alt kupaya düşmesi
+
 ## V10.1 (maç düzeltmeleri 2) — 19 Kasım 2026
 - Avantaj sonrası faul golü iptal, temiz müdahalede düşme yok, AI faul ve sakatlık azaldı
 - Değişiklik bandı kaldırıldı, 4. hakem sadece gerektiğinde, uzatma süresi düzeltildi
