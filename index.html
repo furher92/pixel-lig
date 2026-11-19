@@ -2422,6 +2422,10 @@ function gecArsivTab(s,lig,yil){const L=LEAGUES.find(l=>l.id===lig);if(!L)return
  try{fk.forEach(w=>w.forEach(([a,b])=>{if(a<0||b<0)return;isle(tab,a,b,simMac({rt:ALL[a].rt},{rt:ALL[b].rt}));}));}finally{Math.random=R0;}
  let sr=sirala(tab,ids);const u=ULK(lig);let kod=null;if(!/\d/.test(lig)){kod=s.samp&&s.samp[yil]&&s.samp[yil].lig&&s.samp[yil].lig[u];if(!kod){const lb=yil+'/'+String((yil+1)%100).padStart(2,'0');const e=(LIG_GECMIS[u]||[]).find(x=>x[0]===lb);if(e)kod=e[1];}}
  if(kod){const ci=sr.findIndex(r=>ALL[r.i]&&ALL[r.i].kod===kod);if(ci>0){const A=sr[0],B=sr[ci];const ka=['o','g','b','m','a','y','p','av'];ka.forEach(k=>{const t=A[k];A[k]=B[k];B[k]=t;});const ti=A.i;A.i=B.i;B.i=ti;sr=sr.slice();[sr[0],sr[ci]]=[sr[ci],sr[0]];if(sr[0].p<=sr[1].p){sr[0].p=sr[1].p+1+(yil%3);sr[0].g+=1;sr[0].b=Math.max(0,sr[0].b-1);}}}
+ try{const M=(s.macGec||[]).filter(x=>x.sz===yil&&x.tip==='lig');if(M.length>=5){const say={};M.forEach(x=>{say[x.a]=(say[x.a]||0)+1;say[x.b]=(say[x.b]||0)+1;});const me=+Object.keys(say).sort((p,q)=>say[q]-say[p])[0];
+  const ri=sr.findIndex(r=>r.i===me);if(ri>=0){const R={i:me,o:0,g:0,b:0,m:0,a:0,y:0,p:0,av:0};M.forEach(x=>{const ev=x.a===me,bg=ev?x.sk[0]:x.sk[1],yg=ev?x.sk[1]:x.sk[0];R.o++;R.a+=bg;R.y+=yg;if(bg>yg){R.g++;R.p+=3;}else if(bg===yg){R.b++;R.p++;}else R.m++;});R.av=R.a-R.y;
+   const n=sr[0].o||R.o;if(R.o<n){const k=n/R.o;['g','b','m','a','y'].forEach(f=>R[f]=Math.round(R[f]*k));R.o=n;R.p=R.g*3+R.b;R.av=R.a-R.y;}
+   sr=sr.slice();sr[ri]=R;sr.sort((p,q)=>q.p-p.p||q.av-p.av||q.a-p.a);}}}catch(e){}
  return window._dtC[key]=sr.map(r=>[r.i,r.o,r.g,r.b,r.m,r.av,r.p]);}
 function gecSezonHtml(s,lig){const kayit={};(s.gecTab||[]).filter(x=>x.lig===lig).forEach(x=>kayit[x.sz]=x.r);const L=[];for(let y=(s.sezon||2026)-1;y>=Math.max(2018,(s.sezon||2026)-8);y--){L.push({sz:y,r:kayit[y]||gecArsivTab(s,lig,y),oyn:!!kayit[y]});}
  let h=`<div class="fmH">📚 Geçmiş Sezonlar</div>`;if(!L.length)return h;
@@ -4060,6 +4064,7 @@ function anaSekme(i){$('anaModlar').style.display=i?'none':'flex';$('anaAyar').s
  const du=c.toDataURL();document.documentElement.style.setProperty('--stad','url('+du+')');const a=$('ana');if(a){a.style.backgroundImage='url('+du+')';a.style.imageRendering='pixelated';}}catch(e){}})();
 // 🆕 Yenilikler: sürüm geçmişi mini ekranı
 const SURUMLER=[
+['V10.1 · 19 Kasım 2026 (geçmiş sezon düzeltmesi)',['📚 Geçmiş sezon tablolarında oynadığın sezonlar artık kendi maç sonuçlarınla (puan, gol, averaj) hesaplanıyor; şampiyon tarihçeyle aynı']],
 ['V10.1 · 19 Kasım 2026 (teknik direktör teklifleri)',['📨 Sezon içinde iş teklifi: hocasını gönderen kulüpler sözleşmen sürerken de seni çağırabilir; kabul edersen hemen yeni kulübe geçersin, reddedersen yönetimin güveni artar','🧤 "Kaleci kornere çeldi" yazısı artık sadece top gerçekten kornere gidince çıkıyor']],
 ['V10.1 · 19 Kasım 2026 (hakem/VAR/AI)',['⚖️ Hakem ve VAR kararlarında şans yok: kart sertliğe göre (arkadan kayarak = sarı, son adam = kırmızı, 3. faul = sarı), penaltı VAR\'da onaylanır, kırmızı geri dönmez','🚩 Çok yakın ofsaytta yan hakem bayrağı kaldırmaz, VAR karar verir','🧑‍💼 Teknik direktöre kart 3. itirazda, ihraç 6. itirazda; itiraz eden oyuncuya sarı 3. itirazda','🤖 AI arkadan kayarak müdahale etmiyor, ayakta faul çok azaldı','⚽ Gol animasyonu yayın tarzında: skorbordun altından kulüp renklerinde GOL bandı (golcü, dakika, skor)']],
 ['V10.1 · 19 Kasım 2026 (mor tema)',['💜 Bütün ekranlar mor temaya geçti: arka plan, menüler, sekmeler, butonlar, tablolar ve kutular']],
