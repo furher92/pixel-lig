@@ -1,5 +1,9 @@
 # Sürüm notları
 
+## V10.1 (3. paket) — 19 Kasım 2026
+- 📺 Alt bantlar (gol, değişiklik, topla oynama)
+- 👕 Göğüs sponsoru, yuvarlak kıta yamaları + vakıf bandı
+
 ## V10.1 (2. paket) — 19 Kasım 2026
 - 🏳️ Bayrak Ligi oynanabilir (Lig A–D, dörtlü final)
 - 👕 Formalar Part 2 (82 kulüp)
