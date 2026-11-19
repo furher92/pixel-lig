@@ -1,5 +1,10 @@
 # Sürüm notları
 
+## V10.1 (maç düzeltmeleri 2) — 19 Kasım 2026
+- Avantaj sonrası faul golü iptal, temiz müdahalede düşme yok, AI faul ve sakatlık azaldı
+- Değişiklik bandı kaldırıldı, 4. hakem sadece gerektiğinde, uzatma süresi düzeltildi
+- Doğu kupası tablo işaretleri, kupa logosu, kol yaması; Gündem kendi ligi; AI baskısı; geçmiş sezon tabloları
+
 ## V10.1 (4. paket) — 19 Kasım 2026
 - 📺 Lig skorbordları, 🎽 lig kol yamaları, 🗂️ kariyer sol menü
 - 🌍 Katılmadığın kıta kupalarının tabloları, 🚇 tünel, ⚽ dubalarda yedek toplar
