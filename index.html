@@ -259,6 +259,34 @@ body.krDash .krAlt .hbI{padding:4px 0;border-bottom:1px solid rgba(255,255,255,.
 body.krDash .fmAlt2{margin-top:4px}body.krDash .fmAlt2 .btn{font-size:9px;padding:7px 12px}
 @media(max-width:1100px){body.krDash .krAlt{grid-template-columns:repeat(2,minmax(0,1fr))!important}body.krDash .krAlt .fmSut{height:auto!important;max-height:70vh!important}}
 @media(max-width:700px){body.krDash .krUst,body.krDash .krAlt{grid-template-columns:1fr!important}}
+
+/* V10.1: MOR TEMA (her ekran) */
+:root{--bg:#140a26;--pn:#22143f;--mor:#22143f;--mor2:#1a0f33;--morK:#3b2a6b;--pembe:#ff4fa3}
+body{background:#140a26}
+.ekr,.secModal,#ilk11,#macOnu,.basinOda{background:radial-gradient(ellipse at 50% 20%,rgba(255,79,163,.16),transparent 60%),linear-gradient(rgba(20,8,40,.86),rgba(14,6,30,.95)),var(--stad,none) center bottom/cover #140a26!important}
+.sonra,#karIc .sonra,.secModal .sonra{background:linear-gradient(180deg,#22143f,#1a0f33)!important;border:1px solid #3b2a6b!important;box-shadow:0 2px 0 rgba(0,0,0,.4)!important;color:#e9e4f7}
+.ligad{color:#ff7ab8!important}
+.tab{background:#2a1a4d!important;color:#e9e4f7!important;border:1px solid #3b2a6b!important}
+.tab.akt{background:linear-gradient(90deg,#ff4fa3,#b0207a)!important;color:#fff!important;box-shadow:none!important;border-color:#ff9fd0!important}
+#karIc .tabs,.tabs{background:#1a0f33!important;border:1px solid #3b2a6b!important}
+.btn{background:linear-gradient(180deg,#ff4fa3,#c42a83)!important;border-bottom-color:#7a1452!important}
+.btn.gri{background:linear-gradient(180deg,#4a3680,#35265f)!important;border-bottom-color:#1a0f33!important}
+.fmUst{background:linear-gradient(90deg,var(--tc) 0 8px,var(--tc2) 8px 12px,#2a1850 12px,#3a1f66)!important;border:1px solid #4a3680!important;box-shadow:0 3px 0 rgba(0,0,0,.45)!important}
+.fmUst>*:not(:first-child) div,.fmUst .fmKutu{background:rgba(20,8,40,.6)}
+.krGov>.krSol{background:rgba(26,15,51,.92)!important;border-color:#3b2a6b!important;border-left-color:#ff4fa3!important}
+.krGov>.krSol .tab{background:rgba(42,26,77,.9)!important}
+.krGov>.krSol .tab.akt{background:linear-gradient(90deg,#ff4fa3,#b0207a)!important;border-color:#ffd0ea!important}
+table{background:linear-gradient(160deg,#22143f,#1a0f33)!important;border-color:#3b2a6b!important}
+th{background:#2e1b57!important;color:#ff9fd0!important;border-bottom-color:#3b2a6b!important}
+tr.ben td{background:linear-gradient(90deg,#6a1f52,#3f1640)!important}
+.fmK,.fmSut{background:linear-gradient(180deg,#22143f,#1a0f33)!important;border-color:#3b2a6b!important}
+.fmKb2{background:#22143f!important}
+.fmHaber{background:rgba(20,8,40,.7)!important;border-color:#3b2a6b!important}
+details summary{color:#ff9fd0}
+.bar{background:#3b2a6b}
+#pesM{background:linear-gradient(90deg,rgba(26,10,48,.94) 0%,rgba(26,10,48,.74) 55%,rgba(26,10,48,.35) 100%)!important}
+.pk{background:linear-gradient(180deg,rgba(74,40,130,.88),rgba(34,16,66,.92))!important;border-color:#5a3a9a!important}.pkA{background:rgba(20,6,40,.78)!important}
+.pmTab button.akt{color:#ff4fa3!important;border-color:#ff4fa3!important}.pmLogo b{color:#ff4fa3!important}.pmSur{background:rgba(34,16,66,.85)!important;border-color:#5a3a9a!important}.pmAc,.pmAd{background:rgba(26,10,48,.7)!important}
 </style>
 </head><body>
 <div class="ekr" id="ana">
@@ -4013,6 +4041,7 @@ function anaSekme(i){$('anaModlar').style.display=i?'none':'flex';$('anaAyar').s
  const du=c.toDataURL();document.documentElement.style.setProperty('--stad','url('+du+')');const a=$('ana');if(a){a.style.backgroundImage='url('+du+')';a.style.imageRendering='pixelated';}}catch(e){}})();
 // 🆕 Yenilikler: sürüm geçmişi mini ekranı
 const SURUMLER=[
+['V10.1 · 19 Kasım 2026 (mor tema)',['💜 Bütün ekranlar mor temaya geçti: arka plan, menüler, sekmeler, butonlar, tablolar ve kutular']],
 ['V10.1 · 19 Kasım 2026 (kariyer ana ekranı)',['🖥️ Kariyer ana ekranı tek ekrana sığıyor: üstte sıradaki maç, lig ve yönetim; altta maç günü, son maç, takvim yan yana, her panel kendi içinde kayıyor','🔤 Panellerde okunaklı yazı tipi, daha az satır kayması']],
 ['V10.1 · 19 Kasım 2026 (kadro/transfer)',['👕 Kadro ve transfer ekranları panel düzeninde, butonlar küçüldü, tablolar taşmıyor','📊 Puan durumu dar ekranda puan sütununu kesmiyor','❄️ Doğu kupalarına katılım geçen sezonun final sıralamasına göre (Kutup Yıldızı = ilk 5)','⚔️ Kupa tablolarında eleme turları: Avrupa ve Doğu kupalarının play-off, son 16, çeyrek, yarı final ve final sonuçları','❄️ Diğer Doğu kupaları seninle aynı sayıda grup maçı oynamış görünüyor']],
 ['V10.1 · 19 Kasım 2026 (puan durumu)',['📊 Puan durumu yeni panel düzeninde: tablo, son sonuç okları, sezon özeti, sıradaki rakip, fikstür ve oyuncu istatistikleri','🏆 Kupa puan durumları da aynı panel düzeninde: gruplar yan yana, her kupa kendi renk şeridiyle','📚 Geçmiş sezonlar: son 8 sezonun final tabloları (oynadığın sezonlar kendi sonuçlarıyla)','❄️ Doğu kupalarında grubu 3. bitiren takım bir alt kupanın play-off turuna düşüyor (Kutup Yıldızı → Kuzey Rüzgârı → Ayaz)']],
