@@ -1,5 +1,11 @@
 # Sürüm notları
 
+## V10.1 (2. paket) — 19 Kasım 2026
+- 🏳️ Bayrak Ligi oynanabilir (Lig A–D, dörtlü final)
+- 👕 Formalar Part 2 (82 kulüp)
+- 🧤 Kaleci kurtarışları, ⏱️ uzatma tabelası, 🧍 oyuncular iç içe geçmiyor
+- 💸📋 Kulüp değişiminde taksit/alacak ve transfer listesi düzeltmeleri
+
 ## V10.1 — 19 Kasım 2026
 - 🎬 Yeni açılış: Catanadev logosu → arma ve "SAHA SENİN" → gece stadyumu, "Başlamak için dokun"
 - 🏟️ Yeni ana menü: ANA · MAÇ · TURNUVALAR · KARİYER · EKSTRA sekmeleri, karo kartlar, sağda favori oyuncu
