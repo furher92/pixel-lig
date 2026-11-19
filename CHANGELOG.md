@@ -1,5 +1,9 @@
 # Sürüm notları
 
+## V10.1 (4. paket) — 19 Kasım 2026
+- 📺 Lig skorbordları, 🎽 lig kol yamaları, 🗂️ kariyer sol menü
+- 🌍 Katılmadığın kıta kupalarının tabloları, 🚇 tünel, ⚽ dubalarda yedek toplar
+
 ## V10.1 (3. paket) — 19 Kasım 2026
 - 📺 Alt bantlar (gol, değişiklik, topla oynama)
 - 👕 Göğüs sponsoru, yuvarlak kıta yamaları + vakıf bandı
