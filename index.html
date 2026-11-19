@@ -3550,19 +3550,19 @@ function kupalarHtml(s,tb){const c=Object.values(s.kp||{});
   return `<div style="background:#111836;border:1px solid #263260;border-top:3px solid ${k.renk};border-radius:6px;padding:7px 8px;text-align:left;min-width:0">
    <div style="display:flex;align-items:center;gap:6px;font-size:9px">${kpLogo(k.ad,22,ULK(s.lig))}<b style="color:${k.renk};flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${k.ad}</b></div>
    <div style="margin:5px 0 3px"><span style="font-size:7px;background:${pr}22;color:${pr};border:1px solid ${pr}66;border-radius:9px;padding:2px 6px">${sampiyon?'ŞAMPİYON':elendi?'ELENDİ':k.eleme&&k.bitti?'BİTTİ':'SIRADAKİ'}</span> <span style="font-size:8px">${durum}</span></div>
-   ${log?`<div style="font-size:7px;opacity:.85">${log}</div>`:''}</div>`;};
+   ${log?`<div style="font-size:7px;opacity:.85">${log}</div>`:''}${(()=>{if(sampiyon||elendi||k.bitti)return '';const N=(k.adim||[]).slice(k.ai,k.ai+4);if(!N.length)return '';return `<div style="margin-top:6px;font-size:7px"><b style="color:#8ab4ff">🗓️ SONRAKİ MAÇLAR</b>${N.map(a=>{let d='';try{d=tarihYaz(haftaTarih(s,Math.max(0,Math.round(a.w))));}catch(e){}return `<div style="padding:2px 0;border-top:1px solid rgba(255,255,255,.06);display:flex;justify-content:space-between;gap:6px"><span>${adimAd(k,a)}</span><span style="opacity:.7">${d}</span></div>`;}).join('')}</div>`;})()}</div>`;};
  const tablo=k=>{if(!k.lig)return '';let t='';
   if(k.lig.gruplar&&!k.eleme)t=k.lig.gruplar.map((g,j)=>`<div class="ligad">Grup ${String.fromCharCode(65+j)}</div>`+tabloHtml(sirala(k.lig.tab,g),s.milli&&s.milli.id)).join('');
   else if(k.lig.gruplar)t=tabloHtml(sirala(k.lig.tab,k.lig.gruplar[0]),s.milli&&s.milli.id,i=>i<2?'ucl':'');
   else if(!k.milli)t=tabloHtml(sirala(k.lig.tab,k.lig.ids),s.ti,i=>i<8?'ucl':i<24?'uel':'')+'<div class="lej"><span class="ucl">■</span> Son 16 <span class="uel">■</span> Play-off</div>';
   return t?`<details open style="max-width:560px;margin:4px auto"><summary style="font-size:8px;cursor:pointer;color:${k.renk}">📊 ${k.ad} · tablo</summary>${t}</details>`:'';};
- const grid=L=>`<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:8px;width:100%;max-width:560px;margin:0 auto">${L.map(kart).join('')}</div>`;
+ const grid=L=>`<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:10px;width:100%;max-width:1150px;margin:0 auto">${L.map(kart).join('')}</div>`;
  const yi=c.filter(k=>!kita(k)),kt=c.filter(kita);
  if(tb){const ka=kt.filter(avK),kd=kt.filter(dgK);let t='';const bl=(b,L)=>{const x=L.map(tablo).join('');return x?`<div class="ligad" style="margin-top:12px">${b}</div><div style="width:100%;max-width:560px;margin:0 auto">${x}</div>`:'';};t+=bl('🏠 YURT İÇİ KUPALAR',yi)+bl('🌍 AVRUPA KUPALARI',ka)+bl('❄️ DOĞU KUPALARI',kd);return t;}
  let h='';
  if(!c.length)h+='<div class="sonra">Bu sezon kupa yok.</div>';
  if(yi.length)h+=`<div class="ligad" style="margin-top:4px">🏠 YURT İÇİ & MİLLİ</div>`+grid(yi);
- if(kt.filter(avK).length)h+=`<div class="ligad" style="margin-top:12px">🌍 AVRUPA KUPALARI</div>`+grid(kt.filter(avK));if(kt.filter(dgK).length)h+=`<div class="ligad" style="margin-top:12px;color:#ffd23f">❄️ DOĞU KUPALARI</div>`+grid(kt.filter(dgK));if(kt.length)h+=`<div class="sonra" style="font-size:8px">📊 Kupa tabloları PUAN DURUMU · 🏆 kupa müzesi FORMA+KUPALAR · 📜 şampiyonlar ve ülke puanı TARİHÇE sekmesinde</div>`;
+ if(kt.filter(avK).length)h+=`<div class="ligad" style="margin-top:12px">🌍 AVRUPA KUPALARI</div>`+grid(kt.filter(avK));if(kt.filter(dgK).length)h+=`<div class="ligad" style="margin-top:12px;color:#ffd23f">❄️ DOĞU KUPALARI</div>`+grid(kt.filter(dgK));
  return h;}
 function menajerHtml(s){const m=s.men,u=MILLI[m.ul];return `<div class="sonra" style="font-size:9px;width:100%;max-width:560px">👔 ${m.ad} ${m.soy} · ${chip(u)} ${u.ad} · ${m.yas+(s.sezon-2026)} yaş<br>İtibar: ${m.itibar}/100<div class="bar"><i style="width:${m.itibar}%;background:#ffd23f"></i></div>
  Kulüp: ${ALL[s.ti].ad}${s.milli?'<br>Milli takım: '+MILLI[s.milli.n].ad:''}</div><div class="ligad">KUPALAR (${m.kupalar.length})</div><div class="gec">${m.kupalar.slice().reverse().map(x=>{const r=/^🏆 (.+?) \d{4}\//.exec(x);return r?`<span style="display:inline-flex;align-items:center;gap:6px"><span style="width:18px;height:18px;display:inline-block">${kupaSvgAd(r[1],18)}</span>${x.slice(3)}</span>`:kupaSatir(x);}).join('<br>')||'Henüz kupa yok'}</div>
