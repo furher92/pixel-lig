@@ -3602,6 +3602,8 @@ try{[['TR','FRT'],['ENG','MCM'],['ESP','SSB'],['ITA','MMS'],['GER','MÜN'],['FRA
  [['ENG','MCM'],['SCO','PSL']].forEach(([u,k])=>{const L=LKUPA_GEC[u];if(L&&!L.some(x=>x[0]==='2025/26'))L.push(['2025/26',k]);});[['TR','KAN'],['ESP','BRS'],['ITA','NAP'],['FRA','PAR'],['NED','EİN']].forEach(([u,k])=>{const L=SUPER_GEC[u];if(L&&!L.some(x=>x[0]==='2025/26'))L.push(['2025/26',k]);});}catch(e){}
 
 // 2026/27 yerel kupa şampiyonları (kariyer kaydında o sezon geçmişse ve kayıt yoksa)
+// 2026/27 süper kupaları: sadece gerçekte oynanmış olanlar (Ağu 2026)
+const SK27={ENG:'LTP',GER:'MÜN',NED:'ALK',FRA:'LNS'};function sk26(u,H){const s=KRY();if(!s||!(s.sezon>2026)||!SK27[u]||H.some(x=>x[0]==='2026/27'))return H;return H.concat([['2026/27',SK27[u]]]);}
 const LK26={ENG:'LVK',SCO:'GLY'};function lk26(u,H){const s=KRY();if(!s||!(s.sezon>2026)||!LK26[u]||H.some(x=>x[0]==='2026/27'))return H;return H.concat([['2026/27',LK26[u]]]);}
 const YK26={BEL:'BRU',TR:'KAN',ENG:'MCK',ESP:'MDB',ITA:'ZBR',GER:'MÜN',FRA:'PAR',NED:'EİN',POR:'BNF',SCO:'GLY',RUS:'NEV'};
 function yk26(u,H){const s=KRY();if(!s||!(s.sezon>2026)||!YK26[u]||H.some(x=>x[0]==='2026/27'))return H;return H.concat([['2026/27',YK26[u]]]);}
@@ -3660,7 +3662,7 @@ function tarihceHtml(s){const ULS=Object.keys(MUZE_V),tk=(k,u)=>ALL.find(z=>z.ko
   return cift(kart(u,yKupa(u,16)+YEREL_AD[u],srt(topla(Object.entries(YEREL_K[u]).concat(Object.entries(GECMIS_EK.yerel[u]||{})),kz.yerel[u])),ikon('y'+u,()=>yKupa(u,34)),H),hk(YEREL_AD[u]+ara(H),'',H,u));}).join('')
   +Object.entries(LIG_KUPA).map(([u,[ad,o]])=>{const H=lk26(u,LKUPA_GEC[u]||[]);return cift(kart(u,lkKupa(u,16)+ad,srt(topla(Object.entries(o),kz.lk[u])),ikon('k'+u,()=>lkKupa(u,34)),H),hk(ad+ara(H),'',H,u));}).join(''));
  // SÜPER KUPALAR
- h+=bolum('super','SÜPER KUPALAR · TARİH',sKupa('TR',22),Object.keys(SUPER_K).filter(u=>Object.keys(SUPER_K[u]).length||kz.sup[u]).map(u=>{const H=u==='KKTC'?KKTC_GECMIS.super.concat(kkY(kzG.sup.KKTC)):(SUPER_GEC[u]||[]).concat(kzG.sup[u]||[]),ad=(LIG_ON[u]||'')+' Süper Kupası';
+ h+=bolum('super','SÜPER KUPALAR · TARİH',sKupa('TR',22),Object.keys(SUPER_K).filter(u=>Object.keys(SUPER_K[u]).length||kz.sup[u]).map(u=>{const H=u==='KKTC'?KKTC_GECMIS.super.concat(kkY(kzG.sup.KKTC)):sk26(u,(SUPER_GEC[u]||[]).concat(kzG.sup[u]||[])),ad=(LIG_ON[u]||'')+' Süper Kupası';
   return cift(kart(u,sKupa(u,16)+ad,srt(topla(Object.entries(SUPER_K[u]),kz.sup[u])),ikon('s'+u,()=>sKupa(u,34)),H),hk(ad+ara(H),'',H,u));}).join('')
   +cift(kart(null,sKupa('AVR',16)+' Kıtalar Süper Kupası',srt(topla(Object.entries(AVR_SUPER),kz.asup)),ikon('sAVR',()=>sKupa('AVR',34)),ASUPER_GEC.concat(kzG.asup||[])),hk('Kıtalar Süper Kupası'+ara(ASUPER_GEC.concat(kzG.asup||[])),'',ASUPER_GEC.concat(kzG.asup||[]),null)));
  // AVRUPA
