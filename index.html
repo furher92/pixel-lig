@@ -2423,7 +2423,8 @@ function gecArsivTab(s,lig,yil){const L=LEAGUES.find(l=>l.id===lig);if(!L)return
  else if(yil===(s.sezon||2026)-1&&s.ligUye){const gelen=ids.filter(i=>s.ligUye[i]===lig&&ALL[i].lig0!==lig),giden=ALL.filter(t=>t.lig0===lig&&s.ligUye[t.i]&&s.ligUye[t.i]!==lig).map(t=>t.i);
   if(gelen.length&&gelen.length===giden.length){ids=ids.filter(i=>!gelen.includes(i)).concat(giden);dus=giden.filter(i=>KADEME(s.ligUye[i])>KADEME(lig));}}
  const fk=fikstur(ids);let h=0;for(const ch of lig)h=(h*31+ch.charCodeAt(0))|0;const R0=Math.random;Math.random=tohum(Math.abs(h)+yil*6151);const tab={};
- try{fk.forEach(w=>w.forEach(([a,b])=>{if(a<0||b<0)return;isle(tab,a,b,simMac({rt:ALL[a].rt},{rt:ALL[b].rt}));}));}finally{Math.random=R0;}
+ const GM={};try{(s.macGec||[]).filter(x=>x.sz===yil&&x.tip==='lig'&&ids.includes(x.a)&&ids.includes(x.b)).forEach(x=>{const k=Math.min(x.a,x.b)+'-'+Math.max(x.a,x.b);(GM[k]=GM[k]||[]).push(x);});}catch(e){}
+ try{fk.forEach(w=>w.forEach(([a,b])=>{if(a<0||b<0)return;const k=Math.min(a,b)+'-'+Math.max(a,b),L2=GM[k];let r=simMac({rt:ALL[a].rt},{rt:ALL[b].rt});if(L2&&L2.length){const x=L2.find(q=>q.a===a)||L2[0];L2.splice(L2.indexOf(x),1);r=x.a===a?[x.sk[0],x.sk[1]]:[x.sk[1],x.sk[0]];}isle(tab,a,b,r);}));}finally{Math.random=R0;}
  let sr=sirala(tab,ids);{const sat=k=>{const st=sr.map(r=>Object.assign({},r));const out=k.map((i,j)=>Object.assign(st[j],{i}));return out;};
   if(sabit)sr=sat(sabit);else if(dus.length){const ust=sr.map(r=>r.i).filter(i=>!dus.includes(i)),alt=sr.map(r=>r.i).filter(i=>dus.includes(i));sr=sat(ust.concat(alt));}}
  const u=ULK(lig);let kod=null;if(!/\d/.test(lig)){kod=s.samp&&s.samp[yil]&&s.samp[yil].lig&&s.samp[yil].lig[u];if(!kod){const lb=yil+'/'+String((yil+1)%100).padStart(2,'0');const e=(LIG_GECMIS[u]||[]).find(x=>x[0]===lb);if(e)kod=e[1];}}
