@@ -1,5 +1,16 @@
 # Sürüm notları
 
+## V10.1 — 19 Kasım 2026
+- 🎬 Yeni açılış: Catanadev logosu → arma ve "SAHA SENİN" → gece stadyumu, "Başlamak için dokun"
+- 🏟️ Yeni ana menü: ANA · MAÇ · TURNUVALAR · KARİYER · EKSTRA sekmeleri, karo kartlar, sağda favori oyuncu
+- ⭐ Favori oyuncu (her takımdan), 🔒 DÜZENLE (sadece görüntüleme), 📦 Veri Paketi 2.6
+- 📜 Tarihçe: hep açık bölümler, her kupada sayı + yıl yıl şampiyonlar yan yana, Doğu kupaları altın
+- 🏛️ Kulüp Müzesi Doğu rafları ve eski dönem şampiyonlukları; vitrinde kupa çizimleri
+- 💸 Kulüp değişince eski kulübün taksit, alacak ve son maçı eski kulüpte kalıyor
+- 📊 Puan Durumu kupa tabloları açık; Doğu kupaları ayrı başlıkta
+- 🌍 Ülke puanı her kıta haftasında bütün ülkeler için işleniyor
+- ⚽ Maç: başlama vuruşunda değişiklik, gol sonrası top, maçın adamı, hakem faul/penaltı kararları, sahada turnuvanın kendi kupası
+
 ## V10.0.32 — 12 Kasım 2026
 - 🆕 Yenilikler penceresi ekrana sığıyor: başlık üstte, KAPAT altta sabit, liste kendi içinde kayıyor
 
