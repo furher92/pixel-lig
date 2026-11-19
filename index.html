@@ -377,7 +377,7 @@ function ligUyeUygula(s){HOCA_OZ=(s&&s.hocaOz)||{};const U=(s&&s.ligUye)||{};ALL
 // Kariyerdeki ülkenin tüm kademeleri: sezon sonu terfi / küme düşme
 function ligSimSira(L,s){const ids=L.t.map(t=>t.i),tab={};ids.forEach(a=>ids.forEach(b=>{if(a!==b)isle(tab,a,b,simMac({rt:takimGucu(a,s)},{rt:takimGucu(b,s)}));}));return sirala(tab,ids).map(r=>r.i);}
 function ligHareket(s,benSira){const ul=ULK(s.lig),K=KADEMELER[ul];if(!K)return;s.ligUye=s.ligUye||{};const sira={};
- K.t.forEach(gr=>gr.forEach(id=>{const L=LEAGUES.find(l=>l.id===id);if(L)sira[id]=id===s.lig?benSira:ligSimSira(L,s);}));
+ K.t.forEach(gr=>gr.forEach(id=>{const L=LEAGUES.find(l=>l.id===id);if(L)sira[id]=id===s.lig?benSira:ligSimSira(L,s);}));try{s.ligGec=s.ligGec||{};s.ligGec[s.sezon]=Object.assign(s.ligGec[s.sezon]||{},JSON.parse(JSON.stringify(sira)));Object.keys(s.ligGec).map(Number).sort((a,b)=>a-b).slice(0,-8).forEach(y=>delete s.ligGec[y]);}catch(e){}
  const tasi=[];
  K.d.forEach((d,k)=>{const ust=K.t[k],alt=K.t[k+1];const dn=Math.round(d/ust.length),cik=Math.round(d/alt.length);
   const inen=[],cikan=[];ust.forEach(id=>{const r=sira[id]||[];inen.push(...r.slice(r.length-dn));});alt.forEach(id=>{const r=sira[id]||[];cikan.push(...r.slice(0,cik));});
@@ -2418,10 +2418,16 @@ function chip(t){return arma(t,17);}
 const bos=()=>({o:0,g:0,b:0,m:0,a:0,y:0});
 function isle(tab,a,b,s){const A=tab[a]||(tab[a]=bos()),B=tab[b]||(tab[b]=bos());A.o++;B.o++;A.a+=s[0];A.y+=s[1];B.a+=s[1];B.y+=s[0];if(s[0]>s[1]){A.g++;B.m++;}else if(s[0]<s[1]){B.g++;A.m++;}else{A.b++;B.b++;}}
 function gecArsivTab(s,lig,yil){const L=LEAGUES.find(l=>l.id===lig);if(!L)return null;const key='ga|'+lig+'|'+yil;window._dtC=window._dtC||{};if(window._dtC[key])return window._dtC[key];
- const ids=L.t.map(t=>t.i),fk=fikstur(ids);let h=0;for(const ch of lig)h=(h*31+ch.charCodeAt(0))|0;const R0=Math.random;Math.random=tohum(Math.abs(h)+yil*6151);const tab={};
+ let ids=L.t.map(t=>t.i),sabit=null,dus=[];const LG=s.ligGec&&s.ligGec[yil]&&s.ligGec[yil][lig];
+ if(LG&&LG.length)sabit=ids=LG.filter(i=>ALL[i]);
+ else if(yil===(s.sezon||2026)-1&&s.ligUye){const gelen=ids.filter(i=>s.ligUye[i]===lig&&ALL[i].lig0!==lig),giden=ALL.filter(t=>t.lig0===lig&&s.ligUye[t.i]&&s.ligUye[t.i]!==lig).map(t=>t.i);
+  if(gelen.length&&gelen.length===giden.length){ids=ids.filter(i=>!gelen.includes(i)).concat(giden);dus=giden.filter(i=>KADEME(s.ligUye[i])>KADEME(lig));}}
+ const fk=fikstur(ids);let h=0;for(const ch of lig)h=(h*31+ch.charCodeAt(0))|0;const R0=Math.random;Math.random=tohum(Math.abs(h)+yil*6151);const tab={};
  try{fk.forEach(w=>w.forEach(([a,b])=>{if(a<0||b<0)return;isle(tab,a,b,simMac({rt:ALL[a].rt},{rt:ALL[b].rt}));}));}finally{Math.random=R0;}
- let sr=sirala(tab,ids);const u=ULK(lig);let kod=null;if(!/\d/.test(lig)){kod=s.samp&&s.samp[yil]&&s.samp[yil].lig&&s.samp[yil].lig[u];if(!kod){const lb=yil+'/'+String((yil+1)%100).padStart(2,'0');const e=(LIG_GECMIS[u]||[]).find(x=>x[0]===lb);if(e)kod=e[1];}}
- if(kod){const ci=sr.findIndex(r=>ALL[r.i]&&ALL[r.i].kod===kod);if(ci>0){const A=sr[0],B=sr[ci];const ka=['o','g','b','m','a','y','p','av'];ka.forEach(k=>{const t=A[k];A[k]=B[k];B[k]=t;});const ti=A.i;A.i=B.i;B.i=ti;sr=sr.slice();[sr[0],sr[ci]]=[sr[ci],sr[0]];if(sr[0].p<=sr[1].p){sr[0].p=sr[1].p+1+(yil%3);sr[0].g+=1;sr[0].b=Math.max(0,sr[0].b-1);}}}
+ let sr=sirala(tab,ids);{const sat=k=>{const st=sr.map(r=>Object.assign({},r));const out=k.map((i,j)=>Object.assign(st[j],{i}));return out;};
+  if(sabit)sr=sat(sabit);else if(dus.length){const ust=sr.map(r=>r.i).filter(i=>!dus.includes(i)),alt=sr.map(r=>r.i).filter(i=>dus.includes(i));sr=sat(ust.concat(alt));}}
+ const u=ULK(lig);let kod=null;if(!/\d/.test(lig)){kod=s.samp&&s.samp[yil]&&s.samp[yil].lig&&s.samp[yil].lig[u];if(!kod){const lb=yil+'/'+String((yil+1)%100).padStart(2,'0');const e=(LIG_GECMIS[u]||[]).find(x=>x[0]===lb);if(e)kod=e[1];}}
+ if(kod&&!sabit){const ci=sr.findIndex(r=>ALL[r.i]&&ALL[r.i].kod===kod);if(ci>0){const A=sr[0],B=sr[ci];const ka=['o','g','b','m','a','y','p','av'];ka.forEach(k=>{const t=A[k];A[k]=B[k];B[k]=t;});const ti=A.i;A.i=B.i;B.i=ti;sr=sr.slice();[sr[0],sr[ci]]=[sr[ci],sr[0]];if(sr[0].p<=sr[1].p){sr[0].p=sr[1].p+1+(yil%3);sr[0].g+=1;sr[0].b=Math.max(0,sr[0].b-1);}}}
  try{const M=(s.macGec||[]).filter(x=>x.sz===yil&&x.tip==='lig');if(M.length>=5){const say={};M.forEach(x=>{say[x.a]=(say[x.a]||0)+1;say[x.b]=(say[x.b]||0)+1;});const me=+Object.keys(say).sort((p,q)=>say[q]-say[p])[0];
   const ri=sr.findIndex(r=>r.i===me);if(ri>=0){const R={i:me,o:0,g:0,b:0,m:0,a:0,y:0,p:0,av:0};M.forEach(x=>{const ev=x.a===me,bg=ev?x.sk[0]:x.sk[1],yg=ev?x.sk[1]:x.sk[0];R.o++;R.a+=bg;R.y+=yg;if(bg>yg){R.g++;R.p+=3;}else if(bg===yg){R.b++;R.p++;}else R.m++;});R.av=R.a-R.y;
    const n=sr[0].o||R.o;if(R.o<n){const k=n/R.o;['g','b','m','a','y'].forEach(f=>R[f]=Math.round(R[f]*k));R.o=n;R.p=R.g*3+R.b;R.av=R.a-R.y;}
@@ -4064,7 +4070,7 @@ function anaSekme(i){$('anaModlar').style.display=i?'none':'flex';$('anaAyar').s
  const du=c.toDataURL();document.documentElement.style.setProperty('--stad','url('+du+')');const a=$('ana');if(a){a.style.backgroundImage='url('+du+')';a.style.imageRendering='pixelated';}}catch(e){}})();
 // 🆕 Yenilikler: sürüm geçmişi mini ekranı
 const SURUMLER=[
-['V10.1 · 19 Kasım 2026 (geçmiş sezon düzeltmesi)',['📚 Geçmiş sezon tablolarında oynadığın sezonlar artık kendi maç sonuçlarınla (puan, gol, averaj) hesaplanıyor; şampiyon tarihçeyle aynı']],
+['V10.1 · 19 Kasım 2026 (geçmiş sezon düzeltmesi)',['📚 Geçmiş sezon tablolarında oynadığın sezonlar artık kendi maç sonuçlarınla (puan, gol, averaj) hesaplanıyor; şampiyon tarihçeyle aynı','⬇️ Geçmiş sezon tablolarında küme düşen takımlar gerçekten düşenler; o sezon alt ligde olan takımlar tabloda görünmüyor; her sezonun gerçek final sıralaması kaydediliyor']],
 ['V10.1 · 19 Kasım 2026 (teknik direktör teklifleri)',['📨 Sezon içinde iş teklifi: hocasını gönderen kulüpler sözleşmen sürerken de seni çağırabilir; kabul edersen hemen yeni kulübe geçersin, reddedersen yönetimin güveni artar','🧤 "Kaleci kornere çeldi" yazısı artık sadece top gerçekten kornere gidince çıkıyor']],
 ['V10.1 · 19 Kasım 2026 (hakem/VAR/AI)',['⚖️ Hakem ve VAR kararlarında şans yok: kart sertliğe göre (arkadan kayarak = sarı, son adam = kırmızı, 3. faul = sarı), penaltı VAR\'da onaylanır, kırmızı geri dönmez','🚩 Çok yakın ofsaytta yan hakem bayrağı kaldırmaz, VAR karar verir','🧑‍💼 Teknik direktöre kart 3. itirazda, ihraç 6. itirazda; itiraz eden oyuncuya sarı 3. itirazda','🤖 AI arkadan kayarak müdahale etmiyor, ayakta faul çok azaldı','⚽ Gol animasyonu yayın tarzında: skorbordun altından kulüp renklerinde GOL bandı (golcü, dakika, skor)']],
 ['V10.1 · 19 Kasım 2026 (mor tema)',['💜 Bütün ekranlar mor temaya geçti: arka plan, menüler, sekmeler, butonlar, tablolar ve kutular']],
