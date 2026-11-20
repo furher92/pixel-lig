@@ -4267,7 +4267,8 @@ function ligRaf(sec,cmd,tum){const ul=sec?ULK(sec):'',UL=[...new Set(LEAGUES.map
 // diğer liglerin puan durumu: kendi haftamıza kadar tohumlu simülasyon (her açılışta aynı sonuç)
 function digerTablo(s,lig){const L=LEAGUES.find(l=>l.id===lig);if(!L)return {};const ids=L.t.map(t=>t.i),fk=fikstur(ids),n=Math.min(fk.length,Math.round((s.hafta||0)*fk.length/Math.max(1,(s.fik||[]).length)));
  const key=lig+'|'+s.sezon+'|'+n;window._dtC=window._dtC||{};if(window._dtC[key])return window._dtC[key];let h=0;for(const ch of lig)h=(h*31+ch.charCodeAt(0))|0;const R0=Math.random;Math.random=tohum(Math.abs(h)+(s.sezon||2026)*7919);const tab={};
- try{for(let w=0;w<n;w++)fk[w].forEach(([a,b])=>{if(a<0||b<0)return;isle(tab,a,b,simMac({rt:ALL[a].rt},{rt:ALL[b].rt}));});}finally{Math.random=R0;}return window._dtC[key]=tab;}
+ try{for(let w=0;w<n;w++)fk[w].forEach(([a,b])=>{if(a<0||b<0)return;isle(tab,a,b,simMac({rt:ALL[a].rt},{rt:ALL[b].rt}));});
+  if(n>0&&n<fk.length&&ids.length%2){const o=i=>(tab[i]&&tab[i].o)||0;let mx=Math.max(...ids.map(o));if(mx%2)mx++;for(let g=0;g<ids.length*3;g++){const D=ids.filter(i=>o(i)<mx).sort((x,y)=>o(x)-o(y)||x-y);if(D.length<2)break;isle(tab,D[0],D[1],simMac({rt:ALL[D[0]].rt},{rt:ALL[D[1]].rt}));}}}finally{Math.random=R0;}return window._dtC[key]=tab;}
 // V10.1: katılmadığın kıta kupalarının lig aşaması tablosu (tohumlu simülasyon, sezon boyunca tutarlı)
 function avrSimTablo(s,kod){const AD={UCL:'Yıldızlar Ligi',UEL:'Kıta Ligi',UECL:'Umut Ligi'}[kod],nT=kod==='UECL'?6:8,oyn=Math.min(nT,KITA_HAFTA.filter(w=>w<(s.hafta||0)).length);
  const key='av|'+kod+'|'+s.sezon+'|'+oyn;window._dtC=window._dtC||{};if(window._dtC[key])return window._dtC[key];let h=0;for(const ch of kod)h=(h*31+ch.charCodeAt(0))|0;const R0=Math.random;Math.random=tohum(Math.abs(h)+(s.sezon||2026)*104729);
