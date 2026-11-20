@@ -3236,12 +3236,13 @@ function pzM(baslik,html,btn){const d=secimModal(baslik,html,btn);d.style.overfl
 function pzYuv(x){return Math.round(x*10)/10;}
 function pzOyuncu(id,ti,s){return takimKadro(ti,s).find(x=>x.id===id);}
 function pzIlgi(s,ti){// oyuncunun bize gelme isteği (0-1)
- const fark=(takimGucu(s.ti,s)-takimGucu(ti,s))/20,kad=(KADEME(ALL[ti].lig)-KADEME(ALL[s.ti].lig))*.18,it=(((s.men&&s.men.itibar)||50)-50)/250;
- const avr=s.kp&&s.kp.AVR?.08:0;return clamp(.5+fark+kad+it+avr,.05,.95);}
+ const fark=(takimGucu(s.ti,s)-takimGucu(ti,s))/45,kad=(KADEME(ALL[ti].lig)-KADEME(ALL[s.ti].lig))*.12,it=(((s.men&&s.men.itibar)||50)-50)/180;
+ let sira=.0;try{const L=LEAGUES.find(l=>l.id===s.lig);const r=sirala(s.tab,L.t.map(x=>x.i)).findIndex(x=>x.i===s.ti);sira=r===0?.08:r<3?.04:0;}catch(e){}
+ const avr=s.kp&&(s.kp.AVR||s.kp.DK)?.08:0;return clamp(.5+fark+kad+it+avr+sira,.18,.95);}
 // V10.1: ÖZEL KURAL — Türkiye, Rusya ve KKTC ligleri arasında oyuncular birbirine gitmeye hevesli (kulüpler satmaya, oyuncular gelmeye istekli; yapay zekâ da bu üç lig arasında daha çok transfer yapar)
 const UCLU=['TR','RUS','KKTC'];function ucluKardes(a,b){return a!==b&&UCLU.includes(a)&&UCLU.includes(b);}
 function pzIstekYil(p){return p.yas<=22?5:p.yas<=26?4:p.yas<=30?3:p.yas<=33?2:1;}
-function pzYilOlasilik(ilgi,istek,yil){return clamp(ilgi-Math.abs(istek-yil)*.12,.03,.97);}
+function pzYilOlasilik(ilgi,istek,yil){return clamp(ilgi-Math.abs(istek-yil)*.08,.1,.97);}
 // ---- 1) TEMSİLCİ ----
 function teklif(id,ti){pzBasla(id,ti,'al');}
 function kirala(id,ti){pzBasla(id,ti,'kira');}
