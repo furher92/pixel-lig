@@ -392,9 +392,17 @@ function ligHareket(s,benSira){const benUl=ULK(s.lig),benEski=s.lig;
  Object.keys(KADEMELER).forEach(ul=>{if(ul===benUl)return;ulkeHareket(s,ul,(id,L)=>sirala(digerTablo(s,id),L.t.map(t=>t.i)).map(r=>r.i),s.sezon);});
  s.ligTumGoc=s.sezon+1;
  Object.keys(s.ligUye).forEach(k=>{if(s.ligUye[k]===ALL[k].lig0)delete s.ligUye[k];});
- ligUyeUygula(s);const benYeni=ALL[s.ti].lig;
+ ligUyeUygula(s);try{ligDengele(s);}catch(e){console.warn('ligDengele',e);}const benYeni=ALL[s.ti].lig;
  if(benYeni!==benEski){const yuk=KADEME(benYeni)<KADEME(benEski);s.lig=benYeni;s.haber.push(yuk?`🎉 TERFİ! ${ALL[s.ti].ad} gelecek sezon ${LEAGUES.find(l=>l.id===benYeni).ad}'nde!`:`💔 KÜME DÜŞTÜK. ${ALL[s.ti].ad} gelecek sezon ${LEAGUES.find(l=>l.id===benYeni).ad}'nde oynayacak.`);
   if(yuk){s.men.itibar=clamp(s.men.itibar+6,0,100);s.men.kupalar.push(`⬆️ Terfi ${s.sezon}/${(s.sezon+1)%100} (${ALL[s.ti].kod})`);}else{s.guven=clamp(s.guven-15,0,100);}}}
+// Lig takım sayıları kayarsa (ör. 3 düşüp 2 çıkınca) sezon başında temel sayılara geri dengele
+function ligDengele(s){if(!s)return 0;s.ligUye=s.ligUye||{};let n=0;const baz=id=>ALL.filter(x=>x.lig0===id).length,uye=id=>ALL.filter(x=>(s.ligUye[x.i]||x.lig0)===id);
+ Object.keys(KADEMELER).forEach(ul=>{const K=KADEMELER[ul].t;for(let k=0;k<K.length-1;k++){for(let tur=0;tur<40;tur++){let is=false;
+  for(const id of K[k]){const U=uye(id),f=U.length-baz(id);if(f===0)continue;const alt=K[k+1].map(a=>[a,uye(a).length-baz(a)]);
+   if(f>0){const hedef=alt.sort((a,b)=>a[1]-b[1])[0][0];const x=U.filter(t=>t.i!==s.ti).sort((a,b)=>a.rt-b.rt)[0];if(!x)continue;s.ligUye[x.i]=hedef;n++;is=true;}
+   else{const kay=alt.sort((a,b)=>b[1]-a[1])[0][0];const x=uye(kay).filter(t=>t.i!==s.ti).sort((a,b)=>b.rt-a.rt)[0];if(!x)continue;s.ligUye[x.i]=id;n++;is=true;}}
+  if(!is)break;}}});
+ Object.keys(s.ligUye).forEach(k=>{if(s.ligUye[k]===ALL[k].lig0)delete s.ligUye[k];});ligUyeUygula(s);return n;}
 // Eski kayıt: geçen sezon diğer ülkelerde terfi/düşme yapılmamıştı → arşivde görünen tabloya göre bir kez uygula
 function ligTumGoc(s){if(!s||s.ti==null||(s.sezon||2026)<=2026||s.ligTumGoc>=s.sezon)return;const y=s.sezon-1,benUl=ULK(s.lig);
  Object.keys(KADEMELER).forEach(ul=>{const K=KADEMELER[ul];if(ul===benUl||K.d.length===0)return;if(s.ligGec&&s.ligGec[y]&&s.ligGec[y][K.t[0][0]])return;
