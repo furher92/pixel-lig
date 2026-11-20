@@ -3691,6 +3691,7 @@ const LK26={ENG:'LVK',SCO:'GLY'};function lk26(u,H){const s=KRY();if(!s||!(s.sez
 const YK26={BEL:'BRU',TR:'KAN',ENG:'MCK',ESP:'MDB',ITA:'ZBR',GER:'MÜN',FRA:'PAR',NED:'EİN',POR:'BNF',SCO:'GLY',RUS:'NEV'};
 function yk26(u,H){const s=KRY();if(!s||!(s.sezon>2026)||!YK26[u]||H.some(x=>x[0]==='2026/27'))return H;return H.concat([['2026/27',YK26[u]]]);}
 function trSec(b,k){const sec=b.closest('section');sec.querySelectorAll('.trSek button').forEach((x,i)=>x.classList.toggle('akt',i===k));sec.querySelectorAll('.trTek>.trP').forEach((x,i)=>x.style.display=i===k?'':'none');}
+const yilS=x=>parseInt(String(x[0]).slice(0,4))||0;
 function tarihceHtml(s){const ULS=Object.keys(MUZE_V),tk=(k,u)=>ALL.find(z=>z.kod===k&&(!u||ULK(z.lig)===u))||ALL.find(z=>z.kod===k);
  // oyunda olmayan kulüp → nötr arma (baş harf); kulüp değilse (oynanmadı vb.) nokta
  const yokArma=ad=>/Oynanmadı|Düzenlenmedi|Covid|tamamlan|Ertelendi|^—|^-|^$/i.test(ad||'')?'<span style="flex:none;width:15px;text-align:center">·</span>':`<svg viewBox="0 0 20 22" width="15" height="17" style="flex:none"><path d="M2 2h16v10q0 6-8 9-8-3-8-9z" fill="#3a4466" stroke="#9fb3e8" stroke-width="1.2"/><text x="10" y="13.5" font-size="9" font-weight="bold" text-anchor="middle" fill="#e8eeff" font-family="sans-serif">${(ad||'?').replace(/^[^A-Za-zÇĞİÖŞÜçğıöşü]+/,'').charAt(0).toLocaleUpperCase('tr')}</text></svg>`;
@@ -3728,7 +3729,7 @@ function tarihceHtml(s){const ULS=Object.keys(MUZE_V),tk=(k,u)=>ALL.find(z=>z.ko
  const satir=(t,n,ik,ad,y)=>`<div class="trS">${t?chip(t):yokArma(ad)}<span>${t?t.ad:ad}</span>${y?`<i class="trY">${y}</i>`:''}<b>${ik} ${n}</b></div>`;
  const sonY=H=>{const o={};(H||[]).forEach(([z,k])=>{if(k)o[k]=z;});return o;};
  const kart=(u,bas,L,ik,H)=>{const y=sonY(H);return `<div class="trK"><div class="trB">${u?bayrakImg(u,9):''} ${bas}</div>${L.map(([k,n,uu])=>k[0]==='!'?satir(null,n,ik,k.slice(1),y[k]):satir(tk(k,uu||u),n,ik,'',y[k])).join('')||'<div class="trS"><span>Kayıt yok</span></div>'}</div>`;};
- const hk=(bas,ik,L,u)=>`<div class="trK trT"><div class="trB">📅 ${ik} ${bas}</div>${(L||[]).slice().reverse().map(([sz,k])=>{const t=k&&k[0]!=='!'?tk(k,u):null,ad=(k||'!—').slice(1);return `<div class="trS"><b style="color:#9fb3e8;min-width:44px">${sz}</b>${t?chip(t):yokArma(ad)}<span>${t?t.ad:ad}</span></div>`;}).join('')||'<div class="trS"><span>Yıl yıl şampiyonlar kariyer sezonlarıyla dolar</span></div>'}</div>`;
+ const hk=(bas,ik,L,u)=>`<div class="trK trT"><div class="trB">📅 ${ik} ${bas}</div>${(L||[]).map((x,i)=>[x,i]).sort((a,b)=>yilS(a[0])-yilS(b[0])||a[1]-b[1]).map(x=>x[0]).reverse().map(([sz,k])=>{const t=k&&k[0]!=='!'?tk(k,u):null,ad=(k||'!—').slice(1);return `<div class="trS"><b style="color:#9fb3e8;min-width:44px">${sz}</b>${t?chip(t):yokArma(ad)}<span>${t?t.ad:ad}</span></div>`;}).join('')||'<div class="trS"><span>Yıl yıl şampiyonlar kariyer sezonlarıyla dolar</span></div>'}</div>`;
  const cift=(a,b)=>`<div class="trP">${a}${b}</div>`;
  // V10.1: sade görünüm — bölümde birden çok lig/kupa varsa üstte sekme şeridi, aynı anda sadece biri açık
  const bolum=(id,bas,ikon,ic)=>{const P=ic.split('<div class="trP">').slice(1).map(x=>'<div class="trP">'+x);
@@ -3740,7 +3741,7 @@ function tarihceHtml(s){const ULS=Object.keys(MUZE_V),tk=(k,u)=>ALL.find(z=>z.ko
  const al=v=>String(v).replace(/#e9ecf2/g,'#ffe680').replace(/#c4c9d2/g,'#d9a821').replace(/#c9ccd2/g,'#e0b030').replace(/#9aa0aa/g,'#b8860b').replace(/#8a8f99/g,'#a07010');
  const ligIk=u=>{const L=LEAGUES.find(l=>ULK(l.id)===u&&!/\d/.test(l.id));const kt=L?kupaTur(L.ad):['kupa',['#d9dde3','#ffd23f']];return kupaIkon(kt[0],kt[1]);};
  const ligAd=u=>(LEAGUES.find(l=>ULK(l.id)===u&&!/\d/.test(l.id))||{}).ad||ULKE_AD[u]||u;
- const ara=H=>H&&H.length?` · ${H[0][0]}–${H[H.length-1][0]}`:'';
+ const ara=H=>{if(!H||!H.length)return '';const S=H.slice().sort((a,b)=>yilS(a)-yilS(b));return ` · ${S[0][0]}–${S[S.length-1][0]}`;};
  const srt=L=>L.filter(x=>x[1]>0).sort((a,b)=>b[1]-a[1]);
  let h=`<div class="sonra" style="font-size:8px">Kurgusal kulüplerin gerçek karşılıklarının kupaları · her kupanın yanında yıl yıl şampiyonlar · kariyerde kazandıkların da eklenir</div>`;
  // LİGLER: şampiyonluk sayısı + yıl yıl geçmiş yan yana
