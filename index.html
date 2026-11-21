@@ -912,7 +912,12 @@ function golVar(gk,d){const penGol=!!(G.penKontrol&&!G.penKontrol.seri&&G.penKon
   else if(iptal){G.kuy.push({b:'HAKEM MONİTÖRE GİDİYOR',t:230,f:()=>{G.alt='VAR, hakemi saha kenarı incelemesine çağırdı';}});
    G.kuy.push({b:'VAR: ATAK BAŞLANGICI',t:150,f:()=>{G.alt='Atak sırasında '+(G._vfNot||'temas')+' · hakem görmedi';}});G.kuy.push({b:tip==='el'?'ELLE OYNAMA! GOL İPTAL':'FAUL! GOL İPTAL',t:120,f:()=>iptalEt(false,tip==='el'?'Top golcünün koluna çarptı':'Gol öncesi atakta faul: '+(G._vfNot||''))});}
   else G.kuy.push(gecerli(true));}
- else{G.kuy.push({b:'VAR KONTROLÜ',t:55,f:()=>{G.kulak=55;G.alt='Gol kontrol ediliyor';}});G.kuy.push({b:'GOL GEÇERLİ',t:40,f:()=>{G.alt='';G.restart={tip:'SANTRA',k:d};}});}}
+ else{// IFAB / VAR protokolü: her golde ofsayt, elle oynama ve atakta faul sırayla kontrol edilir
+  G.kuy.push({b:'VAR KONTROLÜ',t:70,f:()=>{G.kulak=70;G.varKayit=G.golKayit||G.varKayit;G.alt='Gol kontrol ediliyor: ofsayt · elle oynama · faul';}});
+  G.kuy.push({b:'VAR: ATAK BAŞLANGICI',t:120,f:()=>{G.kulak=120;G.alt='Ofsayt kontrolü: pas anında golcü son savunmacının gerisinde ✓';}});
+  G.kuy.push({b:'VAR KONTROLÜ',t:55,f:()=>{G.alt='Elle oynama kontrolü: top kola çarpmadı ✓';}});
+  G.kuy.push({b:'VAR KONTROLÜ',t:55,f:()=>{G.alt='Faul kontrolü: atakta ihlal yok ✓';}});
+  G.kuy.push({b:'KONTROL TAMAM: GOL GEÇERLİ',t:60,f:()=>{varKarar();G.alt='Ofsayt yok · elle oynama yok · faul yok';sesKalabalik(.45,2.5);G.restart={tip:'SANTRA',k:d};}});}}
 function elPenalti(def){const t=G.top,fk=1-def.k;t.sahip=null;t.vx=t.vy=t.vz=0;sesDuduk(1);G.faz='dur';G.fazT=40;G.banner='TOP ELE Mİ ÇARPTI?';G.alt='';G.kuy=[];G.varKayit=(G.kay||[]).slice(-90);
  G.kuy.push({b:'VAR KONTROLÜ',t:230,f:()=>{G.kulak=230;G.alt='Herkes bekliyor · ceza sahasında olası elle oynama';}});
  if(t.z>3){G.kuy.push({b:'HAKEM MONİTÖRE GİDİYOR',t:300,f:()=>{G.alt='Kol doğal olmayan pozisyonda mı?';}});
