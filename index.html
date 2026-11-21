@@ -2243,12 +2243,20 @@ function ciz(){if(!G)return;let F=null,et='';G._ozTk=false;
  if(fz==='gol'){cx.font='6px monospace';cx.fillStyle='rgba(255,255,255,.7)';cx.fillText('X / A: geç',VW-46,37);}stingerCiz();}
 // tekrar giriş/çıkış geçişi (yayıncı logosu ile)
 const STG_T=28;
-function stingerCiz(){if(!G||!(G.stg>0))return;const p=1-G.stg/STG_T;G.stg--;const tm=skbAl(),ad=YAYINCI[G.tema]||YAYINCI.GENEL;
+function stingerCiz(){if(!G||!(G.stg>0))return;const p=1-G.stg/STG_T;G.stg--;const tm=skbAl(),ad=yayinciAd();
  cx.setTransform(CS,0,0,CS,0,0);cx.save();const ofs=-VW*1.45+p*VW*2.9;
  const band=(x0,w,c,a)=>{cx.globalAlpha=a;cx.fillStyle=c;cx.beginPath();cx.moveTo(ofs+x0,0);cx.lineTo(ofs+x0+w,0);cx.lineTo(ofs+x0+w-70,VH);cx.lineTo(ofs+x0-70,VH);cx.closePath();cx.fill();};
  band(-60,140,tm[1],.92);band(70,330,tm[0],.96);band(390,90,'#ffffff',.88);band(470,50,tm[1],.92);
  cx.globalAlpha=.9;cx.fillStyle='#ffffff';cx.beginPath();const cx0=ofs+250,cy0=VH/2;cx.moveTo(cx0-30,cy0-50);cx.lineTo(cx0+20,cy0);cx.lineTo(cx0-30,cy0+50);cx.lineTo(cx0-10,cy0+50);cx.lineTo(cx0+40,cy0);cx.lineTo(cx0-10,cy0-50);cx.closePath();cx.fill();
- if(p>.32&&p<.68){cx.globalAlpha=1;cx.font='10px monospace';cx.textBaseline='middle';const w=cx.measureText(ad).width+20;cx.fillStyle='rgba(10,14,30,.92)';cx.fillRect(VW/2-w/2,VH/2-9,w,18);cx.fillStyle='#e30613';cx.fillRect(VW/2-w/2+5,VH/2-3,6,6);cx.fillStyle='#fff';cx.fillText(ad,VW/2-w/2+15,VH/2);cx.textBaseline='top';}
+ // gerçek yayın gibi: ortada lig/kupa logosu büyüyerek gelir, altında yayıncı logosu
+ if(p>.22&&p<.78){const q=(p-.22)/.56,e=q<.3?q/.3:q>.7?(1-q)/.3:1,sc=.6+.4*Math.min(1,q/.3);cx.globalAlpha=Math.max(0,Math.min(1,e));
+  let im=null;try{im=kodLogoImg(G.tema)||(LEAGUES.some(l=>l.id===G.tema)?ligLogoImg(G.tema):null);if(!im){const dk=DOGU_KUPA.find(d=>d.kod===G.tema);if(dk)im=kupaImg(dk.ad);}}catch(e2){}
+  const R=34*sc,X=VW/2,Y=VH/2-10;cx.fillStyle='rgba(10,14,30,.92)';cx.beginPath();cx.arc(X,Y,R+8,0,6.2832);cx.fill();cx.fillStyle='#f4f6f9';cx.beginPath();cx.arc(X,Y,R+4,0,6.2832);cx.fill();cx.strokeStyle=tm[1];cx.lineWidth=2;cx.beginPath();cx.arc(X,Y,R+6,-1.5708,-1.5708+6.2832*Math.min(1,q*1.4));cx.stroke();cx.lineWidth=1;
+  if(im&&im.complete&&im.naturalWidth){const r=im.naturalHeight/im.naturalWidth,S=R*1.5,w=r>1?S/r:S,h=r>1?S:S*r;cx.drawImage(im,X-w/2,Y-h/2,w,h);}
+  else{cx.fillStyle=tm[1];cx.font='bold 12px system-ui,sans-serif';cx.textBaseline='middle';const tx=(serTema().ad||'').split(' ')[0];cx.fillText(tx,X-cx.measureText(tx).width/2,Y);cx.textBaseline='top';}
+  cx.font='bold 7px system-ui,sans-serif';cx.textBaseline='top';const tt=G.repSon?'TEKRAR':'CANLIYA DÖNÜŞ';cx.fillStyle='#fff';cx.fillText(tt,X-cx.measureText(tt).width/2,Y+R+10);
+  try{cx.font='bold 6px system-ui,sans-serif';const S0=YAYIN_STIL[ad]||{},ww=S0.iki?(cx.measureText(S0.iki[0]).width+cx.measureText(S0.iki[1]).width+12):(cx.measureText(ad).width+17);cx.save();cx.translate(0,Y+R+16);yayinLogo(ad,cx,X-ww/2,1);cx.restore();}catch(e2){}
+  cx.textBaseline='top';}
  cx.restore();}
 function cizIc(){
  cozunurluk();if(!saha)saha=sahaCiz();const t=G.top;
