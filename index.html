@@ -3557,7 +3557,11 @@ function kadroOf(s,i){return i>=10000?ilk11(milliKadro(i-10000)):i===s.ti?benimI
 // Avrupa eleme takvimi (gerçek 26/27 UEFA tarihleri): play-off 16-24 Şub, Son 16 9-17 Mar, ÇF 6-14 Nis, YF 27 Nis-5 May
 function wTarih(s,ay,gun){const y=ay>=7?s.sezon:s.sezon+1,h=new Date(y,ay,gun).getTime()-2*864e5,n=s.fik.length;for(let w=0;w<n;w++){if(haftaTarih(s,w).getTime()>=h)return w;}return n-1;}
 function avrKoW(s){return [['KPO',[1,16],[1,23]],['Son 16',[2,9],[2,16]],['Çeyrek Final',[3,6],[3,13]],['Yarı Final',[3,27],[4,4]]].map(([t,x,z])=>{const a=wTarih(s,x[0],x[1]);let b=wTarih(s,z[0],z[1]);if(b<=a)b=a+1;return [t,a,b];});}
-function avrKoDuzelt(s){for(const k of Object.keys(s.kp||{})){const c=s.kp[k];if(!c||c.bitti||c.koT||!/^(UCL|UEL|UECL)$/.test(c.kod))continue;c.koT=1;const W={};avrKoW(s).forEach(([t,a,b])=>{W[t]=[a,b];});
+// Lig aşaması gerçek takvim: UCL/UEL 8 maç (Eyl–Ocak), UECL 6 maç (Eki–Ara)
+function avrLigW(s,kod){const D=kod==='UECL'?[[9,2],[9,23],[10,6],[10,27],[11,11],[11,18]]:[[8,16],[9,1],[9,21],[10,5],[10,25],[11,10],[0,20],[0,28]];let p=-1;return D.map(([a,g])=>{let w=wTarih(s,a,g);if(w<=p)w=p+1;p=w;return w;});}
+function avrLigDuzelt(s){for(const k of Object.keys(s.kp||{})){const c=s.kp[k];if(!c||c.bitti||c.ligT||!/^(UCL|UEL|UECL)$/.test(c.kod))continue;c.ligT=1;const W=avrLigW(s,c.kod);
+ c.adim.forEach((a,i)=>{if(a.t!=='lig'||i<c.ai||W[a.gun]==null)return;a.w=W[a.gun];});}}
+function avrKoDuzelt(s){try{avrLigDuzelt(s);}catch(e){}for(const k of Object.keys(s.kp||{})){const c=s.kp[k];if(!c||c.bitti||c.koT||!/^(UCL|UEL|UECL)$/.test(c.kod))continue;c.koT=1;const W={};avrKoW(s).forEach(([t,a,b])=>{W[t]=[a,b];});
  c.adim.forEach((a,i)=>{if(a.t!=='ko'||!W[a.tur]||i<c.ai||(i===c.ai&&c.es))return;a.w=W[a.tur][a.ayak===2?1:0];});}}
 function wHes(s,f){const n=s.fik.length;return Math.min(n,Math.max(0,Math.round(f*n)));}
 function kpYeni(kod,ad,renk,onc,adim,ek){return Object.assign({kod,ad,renk,onc,adim,ai:0,es:null,kalan:[],ben:true,kazanan:null,finalist:null,log:[],bitti:false},ek||{});}
@@ -3636,7 +3640,7 @@ function avrLigKur(s,c,gercek){if(c.lig)return;if(UEFA_PRIM[c.kod])para_ekle(s,U
  const ids=[s.ti].concat(avrHavuz(s,c.kod,[s.ti]));c.lig={ids,gunler:rastgeleGunler(ids,n),tab:{}};}
 function avrAdimlar(s,kod,giris){const ad=[];const q=['Q2','Q3','PO'];const gi=giris==='L'?3:q.indexOf(giris);
  q.slice(gi).forEach(t=>{ad.push({t:'q',tur:t,ayak:1,w:0},{t:'q',tur:t,ayak:2,w:0});});
- const F=kod==='UECL'?[.10,.20,.30,.40,.50,.58]:[.08,.14,.22,.30,.38,.46,.55,.60];F.forEach((f,k)=>ad.push({t:'lig',gun:k,w:wHes(s,f)}));
+ avrLigW(s,kod).forEach((w,k)=>ad.push({t:'lig',gun:k,w}));
  avrKoW(s).forEach(([t,a,b])=>{ad.push({t:'ko',tur:t,ayak:1,w:a},{t:'ko',tur:t,ayak:2,w:b});});
  ad.push({t:'ko',tur:'Final',ayak:0,w:s.fik.length});return ad;}
 function avrOlustur(s,g,gercek){const [kod,giris]=g.split('-');const c=kpYeni(kod,AVR_AD[kod],AVR_RENK[kod],1,avrAdimlar(s,kod,giris),{giris:g});if(giris==='L')avrLigKur(s,c,gercek);return c;}
