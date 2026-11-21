@@ -1977,12 +1977,18 @@ function faulVer(p,sh,arkadan){if(G.seri){p.kay=0;p.kayK=false;return;}const dp=
   if(!kart&&!kutu){const hz=Math.hypot(sh.vx||0,sh.vy||0),ileri=(fk?-1:1)*(sh.vx||0),onde=G.P.filter(q=>q.k===p.k&&q.rol!=='GK'&&!(q.disari>0)&&(fk?q.x<fx:q.x>fx)).length;if(hz>1.1&&ileri>.6&&onde<=3&&Math.abs(fx-gk0)<W*.62){kart='S';G._taktikF=1;}}
   if(kart==='S'&&p.sari>=1&&!(p.kayK&&arkadan)&&p.fSay<4)kart=null;
   // VAR: hakem sarı gösterdi ama arkadan, çok yakın kayarak müdahale = ciddi faul → direkt kırmızı incelemesi
-  if(kart==='S'&&p.kayK&&arkadan&&dp<=3&&!(p.sari>=1))kart='KV';}
+  if(kart==='S'&&p.kayK&&arkadan&&dp<=3&&!(p.sari>=1))kart='KV';
+  // IFAB VAR: aşırı güçle (hızlı, çok yakın) kayarak müdahale = ciddi faul → direkt kırmızı incelemesi
+  if(kart==='S'&&p.kayK&&!arkadan&&dp<=2.2&&Math.hypot(p.vx||0,p.vy||0)>2.2&&!(p.sari>=1))kart='KV';
+  // 2026/27 protokolü: açıkça hatalı ikinci sarı incelenir (temas çok hafifse iptal)
+  if(kart==='S'&&p.sari>=1)kart=dp>5.5&&!p.kayK?'S2I':'S2';}
  const kavgaVar=kart==='K';p.kayK=false;
  G.faz='dur';G.fazT=60;G.banner='FAUL!';G.alt='';G.kuy=[];hakemIsaret(kutu?'penalti':'yon',fk?-1:1);itirazBasla(p.k,kutu?.8:kart?.45:.1);
+ if(kart==='S2'){G.kuy.push({b:'İKİNCİ SARI · KIRMIZI KART',t:85,f:()=>{G.alt='Hakem ikinci sarıyı gösterdi';}});G.kuy.push({b:'VAR KONTROLÜ',t:120,f:()=>{G.kulak=120;G.alt='İkinci sarı kart kontrol ediliyor';}});G.kuy.push({b:'KONTROL TAMAM: KIRMIZI KART',t:80,f:()=>{G.alt='Müdahale net · karar doğru';sariVer(p);}});}
+ if(kart==='S2I'){G.kuy.push({b:'İKİNCİ SARI · KIRMIZI KART',t:85,f:()=>{G.alt='Hakem ikinci sarıyı gösterdi';}});G.kuy.push({b:'VAR KONTROLÜ',t:140,f:()=>{G.kulak=140;G.alt='İkinci sarı kart kontrol ediliyor: temas var mı?';}});G.kuy.push({b:'HAKEM MONİTÖRE GİDİYOR',t:200,f:()=>{G.alt='Temas çok hafif, oyuncu abartmış olabilir';}});G.kuy.push({b:'KARAR DEĞİŞTİ: KART İPTAL',t:90,f:()=>{varKarar();G.alt='Açıkça hatalı ikinci sarı · oyuncu sahada kalıyor';}});}
  if(kart==='S'){const tf=G._taktikF;G._taktikF=0;G.kuy.push({b:'SARI KART',t:85,f:()=>{sariVer(p);if(tf)G.alt='Taktik faul: umut vaat eden atağı durdurdu';}});}
- if(kart==='K'){G.kuy.push({b:'VAR KONTROLÜ',t:110,f:()=>{G.kulak=110;G.alt='Kırmızı kart kontrol ediliyor: son adam, net gol şansı';}});G.kuy.push({b:'KIRMIZI KART!',t:95,f:()=>{G.alt='Gol şansını faulle engelledi · karar doğru';kirmiziVer(p);}});}
- if(kart==='KV'){G.kuy.push({b:'SARI KART',t:70,f:()=>{G.alt='Hakem sarı kart gösterdi';}});G.kuy.push({b:'VAR KONTROLÜ',t:150,f:()=>{G.kulak=150;G.alt='Olası direkt kırmızı: ciddi faul';}});G.kuy.push({b:'HAKEM MONİTÖRE GİDİYOR',t:200,f:()=>{G.alt='Arkadan, kontrolsüz kayarak müdahale';}});G.kuy.push({b:'KARAR DEĞİŞTİ: KIRMIZI KART!',t:95,f:()=>{varKarar();kirmiziVer(p);}});}
+ if(kart==='K'){G.kuy.push({b:'KIRMIZI KART!',t:70,f:()=>{G.alt='Hakem direkt kırmızı gösterdi';}});G.kuy.push({b:'VAR KONTROLÜ',t:110,f:()=>{G.kulak=110;G.alt='Direkt kırmızı kontrol ediliyor: faulün yeri, son adam, net gol şansı';}});G.kuy.push({b:'KONTROL TAMAM: KIRMIZI KART',t:95,f:()=>{G.alt='Gol şansını faulle engelledi · karar doğru';kirmiziVer(p);}});}
+ if(kart==='KV'){G.kuy.push({b:'SARI KART',t:70,f:()=>{G.alt='Hakem sarı kart gösterdi';}});G.kuy.push({b:'VAR KONTROLÜ',t:150,f:()=>{G.kulak=150;G.alt='Olası direkt kırmızı: ciddi faul';}});G.kuy.push({b:'HAKEM MONİTÖRE GİDİYOR',t:200,f:()=>{G.alt=arkadan?'Arkadan, kontrolsüz kayarak müdahale':'Aşırı güçle, rakibin güvenliğini tehlikeye atan müdahale';}});G.kuy.push({b:'KARAR DEĞİŞTİ: KIRMIZI KART!',t:95,f:()=>{varKarar();kirmiziVer(p);}});}
  if(kutu){G.penFaul=(G.kay||[]).slice(-36);G.kuy.push({b:'PENALTI!',t:70,f:()=>{G.alt='Hakem penaltı noktasını gösterdi';}});
   const pAt=()=>{G.alt='';sesKalabalik(.35,2);G.restart={tip:'PENALTI',k:fk,x:fk?ML+55:MR-55,y:H/2};},pIptal=(ac,dal)=>{varKarar();G.alt=ac;G.penFaul=null;if(dal&&!sh.disari)sariVer(sh);G.restart={tip:'AUT',k:p.k,x:p.k?MR-16:ML+16,y:H/2};};
   G.kuy.push({b:'VAR KONTROLÜ',t:150,f:()=>{G.kulak=150;G.alt='VAR penaltı kararını kontrol ediyor';}});
