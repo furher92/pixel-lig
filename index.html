@@ -3740,7 +3740,10 @@ function doguKur(s){if(!['RUS','KKTC'].includes(s.lig))return;const Ru=doguSira(
 function siradakiOlay(s){hayalet(s);let en=null;
  for(const k of Object.keys(s.kp||{})){const c=s.kp[k];if(!c||c.bitti)continue;const a=c.adim[c.ai];if(!a||a.w>s.hafta)continue;if(!benimMi(s,c))continue;
   if(!en||a.w<en.a.w||(a.w===en.a.w&&c.onc<en.c.onc))en={k,c,a};}return en;}
-function hayalet(s){try{avrKoDuzelt(s);}catch(e){}if(s.milli&&s.kp.MQ&&s.kp.MQ.bitti&&!s.kp.MT&&!s.milli.tKur){s.milli.tKur=1;milliTurnuvaKur(s);}
+// Benim kupalarımın oynanmamış adımları aynı haftaya düşerse: öncelikli kupa kalır, diğeri 1 hafta kayar (kupa içi sıra korunur)
+function kupaCakisma(s){const n=(s.fik||[]).length;if(!n)return;const K=Object.keys(s.kp||{}).map(k=>s.kp[k]).filter(c=>c&&!c.bitti&&c.ben&&!c.milli).sort((a,b)=>(a.onc||9)-(b.onc||9));const dolu={};
+ K.forEach(c=>{for(let i=c.ai;i<c.adim.length;i++){const a=c.adim[i];if(i===c.ai&&c.es)continue;let w=a.w;if(i>c.ai){const p=c.adim[i-1].w;if(w<=p)w=p+1;}while(dolu[w]&&w<n-1)w++;if(w!==a.w&&!(a.tur==='Final'&&a.w>=n-1))a.w=Math.min(w,n-1);dolu[a.w]=1;}});}
+function hayalet(s){try{avrKoDuzelt(s);}catch(e){}try{kupaCakisma(s);}catch(e){}if(s.milli&&s.kp.MQ&&s.kp.MQ.bitti&&!s.kp.MT&&!s.milli.tKur){s.milli.tKur=1;milliTurnuvaKur(s);}
  if(s.milli&&s.milli.plan&&s.milli.plan.ortaSezon&&!s.kp.MT&&!s.milli.tKur&&s.hafta>=wHes(s,.40)){s.milli.tKur=1;milliTurnuvaKur(s);}
  for(let g=0;g<400;g++){let is=false;
   for(const k of Object.keys(s.kp||{})){const c=s.kp[k];if(!c||c.bitti)continue;const a=c.adim[c.ai];if(!a||a.w>s.hafta)continue;
