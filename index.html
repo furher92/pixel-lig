@@ -2513,7 +2513,7 @@ function avrSimKO(s,kod,T){const h=s.hafta||0,K=KITA_HAFTA;if(h<=K[8])return [];
  const sf=koSim([0,2].map(i=>[qf[i].w,qf[i+1].w]),'Yarı Final',true,sd+4);L=L.concat(sf);if(h<=K[12])return L;
  return L.concat(koSim([[sf[0].w,sf[1].w]],'Final',false,sd+5));}
 function fmLigHtml(s,gl,sr){const ben=gl.id===s.lig;const tarih=w=>{try{return tarihYaz(haftaTarih(s,Math.max(0,Math.min(w,s.fik.length-1))));}catch(e){return '';}};
- const tab=`<div class="fmP"><div class="fmH">Puan Durumu <span class="fmS">${gl.ad}</span></div>${fmTabloHtml(s,gl.id,sr,ben)}${ligLej(gl.id)}</div>`;
+ const _top=2*((gl.t||[]).length-1),_oyn=Math.max(0,...sr.map(r=>r.o||0)),_kal=Math.max(0,_top-_oyn);const tab=`<div class="fmP"><div class="fmH">${ligLogo(gl.id,18)} Puan Durumu <span class="fmS">${gl.ad} · ${_kal?`<b style="color:#ffd23f">${_kal} maç kaldı</b> (${_oyn}/${_top})`:'<b style="color:#7dffb9">Sezon bitti</b>'}</span></div>${fmTabloHtml(s,gl.id,sr,ben)}${ligLej(gl.id)}</div>`;
  let fik='',rap='',oy='',oz='';
  {const me=s.ti,M=(s.macGec||[]).filter(x=>x.sz===s.sezon&&(x.a===me||x.b===me)).slice(-6);const sat=[];
   M.forEach(x=>{const ev=x.a===me,rk=ev?x.b:x.a,bg=ev?x.sk[0]:x.sk[1],yg=ev?x.sk[1]:x.sk[0],c=bg>yg?'#2ecc71':bg<yg?'#e74c3c':'#f1c40f';sat.push(`<tr><td>${x.d||''}</td><td style="text-align:left">${chip(TT(rk))} ${TT(rk).ad}</td><td>${ev?'E':'D'}</td><td><span class="fmR" style="border-color:${c}">${x.sk[0]}-${x.sk[1]}</span></td><td class="fmC">${x.tip==='lig'?'Lig':(x.yar||x.tip||'')}</td></tr>`);});
