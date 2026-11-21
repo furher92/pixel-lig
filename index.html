@@ -1270,7 +1270,7 @@ function ligSkb(D,T0,T1,L0){const dk=G.devre>=3?Math.min(120,90+Math.floor((G.ka
   if(G.uzG>0&&G.uzT!=null){G.uzG--;cx.fillStyle='#111';cx.fillRect(x+150,y,18,13);cx.fillStyle='#2ecc71';cx.fillText('+'+G.uzDk,x+152,y+4);}
   for(let k=0;k<2;k++)for(let i=0;i<G.kirmizi[k===0?L0:1-L0];i++){cx.fillStyle='#e30613';cx.fillRect((k?x+113:x+14)-i*4*(k?1:-1),y+14,3,4);}}
  cx.restore();}
-function skbAl(){const t=G&&G.tema;let u=null;try{u=ULK(t);}catch(e){}return SKB[t]||SKB[u]||SKB.GENEL;}
+function skbAl(){if(G&&G.temaAd&&typeof yerelKupaMi==='function'&&yerelKupaMi()){return / Süper/.test(G.temaAd)?['#5a0f18','#ffd23f']:['#1e1408','#d9a821'];}const t=G&&G.tema;let u=null;try{u=ULK(t);}catch(e){}return SKB[t]||SKB[u]||SKB.GENEL;}
 function koyu(h,f){if(!/^#[0-9a-f]{6}$/i.test(h))return '#1a1f33';const n=parseInt(h.slice(1),16),c=x=>Math.round(x*f).toString(16).padStart(2,'0');return '#'+c(n>>16&255)+c(n>>8&255)+c(n&255);}
 function serTema(){const tm=skbAl(),L=LEAGUES.find(l=>l.id===G.tema);return {c1:tm[0],c2:tm[1],ad:(G.temaAd||(L?L.ad:SER_AD[G.tema]||'PİKSEL LİG')).toLocaleUpperCase('tr')};}
 function cizSeremoni(){if(!G)return;const T=serTema();cx.font='5px monospace';cx.textBaseline='top';
