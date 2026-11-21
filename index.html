@@ -2141,7 +2141,13 @@ function duvarKontrol(){const D=G.duvarTop;if(!D)return;const t=G.top;if(--D.t<=
   return;}}}
 function fizik(){
  const t=G.top;
- if(t.sahip){const p=t.sahip;t.x=p.x+p.dx*4;t.y=p.y+p.dy*4+1;if(p.rol==='GK'){t.x=clamp(t.x,ML+2,MR-2);p.vurK=G.kare;}t.z=0;t.vx=p.vx;t.vy=p.vy;t.vz=0;
+ if(t.sahip){const p=t.sahip;
+  // ⚽ gerçekçi top sürme: koşarken top ayağa yapışık değil — her dokunuşta öne itilir, yuvarlanıp yavaşlar, oyuncu yetişip tekrar dokunur; dururken top ayakta
+  const sp=Math.hypot(p.vx||0,p.vy||0);let uz=4,yan=0,zp=0;
+  if(p.rol!=='GK'&&sp>.35&&G.faz==='oyun'){if(t._ds!==p){t._ds=p;t._dp=0;}const per=sp>1.6?16:22;t._dp=((t._dp||0)+1)%per;const f=t._dp/per;
+   const ileri=Math.min(12,3+sp*3.2);uz=4+ileri*(1-Math.pow(1-f,2))*(1-f*.55);yan=Math.sin((p.id||1)*1.7+G.kare*.09)*.9;if(t._dp===0){try{if(GRAFIK>0&&Math.random()<.5)sesVurus(1);}catch(e){}}}
+  else t._dp=0;
+  const nx=-(p.dy||0),ny=(p.dx||0),hx2=p.x+p.dx*uz+nx*yan,hy2=p.y+p.dy*uz+ny*yan+1;if(t._ls===p&&Math.hypot(hx2-t.x,hy2-t.y)<18){t.x+=(hx2-t.x)*.42;t.y+=(hy2-t.y)*.42;}else{t.x=hx2;t.y=hy2;}t._ls=p;if(p.rol==='GK'){t.x=clamp(t.x,ML+2,MR-2);p.vurK=G.kare;}t.z=zp;t.vx=p.vx;t.vy=p.vy;t.vz=0;
   if(p.rol==='GK'&&p.k!==G.human){p.tutT=(p.tutT||40)-1;if(p.tutT<=0){let bos=false;G.P.forEach(q=>{if(q.k===p.k&&q.rol==='DF'&&Math.hypot(q.x-p.x,q.y-p.y)<110&&!G.P.some(o=>o.k!==p.k&&Math.hypot(o.x-q.x,o.y-q.y)<22))bos=true;});pasVer(p,!bos);}}
   return;}
  if(t.guclu>0){t.guclu--;G.iz.push([t.x,t.y-t.z]);if(G.iz.length>10)G.iz.shift();}else if(G.iz.length)G.iz.shift();
