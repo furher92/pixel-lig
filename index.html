@@ -3904,7 +3904,13 @@ try{[['TR','FRT'],['ENG','MCM'],['ESP','SSB'],['ITA','MMS'],['GER','MÜN'],['FRA
 // 2026/27 süper kupaları: sadece gerçekte oynanmış olanlar (Ağu 2026)
 // Kutup Süper Kupası geçmişi (gerçek Rusya Süper Kupası 2003–2025; yıl Y = Y/Y+1 sezonu) — kurgusal kodlarla
 SUPER_GEC.RUS=[['2003/04','MDY'],['2004/05','MSO'],['2005/06','MDY'],['2006/07','MSO'],['2007/08','MSO'],['2008/09','NEV'],['2009/10','MSO'],['2010/11','KZN'],['2011/12','NEV'],['2012/13','KZN'],['2013/14','MSO'],['2014/15','MSO'],['2015/16','NEV'],['2016/17','NEV'],['2017/18','MKR'],['2018/19','MSO'],['2019/20','MDY'],['2020/21','NEV'],['2021/22','NEV'],['2022/23','NEV'],['2023/24','NEV'],['2024/25','NEV'],['2025/26','MSO']];
-const SK27={ENG:'LTP',GER:'MÜN',NED:'ALK',FRA:'LNS',RUS:'NEV'};function sk26(u,H){const s=KRY();if(!s||!(s.sezon>2026)||!SK27[u]||H.some(x=>x[0]==='2026/27'))return H;return H.concat([['2026/27',SK27[u]]]);}
+const SK27={ENG:'LTP',GER:'MÜN',NED:'ALK',FRA:'LNS',RUS:'NEV'};function sk26(u,H){const s=KRY();if(!s)return H;H=H.slice();const son=(s.hafta||0)>=1?s.sezon:s.sezon-1;
+ for(let y=2026;y<=son;y++){const z=`${y}/${String((y+1)%100).padStart(2,'0')}`;if(H.some(x=>x[0]===z))continue;
+  if(y===2026&&SK27[u]){H.push([z,SK27[u]]);continue;}
+  const sm=s.samp&&s.samp[y-1];let a=sm&&sm.lig&&sm.lig[u],b=sm&&sm.yk&&sm.yk[u];const L=LEAGUES.find(l=>ULK(l.id)===u&&!/\d/.test(l.id));if(!L)continue;
+  const top=L.t.slice().sort((x,y2)=>y2.rt-x.rt);if(!a)a=top[0].kod;if(!b||b===a)b=(top.find(x=>x.kod!==a)||top[1]).kod;
+  const A=ALL.find(x=>x.kod===a),B=ALL.find(x=>x.kod===b);if(!A||!B)continue;const r=tohum(y*977+u.charCodeAt(0)*13)();H.push([z,r*(A.rt+B.rt)<A.rt?a:b]);}
+ return H;}
 const LK26={ENG:'LVK',SCO:'GLY'};function lk26(u,H){const s=KRY();if(!s||!(s.sezon>2026)||!LK26[u]||H.some(x=>x[0]==='2026/27'))return H;return H.concat([['2026/27',LK26[u]]]);}
 const YK26={BEL:'BRU',TR:'KAN',ENG:'MCK',ESP:'MDB',ITA:'ZBR',GER:'MÜN',FRA:'PAR',NED:'EİN',POR:'BNF',SCO:'GLY',RUS:'NEV'};
 function yk26(u,H){const s=KRY();if(!s||!(s.sezon>2026)||!YK26[u]||H.some(x=>x[0]==='2026/27'))return H;return H.concat([['2026/27',YK26[u]]]);}
