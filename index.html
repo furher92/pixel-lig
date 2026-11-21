@@ -769,7 +769,11 @@ function degPanel(){const d=document.getElementById('degIc');const k=G.human;if(
  const b=document.getElementById('bSub');if(b)b.textContent='🔁 OYUNCU DEĞİŞİKLİĞİ ('+kalan+'/'+DMAX()+')';}
 function degYap(j){const k=G.human;const p=G.P.find(q=>q.id===G.degSecili&&q.k===k);if(!p||G.degS[k]>=DMAX())return;if(G.faz==='oyun'&&!G.restart){G.degKuy=G.degKuy||[];if(G.degKuy.some(q=>q.pid===p.id)||G.degKuy.length+G.degS[k]>=DMAX())return;const y=G.yedek[k][j];if(!y)return;G.degKuy.push({k,pid:p.id,y});G.degB={t:260,txt:'DEĞİŞİKLİK HAZIR · İLK DURAN TOPTA YAPILACAK'};G.degSecili=null;degPanel();return;}oyuncuDegis(k,p,j);G.degSecili=null;degPanel();}
 function sonucSkor(){const s=sonSkor();return G.donus?[s[1],s[0]]:s;}
-function kayitKes(K){if(!K||K.length<4)return K;const sic=i=>{const a=K[i-1].t,b=K[i].t;return Math.hypot(a[0]-b[0],a[1]-b[1])>30;};let son=K.length;for(let i=K.length-1;i>=Math.max(1,K.length-6);i--)if(sic(i))son=i;let kes=0;for(let i=1;i<son;i++)if(sic(i))kes=i;return son-kes>=6?K.slice(kes,son):K.slice(0,son);}
+function kayitKes(K){K=kayitKes0(K);if(!K||K.length<12)return K;
+ // top uzun süre durduysa (kaleci tuttu, aut/korner, faul) tekrar o duraktan SONRA başlasın: aynı atak tekrar tekrar görünmesin
+ const ay=(i)=>Math.hypot(K[i].t[0]-K[i-1].t[0],K[i].t[1]-K[i-1].t[1])<.6;let kes=0,run=0;for(let i=1;i<K.length-8;i++){if(ay(i)){run++;if(run>=6)kes=i;}else run=0;}
+ let L=K.slice(kes);if(L.length<16)L=K.slice(Math.max(0,K.length-40));return L.length>75?L.slice(-75):L;}
+function kayitKes0(K){if(!K||K.length<4)return K;const sic=i=>{const a=K[i-1].t,b=K[i].t;return Math.hypot(a[0]-b[0],a[1]-b[1])>30;};let son=K.length;for(let i=K.length-1;i>=Math.max(1,K.length-6);i--)if(sic(i))son=i;let kes=0;for(let i=1;i<son;i++)if(sic(i))kes=i;return son-kes>=6?K.slice(kes,son):K.slice(0,son);}
 function ofsHat(k){const sag=k===0;const xs=G.P.filter(p=>p.k!==k&&!(p.disari>0)&&!p.sedye).map(p=>p.x).sort((a,b)=>sag?b-a:a-b);return xs[1]!=null?xs[1]:(sag?MR:ML);}
 function ofsKaydet(p){G.ofs=null;const r=G.restart;if(r&&['TAÇ','KORNER','AUT','baslama','SANTRA','PENALTI'].includes(r.tip))return;
  const k=p.k,sag=k===0,hat=ofsHat(k),bx=G.top.x;const S=new Set(),M={};
