@@ -1729,8 +1729,17 @@ function ligPano(y){const tm=skbAl(),ad=serTema().ad,x0=W/2-34;cx.fillStyle=tm[0
 const YAYIN_STIL={'PİKSEL SPOR':{bg:'#4b1f86',fg:'#fff',ac:'#ffd23f',ik:'kavis'},'SKYLINE SPORTS':{bg:'#ffffff',fg:'#0a1f5c',ac:['#0072c9','#7a2fb5','#e4003b'],ik:'grad'},'ESTRELLA TV':{bg:'#00a3e0',fg:'#fff',ac:'#ffffff',ik:'yildiz'},
  'CALCIO+':{bg:'#0d0d0d',fg:'#fff',ac:'#f5e000',ik:'arti'},'FUSSBALL EINS':{bg:'#111',fg:'#fff',ac:'#e30613',ik:'bir'},'CANAL FOOT':{bg:'#000',fg:'#fff',ac:'#ffffff',ik:'arti'},'ORANJE TV':{bg:'#ff6a00',fg:'#fff',ac:'#0a3d91',ik:'nokta'},
  'SPORT LUSO':{bg:'#0b2a1a',fg:'#fff',ac:['#006b3c','#d0102a'],ik:'serit'},'BELGA SPORT':{bg:'#151515',fg:'#ffd400',ac:['#151515','#ffd400','#e1002a'],ik:'serit'},'TARTAN TV':{bg:'#1d1b5c',fg:'#fff',ac:['#7fd0ff','#e1002a'],ik:'serit'},
- 'EUROVİZYON+':{bg:'#06103a',fg:'#9fd4ff',ac:'#ffffff',ik:'yildiz'},'DOĞU TV':{bg:'#0b2a5c',fg:'#fff',ac:'#9fd4ff',ik:'kar'},'ASYA TV':{bg:'#3a1466',fg:'#fff',ac:'#ff8a1a',ik:'gunes'},'ULUSAL TV':{bg:'#c8102e',fg:'#fff',ac:'#ffffff',ik:'yildiz'},'PİKSEL TV':{bg:'#1c2440',fg:'#fff',ac:'#ff4fa3',ik:'nokta'}};
-function yayinLogo(ad){const S=YAYIN_STIL[ad]||{bg:'#1c2440',fg:'#fff',ac:'#ff4fa3',ik:'nokta'};cx.font='bold 6px system-ui,sans-serif';cx.textBaseline='top';const tw=Math.ceil(cx.measureText(ad).width),w=tw+17,h=10,x=VW-30-w,y=4;
+ 'EUROVİZYON+':{bg:'#06103a',fg:'#9fd4ff',ac:'#ffffff',ik:'yildiz'},'DOĞU TV':{bg:'#0b2a5c',fg:'#fff',ac:'#9fd4ff',ik:'kar'},'ASYA TV':{bg:'#3a1466',fg:'#fff',ac:'#ff8a1a',ik:'gunes'},'ULUSAL TV':{bg:'#c8102e',fg:'#fff',ac:'#ffffff',ik:'yildiz'},'PİKSEL TV':{bg:'#1c2440',fg:'#fff',ac:'#ff4fa3',ik:'nokta'},
+ 'MAÇ KUTUP':{iki:['MAÇ','KUTUP'],b1:['#c9932a','#f2cf4a'],f1:'#fff',b2:'#111',f2:'#f2c23a'},'ADA TV':{bg:'#14213d',fg:'#fff',ac:'#e8322b',ik:'nokta'},
+ 'A PİKSEL':{bg:'#ffffff',fg:'#c8102e',ac:'#c8102e',ik:'a'},'TRP 1':{iki:['TRP','1'],b1:['#ffffff','#ffffff'],f1:'#0a3d91',b2:'#1fae5b',f2:'#fff'},
+ 'SKYLINE SPORTS':{iki:['SKYLINE','sports'],b1:['#0b2a8a','#3b5bd8'],f1:'#fff',b2:'#e4003b',f2:'#fff'}};
+function yayinciAd(){const tm=G.tema,u=(()=>{try{return ULK(tm);}catch(e){return tm;}})(),ta=G.temaAd||'';let benU=null;try{const s=KRY();benU=s&&ULK(s.lig);}catch(e){}
+ if(/^(UCL|UEL|UECL)$/.test(tm)&&benU==='TR')return 'TRP 1';
+ if(u==='TR'&&/Kupa/.test(ta))return 'A PİKSEL';if(u==='RUS')return 'MAÇ KUTUP';if(u==='KKTC')return 'ADA TV';return YAYINCI[tm]||YAYINCI[u]||YAYINCI.GENEL;}
+function yayinLogo(ad){const S=YAYIN_STIL[ad]||{bg:'#1c2440',fg:'#fff',ac:'#ff4fa3',ik:'nokta'};
+ if(S.iki){cx.font='bold 6px system-ui,sans-serif';cx.textBaseline='top';const w1=Math.ceil(cx.measureText(S.iki[0]).width)+6,w2=Math.ceil(cx.measureText(S.iki[1]).width)+6,h=10,x=VW-30-w1-w2,y=4;cx.fillStyle='rgba(0,0,0,.35)';cx.fillRect(x+1,y+1,w1+w2,h);
+  const g=cx.createLinearGradient(x,y,x+w1,y+h);g.addColorStop(0,S.b1[0]);g.addColorStop(1,S.b1[1]);cx.fillStyle=g;cx.fillRect(x,y,w1,h);cx.fillStyle=S.b2;cx.fillRect(x+w1,y,w2,h);cx.fillStyle=S.f1;cx.fillText(S.iki[0],x+3,y+2);cx.fillStyle=S.f2;cx.fillText(S.iki[1],x+w1+3,y+2);
+  const cl=G.kare%60<30;cx.fillStyle=cl?'#e30613':'#7a0008';cx.fillRect(x,y+h+1,15,5);cx.fillStyle='#fff';cx.font='4px monospace';cx.fillText('CANLI',x+2,y+h+1.5);return;}cx.font='bold 6px system-ui,sans-serif';cx.textBaseline='top';const tw=Math.ceil(cx.measureText(ad).width),w=tw+17,h=10,x=VW-30-w,y=4;
  cx.fillStyle='rgba(0,0,0,.35)';cx.fillRect(x+1,y+1,w,h);cx.fillStyle=S.bg;cx.fillRect(x,y,w,h);const ic=x+5,iy=y+5;
  if(S.ik==='kavis'){cx.strokeStyle=S.ac;cx.lineWidth=1.4;cx.beginPath();cx.arc(ic,iy+3,4,-2.7,-.5);cx.stroke();cx.fillStyle=S.ac;cx.fillRect(ic-1,iy-1,2,2);}
  else if(S.ik==='grad'){S.ac.forEach((c,i)=>{cx.fillStyle=c;cx.fillRect(x+2,y+2+i*2,6,2);});cx.fillStyle=S.ac[2];cx.fillRect(x,y+h-1,w,1);}
@@ -1740,10 +1749,11 @@ function yayinLogo(ad){const S=YAYIN_STIL[ad]||{bg:'#1c2440',fg:'#fff',ac:'#ff4f
  else if(S.ik==='kar'){cx.strokeStyle=S.ac;cx.lineWidth=1;cx.beginPath();for(let i=0;i<3;i++){const a=i*1.047;cx.moveTo(ic-Math.cos(a)*3.5,iy-Math.sin(a)*3.5);cx.lineTo(ic+Math.cos(a)*3.5,iy+Math.sin(a)*3.5);}cx.stroke();}
  else if(S.ik==='gunes'){cx.fillStyle=S.ac;cx.beginPath();cx.arc(ic,iy+1,3,3.1416,0);cx.fill();cx.fillRect(ic-4,iy+2,8,1);}
  else if(S.ik==='serit'){S.ac.forEach((c,i)=>{cx.fillStyle=c;cx.fillRect(x+1+i*3,y+1,3,h-2);});}
+ else if(S.ik==='a'){cx.fillStyle=S.ac;cx.beginPath();cx.arc(ic,iy,4,0,6.3);cx.fill();cx.fillStyle='#fff';cx.font='bold 6px system-ui,sans-serif';cx.fillText('a',ic-1.7,iy-3.6);}
  else{cx.fillStyle=S.ac;cx.beginPath();cx.arc(ic,iy,2.5,0,6.3);cx.fill();}
- cx.fillStyle=S.fg;cx.fillText(ad,x+12,y+2);
+ cx.font='bold 6px system-ui,sans-serif';cx.fillStyle=S.fg;cx.fillText(ad,x+12,y+2);
  const cl=G.kare%60<30;cx.fillStyle=cl?'#e30613':'#7a0008';cx.fillRect(x,y+h+1,15,5);cx.fillStyle='#fff';cx.font='4px monospace';cx.fillText('CANLI',x+2,y+h+1.5);}
-function cizYayin(){const ad=YAYINCI[G.tema]||YAYINCI.GENEL;try{yayinLogo(ad);}catch(e){}cx.font='5px monospace';cx.textBaseline='top';
+function cizYayin(){const ad=yayinciAd();try{yayinLogo(ad);}catch(e){}cx.font='5px monospace';cx.textBaseline='top';
  if(G.diger&&G.diger.length&&(G.faz==='oyun'||G.faz==='dur')){const dk=Math.min(90,Math.floor(G.kare/G.top_kare*90));G.diger.forEach(m=>{[['ga',0],['gb',1]].forEach(([k])=>{m[k].forEach((g,j)=>{const id=k+j;if(g<=dk&&!(m.say||{})[id]){(m.say=m.say||{})[id]=1;if(G.kare>60){const sa=m.ga.filter(x=>x<=dk).length,sb=m.gb.filter(x=>x<=dk).length;G.digerGol={t:240,txt:'GOL! '+m.a+' '+sa+'-'+sb+' '+m.b+' ('+g+"')"};}}});});});
   if(G.digerGol&&G.digerGol.t>0){G.digerGol.t--;const t=G.digerGol.txt;const w2=cx.measureText(t).width+8;cx.fillStyle='rgba(10,14,30,.85)';cx.fillRect(216,15,w2,8);cx.fillStyle=G.kare%20<10?'#ffd23f':'#fff';cx.fillText(t,220,16);}else{const i=Math.floor(G.kare/700)%G.diger.length;if(G.kare%700<300){const m=G.diger[i],sa=m.ga.filter(x=>x<=dk).length,sb=m.gb.filter(x=>x<=dk).length,t='DİĞER: '+m.a+' '+sa+'-'+sb+' '+m.b+' '+dk+"'";const w2=cx.measureText(t).width+8;cx.fillStyle='rgba(10,14,30,.75)';cx.fillRect(216,15,w2,8);cx.fillStyle='#9fd4ff';cx.fillText(t,220,16);}}}}
 function canliHazirla(s,hafta,ben){s._canli={};const L=[];hafta.forEach(([a,b])=>{if(a===ben||b===ben)return;const iz=s.izlenen&&s.izlenen.sezon===s.sezon&&s.izlenen.h===s.hafta&&s.izlenen.k===a+'-'+b;const r=iz?s.izlenen.r:simMac({rt:takimGucu(a,s)},{rt:takimGucu(b,s)});s._canli[a+'-'+b]=r;const dk=n=>Array.from({length:n},()=>1+Math.floor(Math.random()*90)).sort((x,y)=>x-y);L.push({a:ALL[a].kod,b:ALL[b].kod,ga:dk(r[0]),gb:dk(r[1])});});return L;}
