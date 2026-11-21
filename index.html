@@ -3801,7 +3801,7 @@ function doguSampSec(s,gercek){return DOGU_KUPA.map(d=>{const DK=gercek&&s.kp&&[
   const w=h.filter(i=>!(gercek&&i===s.ti)).map(i=>[i,ALL[i].rt+Math.random()*7]).sort((a,b)=>b[1]-a[1])[0];return w?ALL[w[0]].kod:null;});}
 function sezonSampKaydet(s,yil,ids,kw,ucl,uel){s.samp=s.samp||{};if(s.samp[yil])return;const o={lig:{},yk:{},avr:{}},bu=ULK(s.lig);
  Object.keys(MUZE_V).forEach(u=>{const L=LEAGUES.find(l=>ULK(l.id)===u&&!/\d/.test(l.id));if(!L)return;let w=null;
-  if(ids&&L.id===s.lig)w=ids[0];else{const g=i=>{try{return takimGucu(i,s);}catch(e){return ALL[i].rt;}};w=L.t.map(t=>[t.i,g(t.i)+Math.random()*7]).sort((a,b)=>b[1]-a[1])[0][0];}
+  if(ids&&L.id===s.lig)w=ids[0];else if(LIDER_SABIT[u+'|'+yil]&&ALL.find(x=>x.kod===LIDER_SABIT[u+'|'+yil])){w=ALL.find(x=>x.kod===LIDER_SABIT[u+'|'+yil]).i;}else{const g=i=>{try{return takimGucu(i,s);}catch(e){return ALL[i].rt;}};w=L.t.map(t=>[t.i,g(t.i)+Math.random()*7]).sort((a,b)=>b[1]-a[1])[0][0];}
   if(w!=null&&ALL[w])o.lig[u]=ALL[w].kod;});
  if(kw!=null&&ALL[kw])o.yk[bu]=ALL[kw].kod;
  const hz=k=>{try{const x=hizliSampiyon(s,k)[0];return x!=null&&ALL[x]?ALL[x].kod:null;}catch(e){return null;}};
@@ -4596,7 +4596,11 @@ function ligOran(s,lig){const N=(s.fik||[]).length;if(!N)return 0;const sonH=Mat
 function digerTablo(s,lig){const L=LEAGUES.find(l=>l.id===lig);if(!L)return {};const ids=L.t.map(t=>t.i),fk=HAVUZ(lig)?fikstur(ids).slice(0,34):fikstur(ids),n=Math.min(fk.length,Math.round(ligOran(s,lig)*fk.length));
  const key=lig+'|'+s.sezon+'|'+n;window._dtC=window._dtC||{};if(window._dtC[key])return window._dtC[key];let h=0;for(const ch of lig)h=(h*31+ch.charCodeAt(0))|0;const R0=Math.random;Math.random=tohum(Math.abs(h)+(s.sezon||2026)*7919);const tab={};
  try{for(let w=0;w<n;w++)fk[w].forEach(([a,b])=>{if(a<0||b<0)return;isle(tab,a,b,simMac({rt:ALL[a].rt},{rt:ALL[b].rt}));});
-  if(n>0&&n<fk.length&&ids.length%2&&!HAVUZ(lig)){const o=i=>(tab[i]&&tab[i].o)||0;let mx=Math.max(...ids.map(o));if(mx%2)mx++;for(let g=0;g<ids.length*3;g++){const D=ids.filter(i=>o(i)<mx).sort((x,y)=>o(x)-o(y)||x-y);if(D.length<2)break;isle(tab,D[0],D[1],simMac({rt:ALL[D[0]].rt},{rt:ALL[D[1]].rt}));}}}finally{Math.random=R0;}return window._dtC[key]=tab;}
+  if(n>0&&n<fk.length&&ids.length%2&&!HAVUZ(lig)){const o=i=>(tab[i]&&tab[i].o)||0;let mx=Math.max(...ids.map(o));if(mx%2)mx++;for(let g=0;g<ids.length*3;g++){const D=ids.filter(i=>o(i)<mx).sort((x,y)=>o(x)-o(y)||x-y);if(D.length<2)break;isle(tab,D[0],D[1],simMac({rt:ALL[D[0]].rt},{rt:ALL[D[1]].rt}));}}}finally{Math.random=R0;}try{ligLiderSabit(s,lig,tab,ids);}catch(e){}return window._dtC[key]=tab;}
+// 🤫 Kullanıcı isteği: Anadolu Piksel Ligi 2027/28'de Aslanlar lider/şampiyon (6. şampiyonluk serisi → yıldız)
+const LIDER_SABIT={'TR|2027':'ASL'};
+function ligLiderSabit(s,lig,tab,ids){const kod=LIDER_SABIT[ULK(lig)+'|'+(s.sezon||2026)];if(!kod||/\d/.test(lig))return;const L=ALL.find(x=>x.kod===kod&&ids.includes(x.i));if(!L||L.i===s.ti)return;const sr=sirala(tab,ids);if(!sr.length||sr[0].i===L.i)return;
+ const A=tab[sr[0].i],B=tab[L.i];if(!A||!B)return;['o','g','b','m','a','y'].forEach(k=>{const x=A[k];A[k]=B[k];B[k]=x;});if((B.g*3+B.b)<=(A.g*3+A.b)){B.g++;B.b=Math.max(0,B.b-1);}}
 // Kıta kupası katılımı: geçen sezon lig sırası → direkt / eleme; elemede kaybeden bir alt kupaya düşer (UCL→UEL→UECL→elendi); boş kalan yer diğer ülkelerin en güçlüleriyle dolar
 function avrKatilim(s){const key='ak|'+s.sezon;window._dtC=window._dtC||{};if(window._dtC[key])return window._dtC[key];const y=(s.sezon||2026)-1;const E={};
  Object.keys(KADEMELER).forEach(ul=>{if(['RUS','KKTC'].includes(ul))return;const lig=KADEMELER[ul].t[0][0];const L=LEAGUES.find(l=>l.id===lig);if(!L)return;let sr=null;
