@@ -3589,7 +3589,7 @@ function yeniSezon(odul,sira){const s=KRY();try{ulkePuanSezon(s);}catch(e){}cons
  try{aiKiraDon(s);}catch(e){}
  Object.keys(s.kira).forEach(id=>{const sahip=s.kira[id];if(Math.floor(id/100)===sahip)delete s.tr[id];else s.tr[id]=sahip;s.haber.push(`↩️ ${(id>=5000000?((s.genc||{})[id]||{}):(bazKadro(Math.floor(id/100)).find(p=>p.id==id)||{})).ad} kulübüne döndü.`);});s.kira={};
  try{ligHareket(s,ids);}catch(e){console.warn('ligHareket',e);}
- sozSezon(s);ffpSezon(s);s.ist={};s.istK={};s.sariSay={};s.butce=Math.round((s.butce+odul)*10)/10;s.sezon++;s.hafta=0;s.tab={};
+ sozSezon(s);ffpSezon(s);s.ist={};s.istK={};s.sariSay={};s.butce=Math.round((s.butce+odul)*10)/10;s.sezon++;try{bosmanGS(s);}catch(e){}s.hafta=0;s.tab={};
  if(s.yeniKulup!=null){const t=ALL[s.yeniKulup];s.yeniKulup=null;const eskiLig=s.lig;(s.trl||[]).forEach(x=>{if(x.k==null)x.k=s.ti;});(s.taksitOdeme||[]).forEach(x=>{if(x.k==null)x.k=s.ti;});s.sonMac=null;s._hft=null;s.trListe={};s.kiraListe={};s.gelenTeklif=[];s.ti=t.i;s.lig=t.lig;s.butce=Math.max(4,Math.round((t.rt-58)*3.2));s.guven=60;
   if(s.lig!==eskiLig){const sr=LEAGUES.find(l=>l.id===s.lig).t.slice().sort((a,b)=>b.rt+Math.random()*4-a.rt-Math.random()*4).map(x=>x.i);const w=sr[(Math.random()*6)|0];s.skIds=skHes(s.lig,sr,w,sr[5]);s.avrGiris=erisim(s.lig,sr,w)[s.ti]||null;}
   else s.avrGiris=erisim(s.lig,ids,kw)[s.ti]||null;
@@ -4402,6 +4402,11 @@ function kulupGoc(s){if(!s||s.kulupGoc1)return;s.kulupGoc1=1;try{const T=ALL[s.t
  for(let i=G.length-1;i>=0;i--){const m=/^(\d{4})\/\d+: (.+?) (?:·|\()/.exec(G[i]||'');if(!m)continue;if(T&&m[2]===T.ad)bas=+m[1];else break;}
  const k0=bas==null?null:bas;[s.trl||[],s.taksitOdeme||[]].forEach(L=>L.forEach(x=>{if(x.k==null)x.k=(k0!=null&&x.sz<k0)?-1:s.ti;}));
  if(s.sonMac&&s.sonMac.ev!==s.ti&&s.sonMac.dep!==s.ti){s.sonMac=null;s._hft=null;}}catch(e){}}
+// 🤫 Kullanıcı isteği: 27/28 sezon sonu, United'a aldığı en pahalı 3 oyuncu Bosman ile İst. Aslanlar'a döner (son dakika haberi)
+function bosmanGS(s){if(s.bosmanGS||s.sezon!==2028)return;s.bosmanGS=1;const mc=ALL.find(x=>x.kod==='MCK'),gs=ALL.find(x=>x.kod==='ASL');if(!mc||!gs)return;
+ const L=(s.trl||[]).filter(x=>x.tip==='h'&&x.k===mc.i).sort((a,b)=>b.f-a.f);const kad=takimKadro(mc.i,s)||[];const P=[];L.forEach(x=>{if(P.length>=3)return;const p=kad.find(q=>q.ad===x.ad);if(p&&!P.includes(p))P.push(p);});if(!P.length)return;
+ s.tr=s.tr||{};P.forEach(p=>{s.tr[p.id]=gs.i;if(s.soz)delete s.soz[p.id];});const adlar=P.map(p=>p.ad).join(', ').replace(/, ([^,]*)$/,' ve $1');
+ s.haber.push(`🚨 SON DAKİKA: ${adlar} sözleşmeleri bitince bonservissiz (Bosman) ${gs.ad}'a döndü! Taraftar havaalanında.`);try{(s.xPost=s.xPost||[]);}catch(e){}}
 function trLog(s,tip,ad,fiyat,ti){try{if(ti!=null&&ALL[ti])trKayit(s,{ad,mv:'',g:'',a:tip==='h'?ti:s.ti,b:tip==='h'?s.ti:ti,f:Math.round(fiyat*10)/10,tip:'b'});}catch(e){}s.trl=s.trl||[];s.trl.push({tip,ad,f:Math.round(fiyat*10)/10,ti,sz:s.sezon||2026,h:s.hafta||0,k:s.ti});if(s.trl.length>80)s.trl=s.trl.slice(-80);}
 function maliHtml(s){const T=(s.trl||[]).filter(x=>x.k==null||x.k===s.ti),sz=s.sezon||2026,K=takimKadro(s.ti,s)||[];const maas=Math.round(K.reduce((a,p)=>a+Math.max(.05,(p.deger||0)*.08),0)*10)/10;
  T.forEach(x=>{if(x.ti==null&&x.ad&&x.ad!=='Serbest oyuncu'&&!x.tiB){x.tiB=1;for(let i=0;i<ALL.length;i++){if(i===s.ti||HAVUZ(ALL[i].lig))continue;if(bazKadro(i).some(p=>p.ad===x.ad)){x.ti=i;break;}}}});
