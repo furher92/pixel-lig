@@ -817,16 +817,24 @@ function kesintiKur(tip){const G2=G;G2.gorevli=[];
  if(tip==='saganak'){for(let i=0;i<12;i++)G2.su.push({x:rnd(ML+20,MR-20),y:rnd(MT+15,MB-15),r:rnd(7,15)});for(let i=0;i<5;i++)G2.gorevli.push(gorevli(W/2-60+i*30,MB+12,0,0,'su'));}
  if(tip==='karTemiz'){const yol=[[ML,MT,MR,MT],[ML,MB,MR,MB],[W/2,MT,W/2,MB],[ML,MT,ML,MB],[MR,MT,MR,MB]];yol.forEach((y,i)=>{const g=gorevli(y[0],MB+12,y[0],y[1],'kar');g.yol=y;g.adim=0;G2.gorevli.push(g);});}
  if(tip==='mesale'&&G2.mesale){const g=gorevli(G2.mesale.x<W/2?ML-8:MR+8,MB+12,G2.mesale.x,G2.mesale.y,'mesale');G2.gorevli.push(g);}}
-function kesintiGuncelle(){const K=G.kesinti;if(!K)return;K.t++;
+function kesintiGuncelle(){const K=G.kesinti;if(!K)return;K.t++;const ZK=/KONTROL/.test(G.banner||'')&&(K.tip==='sahaKontrol'||K.tip==='saganak'||K.tip==='karTemiz');if(ZK&&!K.kap){K.kap=[0,1].map(k=>(G.kaptan&&G.kaptan[k]&&!G.kaptan[k].gizli?G.kaptan[k]:null)||G.P.find(p=>p.k===k&&p.rol==='MF'&&!p.gizli)||G.P.find(p=>p.k===k&&p.rol!=='GK'&&!p.gizli));}
  const yuru=(p,tx,ty,hz)=>{const dx=tx-p.x,dy=ty-p.y,d=Math.hypot(dx,dy);if(d>1.5){p.x+=dx/d*Math.min(hz,d);p.y+=dy/d*Math.min(hz,d);p.dx=dx/d;p.dy=dy/d;p.an+=.25;return false;}return true;};
- G.P.forEach((p,i)=>{if(p.gizli)return;let tx,ty;if(K.tip==='su'){tx=kulubeX(p.k)+((i%6)-2.5)*7;ty=MB-6-(i%2)*5;}else if(K.tip==='mesale'){if(G.mesale&&Math.hypot(p.x-G.mesale.x,p.y-G.mesale.y)<40){const dx=p.x-G.mesale.x,dy=p.y-G.mesale.y,d=Math.hypot(dx,dy)||1;tx=G.mesale.x+dx/d*42;ty=G.mesale.y+dy/d*42;}else return;}else{if(!K.slot){K.slot=new Map();const ust=[],alt=[];G.P.forEach(q=>{if(q.gizli)return;(q.y<H/2?ust:alt).push(q);});[[ust,MT+5],[alt,MB-5]].forEach(([L,y])=>{L.sort((a,b)=>a.x-b.x);const n=L.length,ar=Math.min(16,(MR-ML-40)/Math.max(1,n));const bas=clamp(L.reduce((a,q)=>a+q.x,0)/Math.max(1,n)-ar*(n-1)/2,ML+20,MR-20-ar*(n-1));L.forEach((q,k)=>K.slot.set(q,[bas+k*ar,y]));});}const sl=K.slot.get(p);if(!sl)return;tx=sl[0];ty=sl[1];}yuru(p,tx,ty,.9);});
+ G.P.forEach((p,i)=>{if(p.gizli)return;if(ZK&&K.kap&&K.kap.includes(p))return;let tx,ty;if(K.tip==='su'){tx=kulubeX(p.k)+((i%6)-2.5)*7;ty=MB-6-(i%2)*5;}else if(K.tip==='mesale'){if(G.mesale&&Math.hypot(p.x-G.mesale.x,p.y-G.mesale.y)<40){const dx=p.x-G.mesale.x,dy=p.y-G.mesale.y,d=Math.hypot(dx,dy)||1;tx=G.mesale.x+dx/d*42;ty=G.mesale.y+dy/d*42;}else return;}else{if(!K.slot){K.slot=new Map();const ust=[],alt=[];G.P.forEach(q=>{if(q.gizli)return;(q.y<H/2?ust:alt).push(q);});[[ust,MT+5],[alt,MB-5]].forEach(([L,y])=>{L.sort((a,b)=>a.x-b.x);const n=L.length,ar=Math.min(16,(MR-ML-40)/Math.max(1,n));const bas=clamp(L.reduce((a,q)=>a+q.x,0)/Math.max(1,n)-ar*(n-1)/2,ML+20,MR-20-ar*(n-1));L.forEach((q,k)=>K.slot.set(q,[bas+k*ar,y]));});}const sl=K.slot.get(p);if(!sl)return;tx=sl[0];ty=sl[1];}yuru(p,tx,ty,.9);});
  G.gorevli.forEach(g=>{
   if(g.is==='su'){if(!g.hedef||g.hedef.r<1){g.hedef=null;let bd=1e9;G.su.forEach(w=>{if(w.r<1||w.al&&w.al!==g)return;const d=Math.hypot(w.x-g.x,w.y-g.y);if(d<bd){bd=d;g.hedef=w;}});if(g.hedef)g.hedef.al=g;}
    if(g.hedef){if(yuru(g,g.hedef.x,g.hedef.y,1.1)){g.hedef.r-=.12;g.an+=.3;}}else yuru(g,g.x,MB+12,1);}
   else if(g.is==='kar'){const y=g.yol;if(g.adim===0){if(yuru(g,y[0],y[1],1.2))g.adim=1;}else if(g.adim===1){if(yuru(g,y[2],y[3],.7))g.adim=2;}else yuru(g,y[2],MB+12,1);}
   else if(g.is==='mesale'&&G.mesale){const m=G.mesale;if(!m.tasi){if(yuru(g,m.x,m.y,1.4))m.tasi=g;}else{m.x=g.x+3;m.y=g.y-6;yuru(g,g.x<W/2?ML-12:MR+12,MB+14,1.1);}}
  });G.su=G.su.filter(w=>w.r>=1);
- if(G.mesale)G.mesale.t++;}
+ if(G.mesale)G.mesale.t++;
+ // 🌧️ ZEMİN KONTROLÜ: hakem orta yuvarlağa gider, iki kaptan ve dördüncü hakem yanına gelir, hakem topu yere vurup sekmesine bakar (ıslakta/karda top az seker, suda kalır)
+ if(ZK){const hx=W/2,hy=H/2+6,h=G.hakem;G.hakemHedef={x:hx,y:hy};
+  K.kap.forEach((c,k)=>{if(c)yuru(c,hx+(k?11:-11),hy+3,1);});
+  if(!K.dort){K.dort=gorevli(W/2+40,MB+12,0,0,'guv');G.gorevli.push(K.dort);}yuru(K.dort,hx+2,hy+11,.9);
+  const t=G.top;if(Math.hypot(h.x-hx,h.y-hy)<5){K.zt=(K.zt||0)+1;const islak=G.hava==='kar'?.35:K.tip==='saganak'?.25:.5,dong=K.zt%70,amp=9*islak*Math.pow(.55,Math.floor(dong/14)),f=(dong%14)/14;
+   t.sahip=null;t.vx=t.vy=0;t.x=h.x+4;t.y=h.y+1;t.z=dong<56?amp*4*f*(1-f):0;if(dong%14===0&&dong<56&&amp>1){try{sesTon(160,120,.05,'sine',.05);}catch(e){}}
+   if(dong>=56&&G.hava!=='kar'&&GRAFIK>0&&K.zt%6===0)(G.su=G.su||[]).push({x:t.x,y:t.y+1,r:2.5});}}
+ else if(K.dort&&!/KONTROL/.test(G.banner||'')){yuru(K.dort,W/2+40,MB+12,1);}}
 function cizDunyaHava(){
  if(G.su&&G.su.length)G.su.forEach(w=>{cx.fillStyle='rgba(120,170,230,.45)';cx.beginPath();cx.ellipse(Math.round(w.x),Math.round(w.y),w.r,w.r*.55,0,0,7);cx.fill();});
  if(G.hava==='kar'&&GRAFIK>0){cx.fillStyle='rgba(255,255,255,.10)';cx.fillRect(0,0,W,H);}
@@ -2096,11 +2104,11 @@ function guncelle(){if(G.faz==='ozet'){ozetAdim();return;}
    if(hucum&&t.son===p.k&&Math.random()<.75){const dd=Math.hypot(gx-p.x,H/2-p.y)||1;p.dx=(gx-p.x)/dd;p.dy=(H/2-p.y)/dd*.6;sutCek(p,rnd(5.6,7),false);G.top.vz=rnd(-.2,.6);G.degB={t:70,txt:'KAFA VURUŞU · '+(p.ad||'').split(' ').slice(-1)[0]};p.mp=(p.mp||0)+.3;}
    else{const kk=kendiKale(p.k),uzak=Math.abs(p.x-kk)<120;if(uzak||t.son!==p.k)vurus(p,clamp(p.x+(p.k?-110:110),ML+10,MR-10),clamp(p.y+rnd(-60,60),MT+10,MB-10),4.2,true);else{t.vx*=.35;t.vy*=.35;t.vz=1;t.son=p.k;t.sonV=p;}p.mp=(p.mp||0)+.2;}
    return;}
-  if(!t.sahip){if(p.cool<=0&&t.z<(p.rol==='GK'?14:5)&&d<(p.rol==='GK'?10:(p===t.hedefQ||p===G.pasAlici?8:6))){const s=Math.hypot(t.vx,t.vy);let al=false;
-   if(p.rol==='GK'&&s>=1.9&&t.son!==p.k&&!G.seri&&!t.penKurt&&Math.abs(t.x-(p.k?MR:ML))<70&&Math.random()<(s>=3?.13:.06)){t.vx=(p.k?1:-1)*1.2;t.vy=(t.y<H/2?-1:1)*rnd(1,2);t.vz=4.2;t.z=Math.max(t.z,3);t.son=p.k;t.gkDene=p.id;p.cool=40;p.mp=(p.mp||0)+1;p.gkKur=(p.gkKur||0)+1;sesVurus(3);t.celK=G.kare;return;}
-   if(s<(p.rol==='GK'?2.4:3.5))al=true;
-   else if(p.rol==='GK'&&t.penKurt){const pk=G.penKontrol;if(pk&&(pk.gk||pk.girDef)){penTekrar(pk.k,pk.gk?'Kaleci vuruştan önce çizgiden çıktı':'Savunma oyuncusu ceza sahasına erken girdi',false);return;}al=true;}
-   else if(p.rol==='GK'){if(t.gkDene!==p.id){t.gkDene=p.id;if(t.isaK!=null&&t.isaK!==p.k){istSay('isa',t.isaK);t.isaK=null;}const kose=Math.min(.55,Math.abs(t.y-H/2)/(GW/2)*.55);const sav=clamp((t.guclu>0?.42:.62)*(1-kose*.6)+(p.rt-75)/150+(s<4?.12:0)+(p.k!==G.human&&G.human!=null?.14:0),.25,.92);if(Math.random()<sav){if(s>=4.5&&Math.random()<.32&&!G.seri&&!t.penKurt){t.vx=(p.k?1:-1)*1.2;t.vy=(t.y<H/2?-1:1)*rnd(1,2);t.vz=4.2;t.z=Math.max(t.z,3);t.son=p.k;t.sonV=p;t.gkDene=p.id;p.cool=40;p.mp=(p.mp||0)+1;p.gkKur=(p.gkKur||0)+1;sesVurus(3);t.celK=G.kare;return;}al=true;}else if(Math.random()<.55){t.vx=-t.vx*.35;t.vy=rnd(-2,2);t.gkDene=p.id;sesVurus(3);}}}
+  if(!t.sahip){const GKB=p.rol==='GK'&&Math.abs(t.x-(p.k?MR:ML))<=80&&Math.abs(t.y-H/2)<=70;if(p.cool<=0&&t.z<(GKB?14:5)&&d<(GKB?10:(p===t.hedefQ||p===G.pasAlici?8:6))){const s=Math.hypot(t.vx,t.vy);let al=false;
+   if(GKB&&s>=1.9&&t.son!==p.k&&!G.seri&&!t.penKurt&&Math.abs(t.x-(p.k?MR:ML))<70&&Math.random()<(s>=3?.13:.06)){t.vx=(p.k?1:-1)*1.2;t.vy=(t.y<H/2?-1:1)*rnd(1,2);t.vz=4.2;t.z=Math.max(t.z,3);t.son=p.k;t.gkDene=p.id;p.cool=40;p.mp=(p.mp||0)+1;p.gkKur=(p.gkKur||0)+1;sesVurus(3);t.celK=G.kare;return;}
+   if(s<(GKB?2.4:3.5))al=true;
+   else if(GKB&&t.penKurt){const pk=G.penKontrol;if(pk&&(pk.gk||pk.girDef)){penTekrar(pk.k,pk.gk?'Kaleci vuruştan önce çizgiden çıktı':'Savunma oyuncusu ceza sahasına erken girdi',false);return;}al=true;}
+   else if(GKB){if(t.gkDene!==p.id){t.gkDene=p.id;if(t.isaK!=null&&t.isaK!==p.k){istSay('isa',t.isaK);t.isaK=null;}const kose=Math.min(.55,Math.abs(t.y-H/2)/(GW/2)*.55);const sav=clamp((t.guclu>0?.42:.62)*(1-kose*.6)+(p.rt-75)/150+(s<4?.12:0)+(p.k!==G.human&&G.human!=null?.14:0),.25,.92);if(Math.random()<sav){if(s>=4.5&&Math.random()<.32&&!G.seri&&!t.penKurt){t.vx=(p.k?1:-1)*1.2;t.vy=(t.y<H/2?-1:1)*rnd(1,2);t.vz=4.2;t.z=Math.max(t.z,3);t.son=p.k;t.sonV=p;t.gkDene=p.id;p.cool=40;p.mp=(p.mp||0)+1;p.gkKur=(p.gkKur||0)+1;sesVurus(3);t.celK=G.kare;return;}al=true;}else if(Math.random()<.55){t.vx=-t.vx*.35;t.vy=rnd(-2,2);t.gkDene=p.id;sesVurus(3);}}}
    else if(s>=3.5&&p.k!==t.son&&Math.abs(p.x-(p.k?MR:ML))<80&&Math.abs(p.y-H/2)<70&&t.elDene!==p.id&&!G.seri){t.elDene=p.id;}
    else if(!t.guclu&&Math.random()<.18)al=true;
    if(al){if(p.rol==='GK'&&s>=3.5){p.mp=(p.mp||0)+1;yorum(rs(['Müthiş kurtarış! '+soyad(p),'Kaleci gole izin vermedi','Ne kurtarış!']),1);}if(G.ofs){if(G.ofs.k===p.k&&G.ofs.S.has(p.id)){if(((G.ofs.M||{})[p.id]||99)<3){G.ofsGec={k:p.k,t:900};G.ofs=null;}else{ofsaytVer(p);return;}}else G.ofs=null;}t.sahip=p;t.son=p.k;G.restart=null;if(p.rol==='GK'){p.tutT=40;}}}}
