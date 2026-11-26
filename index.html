@@ -661,7 +661,7 @@ function altReklam(){if(!G||G.faz!=='oyun'||G.tekrar)return;const dk=Math.floor(
 function hocaBant(SX){if(!G||G.faz!=='oyun'&&G.faz!=='dur')return;const b0=40+170*6+60,L=260;let k=-1,t=0;
  if(G.devre===1&&G.kare>=b0&&G.kare<b0+L*2){const i=Math.floor((G.kare-b0)/L);k=i===0?(G.takas?1:0):(G.takas?0:1);t=(G.kare-b0)%L;}
  else if(G.devre===2&&G.kare>=G.top_kare/2+300&&G.kare<G.top_kare/2+300+L){if(G.hocaB2==null)G.hocaB2=G.skor[0]<G.skor[1]?0:G.skor[1]<G.skor[0]?1:(Math.random()<.5?0:1);k=G.hocaB2;t=G.kare-G.top_kare/2-300;}
- if(k<0)return;const T=G.T[k];if(!T)return;let ad='';try{const s=KRY();if(G.human>=0&&k===G.human&&s&&s.men&&s.ti===T.t.i)ad=(s.men.ad+' '+(s.men.soy||'')).trim();}catch(e){}if(!ad)ad=hocaAdi(T.t)||'';if(!ad)return;
+ if(k<0)return;const T=G.T[k];if(!T)return;let ad='';try{const s=KRY();if(window._krAktif&&G.human>=0&&k===G.human&&s&&s.men&&s.ti===T.t.i)ad=(s.men.ad+' '+(s.men.soy||'')).trim();}catch(e){}if(!ad)ad=hocaAdi(T.t)||'';if(!ad)return;
  G.hbOn=G.kare;const _ik=(typeof ligDuzen==='function')&&!kupaSkbK()&&ligDuzen()&&ligDuzen().d==='iki';const a=Math.min(1,t/10,(L-t)/10),X=4,Y=_ik?36:21;cx.save();cx.globalAlpha=a;cx.fillStyle='rgba(12,14,24,.95)';cx.fillRect(X,Y,30,16);cx.fillStyle=T.c1;cx.fillRect(X,Y+14,30,2);cx.font='8px "Press Start 2P",monospace';cx.textBaseline='top';cx.fillStyle='#fff';cx.fillText(T.t.kod,X+3,Y+4);cx.font='5px monospace';const w=Math.max(70,cx.measureText(ad).width+14);const g=cx.createLinearGradient(X+30,0,X+30+w,0);{const tm4=skbAl();g.addColorStop(0,/^#/.test(tm4[0])?tm4[0]:'#1a1f33');g.addColorStop(1,koyu(/^#/.test(tm4[0])?tm4[0]:'#1a1f33',.45));}cx.fillStyle=g;cx.fillRect(X+30,Y,w,8);cx.fillStyle='#fff';cx.fillText('TEKNİK DİREKTÖR',X+34,Y+1.5);cx.fillStyle='rgba(12,14,24,.95)';cx.fillRect(X+30,Y+8,w,8);cx.fillStyle='#fff';cx.fillText(ad.toLocaleUpperCase('tr'),X+34,Y+9.5);hocaYakin(X,Y+19,T,t);cx.restore();}
 function hocaYakin(x,y,T,t){const w=46,h=40;cx.fillStyle='#0c0e16';cx.fillRect(x-1,y-1,w+2,h+2);cx.fillStyle='#2b3140';cx.fillRect(x,y,w,h);cx.fillStyle=T.c1;cx.fillRect(x,y+h-12,w,12);cx.fillStyle='rgba(255,255,255,.08)';for(let i=0;i<w;i+=6)cx.fillRect(x+i,y,3,h-12);const s=2.5,cxp=x+w/2,b=Math.floor(t/18)%4,el=b===1||b===2,sy=y+h;const px=(dx,dy,ww,hh,c)=>{cx.fillStyle=c;cx.fillRect(Math.round(cxp+dx*s),Math.round(sy+dy*s),ww*s,hh*s);};px(-4,-8,8,8,'#22252e');px(-1,-8,2,4,'#e8e8e8');px(-1,-6,2,3,T.c1);px(-3,-12,6,4,'#f1c27d');px(-3,-13,6,2,'#3a2a1c');px(-2,-11,1,1,'#222');px(1,-11,1,1,'#222');if(el){px(-6,-9,2,4,'#22252e');px(4,-9,2,4,'#22252e');px(-6,-10,2,1,'#f1c27d');px(4,-10,2,1,'#f1c27d');}else{px(-5,-8,1,6,'#22252e');px(4,-8,1,6,'#22252e');}cx.fillStyle='#e30613';cx.fillRect(x+2,y+2,3,3);cx.font='4px monospace';cx.fillStyle='#fff';cx.fillText('CANLI',x+7,y+2);}
 function kadroSerit(){if(!G||G.devre!==1||G.faz!=='oyun'&&G.faz!=='dur')return;const SG=170,i=Math.floor((G.kare-40)/SG);if(G.kare<40||i>=6)return;
@@ -1885,7 +1885,7 @@ function cizKadroAnons(){if(!G||G.faz!=='onIsinma')return;const e=ON_T-G.fazT,k=
  cx.font='6px monospace';cx.textBaseline='top';cx.fillStyle=T.c2==='#ffffff'||T.c2==='#fff'?'#fff':T.c2;if(T.c1===T.c2)cx.fillStyle='#fff';cx.fillText((k?'DEPLASMAN · ':'EV SAHİBİ · ')+(t.kod||''),x+4,y+3);
  cx.fillStyle='#ffd23f';cx.fillText(String(t.ad||'').slice(0,24),x+4,y+15);
  L.forEach((p,i)=>{const gor=ee>18+i*14;if(!gor)return;cx.fillStyle='#8ab4ff';cx.fillText(String(p.no).padStart(2,' '),x+4,y+24+i*7);cx.fillStyle='#ddd';cx.fillText((p.rol||'')+' '+String(p.ad||('Oyuncu '+p.no)).slice(0,17),x+16,y+24+i*7);});
- const ho=(ALL[t.i]===t&&typeof KRY==='function'&&(()=>{try{const s=KRY();return s&&s.ti===t.i&&s.men&&s.men.ad?s.men.ad+' '+s.men.soy:'';}catch(e){return '';}})())||hocaAdi(t);
+ const ho=(ALL[t.i]===t&&typeof KRY==='function'&&window._krAktif&&(()=>{try{const s=KRY();return s&&s.ti===t.i&&s.men&&s.men.ad?s.men.ad+' '+s.men.soy:'';}catch(e){return '';}})())||hocaAdi(t);
  if(ho){cx.fillStyle='#2ecc71';cx.fillText('TD: '+String(ho).slice(0,26),x+4,y+26+L.length*7);}cx.globalAlpha=1;}
 function onIsinmaAtla(){if(G&&G.faz==='onIsinma'&&ON_T-G.fazT>30)G.fazT=1;}
 function torenDiz(){const t=G.top;t.sahip=null;t.x=W/2;t.y=H/2;t.vx=t.vy=t.vz=0;yhGuncelle();
@@ -2511,7 +2511,7 @@ function macTerk(){sesTribun(false);G.durdu=false;document.getElementById('durMe
 
 // ===== menüler =====
 const $=id=>document.getElementById(id);
-function ekran(id){if(id)setTimeout(()=>muzik(true),0);document.querySelectorAll('.ekr').forEach(e=>e.style.display='none');if(id)$(id).style.display='flex';$('oyun').style.display='none';window.scrollTo(0,0);}
+function ekran(id){if(id)window._krAktif=(id==='kar');if(id)setTimeout(()=>muzik(true),0);document.querySelectorAll('.ekr').forEach(e=>e.style.display='none');if(id)$(id).style.display='flex';$('oyun').style.display='none';window.scrollTo(0,0);}
 function kayit(k,v){try{if(v===undefined)return JSON.parse(localStorage.getItem('pl2627v2_'+k));localStorage.setItem('pl2627v2_'+k,JSON.stringify(v));}catch(e){return null;}}
 // 🛡️ ÖZGÜN ARMALAR: her takıma kulüp renkleri + kısaltmasıyla kodla üretilen arma (gerçek armaların kopyası değil)
 const ARMA_C={};
@@ -4631,7 +4631,7 @@ function ulkePuanHtml(s){const U=ulkeP(s),L0=Object.entries(U.top).sort((a,b)=>b
  const sat=(u,p,i)=>`<tr class="${u===ben?'ben':''}"><td>${i+1}</td><td style="text-align:left">${BAYRAK_SVG[u]?bayrakImg(u):'🏳️'} ${ULKE_AD[u]||ULKE_PAD[u]||u}</td>${YL.map(y=>`<td style="opacity:.8">${((U.gec[y]||{})[u]||0).toFixed(3)}</td>`).join('')}<td>${(U.bu[u]||0).toFixed(3)}</td><td><b>${p.toFixed(3)}</b></td></tr>`;
  return `<div class="ligad">🌍 ÜLKE PUANI SIRALAMASI (5 sezon)</div><div style="overflow-x:auto"><table>${bas}`+L.map(([u,p],i)=>sat(u,p,i)).join('')+`</table></div>`+(LD.length?`<div class="ligad" style="margin-top:8px">🌏 DOĞU</div><div style="overflow-x:auto"><table>${bas}`+LD.map(([u,p],i)=>sat(u,p,i)).join('')+`</table></div>`:'')+`<div class="kat" style="font-size:7px">Avrupa ve Doğu kupalarındaki her galibiyet 2, beraberlik 1 puan; ülkenin takım sayısına bölünür. Puan, son 5 sezonun toplamıdır; sezon sütunları her ülkenin o sezon topladığı puanı gösterir.</div>`;}
 
-function benHoca(k){try{if(!G||G.tek||k!==G.human)return '';const s=KRY();const T=G.T[k];if(s&&s.men&&s.men.ad&&T&&T.t&&s.ti===T.t.i)return (s.men.ad+' '+(s.men.soy||'')).trim();}catch(e){}return '';}
+function benHoca(k){try{if(!G||G.tek||k!==G.human||!window._krAktif)return '';const s=KRY();const T=G.T[k];if(s&&s.men&&s.men.ad&&T&&T.t&&s.ti===T.t.i)return (s.men.ad+' '+(s.men.soy||'')).trim();}catch(e){}return '';}
 const TEN_P=['#f1c27d','#f1c27d','#ffdbac','#e0ac69','#e0ac69','#c68642','#a0662f','#8d5524','#5c3a21','#4a2c19'],SAC_P=['#3b2416','#1a1a1a','#1a1a1a','#5a3a1e','#e6c35c','#d9a441','#7a4a22','#2a1a10','#b5651d','#cfc6b0'];
 function _pH(p){const k=String((p&&(p.ad||p.id))||'');let h=7;for(let i=0;i<k.length;i++)h=(h*31+k.charCodeAt(i))>>>0;return h;}
 function pTen(p){const h=_pH(p);return TEN_P[h%TEN_P.length];}
