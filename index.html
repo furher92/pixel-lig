@@ -4402,10 +4402,10 @@ LIG_GECMIS.AUS=[['2025/26','AKL']];MUZE_V.AUS.AKL=[1];LIG_GECMIS.THA=[['2025/26'
 try{(()=>{const T=(x,y,s,c,t)=>`<text x="${x}" y="${y}" font-size="${s}" font-family="monospace" font-weight="bold" fill="${c}" text-anchor="middle">${t}</text>`;
 LIG_LOGO.USA2='<path d="M10 6h40v30c0 12-10 20-20 24-10-4-20-12-20-24z" fill="#0b2a6b"/><path d="M14 10h32v8H14z" fill="#c8102e"/><path d="M30 22l3 7h7l-6 4 2 7-6-4-6 4 2-7-6-4h7z" fill="#fff"/>'+T(30,62,7,'#0b2a6b','ŞAMPİYONA');
 LIG_LOGO.USA3='<circle cx="30" cy="28" r="22" fill="#111"/><circle cx="30" cy="28" r="17" fill="none" stroke="#2fbf71" stroke-width="3"/>'+T(30,34,18,'#fff','1')+T(30,62,7,'#111','LİG BİR');
-LIG_KUPA_SVG.USA2='<path d="M18 6h24l-2 16q-2 10-10 12-8-2-10-12z" fill="url(#g_s)"/><path d="M18 8q-8 4-2 12l4 2M42 8q8 4 2 12l-4 2" fill="none" stroke="url(#g_s)" stroke-width="2.5"/><path d="M26 34h8l2 16H24z" fill="url(#g_g)"/><rect x="18" y="50" width="24" height="12" fill="#0b2a6b"/><rect x="18" y="53" width="24" height="2" fill="#c8102e"/>';
-LIG_KUPA_SVG.USA3='<path d="M20 8h20l-2 14q-2 8-8 10-6-2-8-10z" fill="url(#g_g)"/><path d="M27 32h6l2 18H25z" fill="url(#g_s)"/><rect x="18" y="50" width="24" height="12" fill="#111"/><rect x="18" y="53" width="24" height="2" fill="#2fbf71"/>';
+LIG_KUPA_SVG.USA2='<path d="M19 6h22l-1 4-2 18q-2 8-8 10-6-2-8-10l-2-18z" fill="url(#g_s)"/><path d="M20 6h20v2H20z" fill="url(#g_g)"/><path d="M20 12q-10-4-12 4l10 14M40 12q10-4 12 4L42 30" fill="none" stroke="url(#g_s)" stroke-width="2.5"/><rect x="22" y="15" width="16" height="5" fill="#8a6a10" opacity=".7"/><rect x="27" y="38" width="6" height="3" fill="url(#g_g)"/><path d="M27 41h6l7 14H20z" fill="url(#g_s)"/><rect x="14" y="55" width="32" height="8" fill="#1a1a1a"/>';
+LIG_KUPA_SVG.USA3='<path d="M18 8h24l-2 14q-2 8-10 10-8-2-10-10z" fill="url(#g_s)"/><path d="M18 9q-8 2-6 10l7 6M42 9q8 2 6 10l-7 6" fill="none" stroke="url(#g_s)" stroke-width="2"/><rect x="23" y="14" width="14" height="4" fill="#8d939c"/><path d="M28 32h4v4h-4zM26 36h8l-1 4h-6zM28 40h4v4h-4z" fill="url(#g_s)"/><path d="M22 44h16l3 8H19z" fill="url(#g_s)"/><path d="M16 52h28l2 6H14z" fill="url(#g_s)"/><rect x="14" y="58" width="32" height="4" fill="#8d939c"/>';
 TOP_DESEN.USA2=TOP_DESEN.USA2B={ad:'Şampiyona Ligi Topu',s:'panel',r:['#0b2a6b','#c8102e','#9aa1ab'],taban:'#ffffff'};TOP_DESEN.USA3={ad:'Lig Bir Topu',s:'sivri',r:['#111111','#2fbf71','#5ab4e8'],taban:'#ffffff'};
-LIG_GECMIS.USA2=[['2025','PİT']];LIG_GECMIS.USA3=[['2025','KNB']];
+LIG_GECMIS.USA2=[['2025','PİT']];LIG_GECMIS.USA3=[['2025','KNB']];MUZE_V.USA2={'PİT':[1],'LMO':[2],'TAM':[2]};MUZE_V.USA3={'KNB':[1],'OMB':[1],'GRZ':[1]};
 })();}catch(e){console.warn('USL',e);}
 // V10.1.2: 22 Asya ligi — lisanssız lig/kupa logoları, kupalar, toplar, bayraklar + 2025/26 şampiyonlar (web)
 try{(()=>{
@@ -4653,7 +4653,7 @@ function tarihceHtml(s){const ULS=Object.keys(MUZE_V),tk=(k,u)=>ALL.find(z=>z.ko
   return `<section class="trD" id="tr_${id}"><div class="trH">${ikon}<span>${bas}</span></div><div class="trSek">${P.map((x,k)=>`<button class="${k===sec?'akt':''}" onclick="trSec(this,${k})">${bay(x)} ${ad(x)}</button>`).join('')}</div><div class="trG trTek">${P.map((x,k)=>x.replace('<div class="trP">',`<div class="trP" style="${k===sec?'':'display:none'}">`)).join('')}</div></section>`;};
  const al=v=>String(v).replace(/#e9ecf2/g,'#ffe680').replace(/#c4c9d2/g,'#d9a821').replace(/#c9ccd2/g,'#e0b030').replace(/#9aa0aa/g,'#b8860b').replace(/#8a8f99/g,'#a07010');
  const ligIk=u=>{const L=LEAGUES.find(l=>ULK(l.id)===u&&!/\d/.test(l.id));const kt=L?kupaTur(L.ad):['kupa',['#d9dde3','#ffd23f']];return kupaIkon(kt[0],kt[1]);};
- const ligAd=u=>(LEAGUES.find(l=>ULK(l.id)===u&&!/\d/.test(l.id))||{}).ad||ULKE_AD[u]||u;
+ const ligAd=u=>({USA2:'Amerika Şampiyona Ligi',USA3:'Amerika Lig Bir'})[u]||(LEAGUES.find(l=>ULK(l.id)===u&&!/\d/.test(l.id))||{}).ad||ULKE_AD[u]||u;
  const ara=H=>{if(!H||!H.length)return '';const S=H.slice().sort((a,b)=>yilS(a)-yilS(b));return ` · ${S[0][0]}–${S[S.length-1][0]}`;};
  const srt=L=>L.filter(x=>x[1]>0).sort((a,b)=>b[1]-a[1]);
  let h=`<div class="sonra" style="font-size:8px">Kurgusal kulüplerin gerçek karşılıklarının kupaları · her kupanın yanında yıl yıl şampiyonlar · kariyerde kazandıkların da eklenir</div>`;
