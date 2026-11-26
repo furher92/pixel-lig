@@ -3100,10 +3100,19 @@ function tohum(n){return function(){n=(n*1103515245+12345)&0x7fffffff;return n/0
 const MVK=['KL','KL','DF','DF','DF','DF','DF','DF','OS','OS','OS','OS','OS','OS','FV','FV','FV','FV'];
 function degerHesap(g,y){const yf=y<23?1.35:y<29?1:y<32?.65:.35;return Math.max(.2,Math.round(Math.pow(Math.max(0,g-50),2.2)/45*yf*10)/10);}
 let KADRO_CACHE={};
+// V10.1.2 · 26/27 kadro profili (yeni kariyerler): gerçek liglerdeki yabancı oranı (2025/26 verisi), yabancı kökenler, kadro genişliği (~24) ve yaş dağılımı; isimler rastgele/lisanssız
+const KADRO_PROF={ENG:[.69,['FRA','NED','BRA','ESP','GER','POR','BEL','AFR','DIG']],ESP:[.40,['FRA','BRA','POR','DIG','AFR','NED','GER']],ITA:[.66,['FRA','BRA','ESP','NED','DIG','AFR','POR','GER','BEL']],GER:[.55,['FRA','NED','AFR','DIG','ESP','BEL','POR','BRA','ENG']],FRA:[.55,['AFR','AFR','BRA','POR','ESP','BEL','DIG','NED']],NED:[.55,['BEL','GER','AFR','DIG','BRA','ESP','POR','ENG']],POR:[.70,['BRA','BRA','AFR','ESP','DIG','FRA']],BEL:[.65,['AFR','NED','FRA','DIG','BRA','ESP']],SCO:[.58,['ENG','ENG','DIG','AFR','NED','BEL']],TR:[.60,['BRA','POR','AFR','DIG','FRA','NED','ESP','GER','BEL']],RUS:[.36,['BRA','AFR','DIG','DIG']],KKTC:[.30,['TR','TR','AFR','DIG']],HKG:[.40,['BRA','ESP','DIG','JPN','KOR','AFR']]};
+const MVK2=['KL','KL','KL','DF','DF','DF','DF','DF','DF','DF','DF','OS','OS','OS','OS','OS','OS','OS','OS','FV','FV','FV','FV','FV'];
 function bazKadro(ti){
  if(KADRO_CACHE[ti])return KADRO_CACHE[ti];
  const t=ALL[ti],r=tohum(ti*7919+17),yerli=t.lig==='ASY'?(ASY_UL[t.kod]||'ARB'):ISIM[ULK(t.lig)]?ULK(t.lig):'DIG',yab=t.lig==='ASY'?['BRA','AFR','DIG','ESP','POR']:['BRA','AFR','DIG','ESP','FRA','POR','NED','ENG'];
- const k=MVK.map((m,j)=>{const ul=r()<.68?yerli:yab[(r()*yab.length)|0],P=ISIM[ul];
+ const PR=window._kadroV!==1&&t.lig!=='ASY'?KADRO_PROF[ULK(t.lig)]:null;
+ const k=PR?MVK2.map((m,j)=>{const jj=(t.kod==='ASL'&&j===10)?24:j;const yb=r()<PR[0];let ul=yb?PR[1][(r()*PR[1].length)|0]:yerli;if(!ISIM[ul])ul='DIG';const P=ISIM[ul];
+  const ad=P[0][(r()*P[0].length)|0]+' '+P[1][(r()*P[1].length)|0];
+  const u=r()+r()+r(),yas=Math.round(17+u/3*19);const ilk=m==='KL'?j===0:m==='DF'?j<7:m==='OS'?j<15:j<21;
+  const g=Math.round(clamp(t.rt+(ilk?2:-5)+(r()*10-5)-(yas<21?4:0)-(yas>33?2:0)+(yb?1:0),45,94));
+  return {id:ti*100+jj,ad,mv:m,yas,g,ul,deger:degerHesap(g,yas)};}):
+ MVK.map((m,j)=>{const ul=r()<.68?yerli:yab[(r()*yab.length)|0],P=ISIM[ul];
   const ad=P[0][(r()*P[0].length)|0]+' '+P[1][(r()*P[1].length)|0];
   const yas=18+((r()*16)|0),ilk=j%(m==='KL'?2:m==='FV'?4:6)<(m==='KL'?1:m==='FV'?2:4);
   const g=Math.round(clamp(t.rt+(ilk?2:-5)+(r()*10-5)-(yas<21?4:0),45,94));
@@ -3112,7 +3121,7 @@ function bazKadro(ti){
  if(t.kod==='ASL')k.push({id:ti*100+83,ad:'Gleb Sarnovski',mv:'OS',yas:20,g:Math.round(clamp(t.rt-2,60,92)),ul:'RUS',no:83,yetenek:1,deger:degerHesap(Math.round(clamp(t.rt-2,60,92)),20)*1.4});
  KADRO_CACHE[ti]=k;return k;}
 // kariyer durumu
-function KRY(){return kayit('kariyer');}
+function KRY(){const s=kayit('kariyer');const v=s&&s.ti!=null?(s.kadroV||1):2;if(window._kadroV!==v){window._kadroV=v;KADRO_CACHE={};}return s;}
 // ⏪ Önceki maça dön: hafta ya da oynanan maç sayısı değişince, ÖNCEKİ kayıt yedeğe alınır (son 3 yedek)
 function krKaydet(s){try{const eski=localStorage.getItem('pl2627v2_kariyer');if(eski&&s){const o=JSON.parse(eski);if(o&&o.ti!=null&&(o.hafta!==s.hafta||o.sezon!==s.sezon||(o.macGec||[]).length!==(s.macGec||[]).length)){const Y=kayit('kariyerYedek')||[];Y.unshift({t:Date.now(),d:eski,et:(o.sezon||'')+' · '+((o.hafta||0)+1)+'. hafta'});kayit('kariyerYedek',Y.slice(0,3));}}}catch(e){}kayit('kariyer',s);}
 function oncekiMacaDon(){const Y=kayit('kariyerYedek')||[];if(!Y.length){alert('Henüz yedek yok. Yedek, bu güncellemeden sonra oynadığın her maçtan önce otomatik alınır.');return;}
@@ -4032,7 +4041,7 @@ function menajerFormu(){ekran('kar');const ul=MILLI.filter(YONETILIR).slice().so
 function menajerKaydet(){const men={ad:($('mAd').value||'Menajer').trim(),soy:($('mSoy').value||'').trim(),ul:+$('mUl').value,yas:+$('mYas').value,itibar:+$('mGec').value,kupalar:[],gecmis:[]};
  takimSec('KARİYER: KULÜBÜNÜ SEÇ',t=>{if(HAVUZ(t.lig)){secimModal('🔒 KARİYER','Bu kulübün oyunda kendi ligi yok (havuz takımı). Veritabanında, transferde ve kulüp kupalarında yer alıyor; kariyer için ligli bir kulüp seç.',[{t:'TAMAM',f:()=>{}}]);return};kariyerYeni(t,men);});}
 function kariyerYeni(t,men,eski){ligUyeUygula(eski||{});const L=LEAGUES.find(l=>l.id===t.lig);const ids=L.t.map(x=>x.i).sort(()=>Math.random()-.5);
- const st={daBasla:eski?(eski.daBasla!=null?eski.daBasla:eski.sezon):2026,ligUye:eski&&eski.ligUye?eski.ligUye:{},ti:t.i,lig:L.id,butce:Math.max(4,Math.round((t.rt-58)*3.2)),sezon:eski?eski.sezon:2026,hafta:0,fik:fikstur(ids),tab:{},tr:eski?eski.tr:{},kira:{},ist:{},guven:60,gecmis:eski?eski.gecmis:[],haber:[`Kulübe hoş geldin ${men.ad} hocam! Bütçe hazır, transfer dönemi açık.`],men,milli:eski?eski.milli:null};
+ const st={kadroV:eski?(eski.kadroV||1):2,daBasla:eski?(eski.daBasla!=null?eski.daBasla:eski.sezon):2026,ligUye:eski&&eski.ligUye?eski.ligUye:{},ti:t.i,lig:L.id,butce:Math.max(4,Math.round((t.rt-58)*3.2)),sezon:eski?eski.sezon:2026,hafta:0,fik:fikstur(ids),tab:{},tr:eski?eski.tr:{},kira:{},ist:{},guven:60,gecmis:eski?eski.gecmis:[],haber:[`Kulübe hoş geldin ${men.ad} hocam! Bütçe hazır, transfer dönemi açık.`],men,milli:eski?eski.milli:null};
  /* V10.1.1: serbest kalıp yeni kulübe geçince maç geçmişi, müze, geçmiş tablolar ve hoca kayıtları kaybolmasın */if(eski){const KUL=new Set(['ti','lig','butce','hafta','fik','tab','kira','ist','istK','sariSay','guven','haber','kp','trListe','kiraListe','gelenTeklif','kadroSec','yedekSec','yedekMan','sonMac','_hft','kovuldu','serbest','kovIs','hedef','form','teklif','teklifVar','araTeklif','araModal','yeniKulup','veda','toren','men','milli','gecmis','tr','ligUye','daBasla','sezon','skIds','avrGiris','uyari','hocaSoz']);Object.keys(eski).forEach(k=>{if(!KUL.has(k)&&st[k]===undefined)st[k]=eski[k];});(st.trl||[]).forEach(x=>{if(x.k==null)x.k=eski.ti;});(st.taksitOdeme||[]).forEach(x=>{if(x.k==null)x.k=eski.ti;});}
  st.hedef=hedefBelirle(st);st.haber.push(`🏛️ Yönetimin hedefi: ${st.hedef.ad} (${st.hedef.hp}. sıra veya üstü).`);sezonKur(st,!eski);krKaydet(st);kariyerEkran();}
 function teklifUret(s,sira){if(s.teklifVar)return;s.teklifVar=1;s.teklif=(s.teklif||[]).filter(x=>x.gs&&x.sz===s.sezon);const it=s.men.itibar;
