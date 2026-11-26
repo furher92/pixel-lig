@@ -4279,7 +4279,7 @@ function tarihceHtml(s){const ULS=Object.keys(MUZE_V),tk=(k,u)=>ALL.find(z=>z.ko
  const srt=L=>L.filter(x=>x[1]>0).sort((a,b)=>b[1]-a[1]);
  let h=`<div class="sonra" style="font-size:8px">Kurgusal kulüplerin gerçek karşılıklarının kupaları · her kupanın yanında yıl yıl şampiyonlar · kariyerde kazandıkların da eklenir</div>`;
  // LİGLER: şampiyonluk sayısı + yıl yıl geçmiş yan yana
- h+=bolum('lig','LİG ŞAMPİYONLUKLARI · TARİH',ligIk('TR'),ULS.map(u=>{const H=u==='KKTC'?KKTC_GECMIS.lig.concat(kkS(kzG.lig.KKTC)):(LIG_GECMIS[u]||[]).concat(kzG.lig[u]||[]);
+ h+=bolum('lig','LİG ŞAMPİYONLUKLARI · TARİH',(()=>{const c=ULS.filter(u=>lLogo(u,22));return c.length?lLogo(c[(Math.random()*c.length)|0],24):ligIk('TR');})(),ULS.map(u=>{const H=u==='KKTC'?KKTC_GECMIS.lig.concat(kkS(kzG.lig.KKTC)):(LIG_GECMIS[u]||[]).concat(kzG.lig[u]||[]);
   const L=srt(topla(mx(Object.entries(MUZE_V[u]).map(([k,x])=>[k,x[0]]).concat(Object.entries(GECMIS_EK.lig[u]||{})),gsay(u==='KKTC'?KKTC_GECMIS.lig:LIG_GECMIS[u])),kz.lig[u]));
   return cift(kart(u,`${lLogo(u,16)||''} ${ligAd(u)}`,L,ikon('l'+u,()=>lLogo(u,34)),H),hk(ligAd(u)+ara(H),'',H,u));}).join(''));
  // YEREL KUPALAR + LİG KUPALARI
