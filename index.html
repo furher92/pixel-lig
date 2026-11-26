@@ -4343,10 +4343,10 @@ function tarihceHtml(s){const ULS=Object.keys(MUZE_V),tk=(k,u)=>ALL.find(z=>z.ko
  // DOĞU (altın kupalar)
  const DA=['Kutup Yıldızı Kupası','Kuzey Rüzgârı Kupası','Ayaz Kupası'];
  h+=bolum('dogu','DOĞU KUPALARI · TARİH',al(KUPA_SVG[0]),DA.map((ad,i)=>cift(kart(null,al(KUPA_SVG[i])+' '+ad,Object.entries(kzD[i]).sort((a,b)=>b[1]-a[1]).map(([k,n])=>[k,n,'RUS']),ikon('dg'+i,()=>al(KUPA_SVG[i])),kzDG[i]),hk(ad+ara(kzDG[i]),'',kzDG[i],'RUS'))).join(''));
- try{const MG=[['🏆 AVRUPA PİKSEL KUPASI (EURO)',[['2024','İspanya'],['2020','İtalya'],['2016','Portekiz'],['2012','İspanya'],['2008','İspanya'],['2004','Yunanistan'],['2000','Fransa'],['1996','Almanya'],['1992','Danimarka'],['1988','Hollanda'],['1984','Fransa'],['1980','Batı Almanya'],['1976','Çekoslovakya'],['1972','Batı Almanya'],['1968','İtalya'],['1964','İspanya'],['1960','Sovyetler Birliği']]],
-  ['🥇 MİLLETLER PİKSEL LİGİ (ULUSLAR LİGİ)',[['2025','Portekiz'],['2023','İspanya'],['2021','Fransa'],['2019','Portekiz']]],
-  ['❄️ DOĞU AVRUPA KUPASI (CONIFA)',[['2026','KKTC'],['2019','Güney Osetya'],['2017','Padanya'],['2015','Padanya']]],
-  ['❄️ DOĞU DÜNYA KUPASI (CONIFA)',[['2018','Karpatalja'],['2016','Abhazya'],['2014','Nice Kontluğu']]],
+ try{const MG=[['🏆 AVRUPA PİKSEL KUPASI',[['2024','İspanya'],['2020','İtalya'],['2016','Portekiz'],['2012','İspanya'],['2008','İspanya'],['2004','Yunanistan'],['2000','Fransa'],['1996','Almanya'],['1992','Danimarka'],['1988','Hollanda'],['1984','Fransa'],['1980','Batı Almanya'],['1976','Çekoslovakya'],['1972','Batı Almanya'],['1968','İtalya'],['1964','İspanya'],['1960','Sovyetler Birliği']]],
+  ['🥇 MİLLETLER PİKSEL LİGİ',[['2025','Portekiz'],['2023','İspanya'],['2021','Fransa'],['2019','Portekiz']]],
+  ['❄️ DOĞU AVRUPA KUPASI',[['2026','KKTC'],['2019','Güney Osetya'],['2017','Padanya'],['2015','Padanya']]],
+  ['❄️ DOĞU DÜNYA KUPASI',[['2018','Karpatalja'],['2016','Abhazya'],['2014','Nice Kontluğu']]],
   ['❄️ DOĞU ULUSLAR LİGİ',[]]];
  const ML=(s&&s.men&&s.men.kupalar||[]).map(x=>/^🏆 (.+?) \((.+)\)$/.exec(x||'')).filter(Boolean);
  const ch=ad=>{const m=MILLI.find(x=>x.ad===ad||(ad==='Batı Almanya'&&x.kod==='GER'));return m?chip(TT(m.i)):'<span style="display:inline-block;width:14px">·</span>';};
