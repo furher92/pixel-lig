@@ -4796,11 +4796,11 @@ function doguDus(s,c){if(c.kod!=='DK'||!c.lig||!c.lig.siralar||s.kp.DK2)return;c
  s.kp.DK2=kpYeni('DK',alt.ad,alt.renk,3,adim,{kalan:[ls[1][1],s.ti,ls[0][1],u3],grupSirali:true,bekle:[ls[0][0],ls[1][0]],dusen:1});
  s.haber.push(`❄️ ${c.ad} grubunu 3. bitirdik → ${alt.ad} play-off turuna düştük! Rakip: ${ALL[ls[1][1]].ad}`);}
 function doguOyn(s){const D=s.kp&&s.kp.DK;if(D&&D.adim)return Math.min(6,D.adim.slice(0,D.ai).filter(a=>a.t==='lig').length);return [.12,.2,.28,.36,.44,.52].filter(f=>wHes(s,f)<(s.hafta||0)).length;}
-function doguSimHtml(s){const ben=s.kp&&s.kp.DK?s.kp.DK.ad:null,oyn=doguOyn(s);if(!oyn)return '';let h='';
+function doguSimHtml(s){const ben=s.kp&&s.kp.DK?s.kp.DK.ad:null,oyn=doguOyn(s)||0;let h='';
  const sr=lig=>{const L=LEAGUES.find(l=>l.id===lig);return L?L.t.slice().sort((a,b)=>b.rt-a.rt).map(t=>t.i):[];};
  DOGU_KUPA.forEach((d,di)=>{if(d.ad===ben||(s.kp&&s.kp.DK2&&s.kp.DK2.ad===d.ad&&false))return;const T=doguSimT(s,di,oyn);
   {const ko=oyn>=6?koHtml(doguSimKO(s,di,T),s.ti):'';h+=fmKupaP(d.ad,d.renk,`grup · ${oyn}/6 maç`,T.gr.map((g,j)=>({ad:'Grup '+'AB'[j],t:fmGrpT(sirala(T.tab,g),-1,i=>i<2?'ucl':i===2&&di<2?'uel':'')})),doguLej(di)+(ko?`<div class="fmGad" style="margin-top:10px">⚔️ Eleme Turları</div>${ko}`:''));}});
- return h?`<div class="fmBas">❄️ Diğer Doğu Kupaları</div>`+h:'';}
+ return h?`<div class="fmBas">❄️ ${ben?"Diğer ":""}Doğu Kupaları</div>`+h:'';}
 function avrSimHtml(s,zorla){const var_=new Set(Object.values(s.kp||{}).map(c=>c&&c.kod));if(!zorla&&['RUS','KKTC'].includes(ULK(s.lig)))return doguSimHtml(s);let h='';
  ['UCL','UEL','UECL'].forEach(kod=>{if(var_.has(kod)||(s.kp&&s.kp.AVR&&s.kp.AVR.kod===kod))return;const T=avrSimTablo(s,kod);if(!T.oyn)return;
   h+=fmKupaP(T.ad,'#8ab4ff',`lig aşaması · ${T.oyn}/${T.nT} maç`,[{t:fmGrpT(sirala(T.tab,T.ids),-1,i=>i<8?'ucl':i<24?'uel':'')}],'<div class="lej"><span class="ucl">■</span> Son 16 <span class="uel">■</span> Play-off</div>'+(()=>{const ko=T.oyn>=T.nT?koHtml(avrSimKO(s,kod,T),s.ti):'';return ko?`<div class="fmGad" style="margin-top:10px">⚔️ Eleme Turları</div>${ko}`:'';})());});
