@@ -1,5 +1,12 @@
 # Sürüm notları
 
+## V10.1.1 (ek paket) — 26 Kasım 2026
+- 👕 Maç içi HD forma: oyuncu sprite'ında arma + kol bandı (yüksek grafik)
+- ⚽ Ada/Anadolu sahalarında taç ve aut'ta dubadaki yedek toptan hızlı başlatma + top toplayıcılar
+- 🌟 Yıldızlar Ligi İLK MAÇ: debut oyuncular forma numaralı yama taşır
+
+# Sürüm notları
+
 ## V10.1.1 — 26 Kasım 2026
 - 🎲 Kura + eleme/play-off turları (kura çekilmeden eşleşme görünmez)
 - ❄️ Doğu Kupaları yeni katılım kuralı: grup + çift maçlı eleme + play-off, alt kupaya düşme; puan durumu lejantı güncellendi
