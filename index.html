@@ -5503,7 +5503,7 @@ function aciliisCalis(){let g=false;try{g=sessionStorage.getItem('pl_acilis');}c
  const d=document.createElement('div');d.id='acilis';
  d.innerHTML=`<div class="acA" id="acA1"><div class="acCd">CATANADEV</div></div>
  <div class="acA" id="acA2"><div class="acArm"><svg viewBox="0 0 40 46" width="100%" height="100%"><path d="M3 3h34v20q0 14-17 21Q3 37 3 23z" fill="#fff"/><path d="M6 6h28v17q0 11-14 17.5Q6 34 6 23z" fill="#05070f"/><path d="M11 12h5.5q4 0 4 4t-4 4H14v6h-3zM14 14.6v2.8h2.3q1.4 0 1.4-1.4t-1.4-1.4z" fill="#fff"/><path d="M22 12h3v11h6v3h-9z" fill="#fff"/><text x="20" y="35.5" font-size="5" font-family="'Press Start 2P',monospace" fill="#fff" text-anchor="middle">2026</text></svg></div><div class="acCiz"></div><div class="acSlo">SAHA<br>SENİN</div></div>
- <div class="acA" id="acA3"><canvas id="acStad"></canvas><div class="acLogo">PİKSEL LİG<small>26/27</small></div><div class="acSlo2">SAHA SENİN</div><div class="acBas">Başlamak için dokun · bir tuşa bas</div><div class="acSur">Sürüm V10.1.1 · Veri Paketi 2.8<br>© 2026 Catanadev</div></div>`;
+ <div class="acA" id="acA3"><canvas id="acStad"></canvas><div class="acLogo">PİKSEL LİG<small>26/27</small></div><div class="acSlo2">SAHA SENİN</div><div class="acBas">Başlamak için dokun · bir tuşa bas</div><div class="acSur">Sürüm V10.1.1 · Veri Paketi 2.9<br>© 2026 Catanadev</div></div>`;
  document.body.appendChild(d);try{stadCiz(d.querySelector('#acStad'));}catch(e){}
  let a=0,t=null,kap=false;const goster=i=>{a=i;d.querySelectorAll('.acA').forEach((e,j)=>e.classList.toggle('on',j===i-1));};
  const ileri=()=>{clearTimeout(t);if(a<3){goster(3);}else bit();};
@@ -5538,7 +5538,7 @@ function favSVG(t,p){const F=(formalar(t)||[])[0]||{c1:t.c1||'#c8102e',c2:t.c2||
  </svg>`;}
 function favSec(){takimSec('FAVORİ OYUNCU: TAKIM SEÇ',t=>{const K=(bazKadro(t.i)||[]).slice().sort((a,b)=>b.g-a.g);
  secimModal('⭐ FAVORİ OYUNCU · '+t.ad,'Ana menüde duracak oyuncuyu seç.',K.slice(0,22).map(p=>({t:`${p.ad} · ${p.mv} · ${p.g}`,f:()=>{favYaz({ti:t.i,id:p.id});ekran('ana');pesMenu();}})).concat([{t:'GERİ',renk:'#555',f:()=>{ekran('ana');pesMenu();}}]));});}
-function veriPaketi(){secimModal('📦 VERİ PAKETİ 2.6','<div style="text-align:left;line-height:2">Sezon: <b>26/27</b><br>Ligler: 32 lig · 645 takım<br>Kıta kupaları: Yıldızlar / Kıta / Umut Ligi · Doğu kupaları<br>Tarihçe: geçmiş şampiyonlar + kariyer sezonları<br>Kadrolar lisanssızdır, adlar kurgusaldır.</div>',[{t:'TAMAM',f:()=>{}}]);}
+function veriPaketi(){secimModal('📦 VERİ PAKETİ 2.9','<div style="text-align:left;line-height:2">Sezon: <b>26/27</b><br>Ligler: 78 lig · 46 ülke<br>Takımlar: 1.210 kulüp (1.148 ligde + 62 havuzda) · 154 milli takım<br>Kupalar: 45 yerel kupa · 39 süper kupa<br>Kıta kupaları: Yıldızlar / Kıta / Umut Ligi · Doğu kupaları · Asya Elit / Asya Ligi 2 / Asya Meydan · Kuzey-Orta Şampiyonlar Kupası<br>Tarihçe: geçmiş şampiyonlar + kariyer sezonları<br>Kadrolar lisanssızdır, adlar kurgusaldır.</div>',[{t:'TAMAM',f:()=>{}}]);}
 function pesMenu(sek){const A=$('ana');if(!A)return;A.classList.add('pes');window._pesT=sek!=null?sek:(window._pesT||0);
  let M=$('pesM');if(!M){M=document.createElement('div');M.id='pesM';A.insertBefore(M,A.firstChild);}
  const bul=f=>[...A.querySelectorAll('#anaModlar .mk,#anaAyar .mk')].find(b=>(b.getAttribute('onclick')||'').includes(f));
@@ -5555,10 +5555,10 @@ function pesMenu(sek){const A=$('ana');if(!A)return;A.classList.add('pes');windo
   1:kart('hizliMac',{buyuk:1,ac:'Takımını seç, hemen sahaya çık.'})+kart('ikiOyuncu')+kart('kupaMenu')+kart('turnuvaMenu'),
   2:kart('turnuvaMenu',{buyuk:1,ac:'Milli turnuvalar: Bayrak Ligi, ulus kupaları.'})+kart('kupaMenu')+[...A.querySelectorAll('#anaModlar .mk.kilit')].map(x=>kart(x)).join(''),
   3:kart('kariyerBasla',{buyuk:1,ac:'Menajer kariyeri: lig, kupa, kıta, milli takım.'})+kart('oyuncuBasla')+kart('dunyaAc')+kart('basarimEkran'),
-  4:kart(null,{buyuk:1,ad:'FAVORİ OYUNCU',ac:'Ana menüde duracak oyuncuyu seç (her takımdan).',ik:yildiz,f:favSec})+kart(null,{ad:'DÜZENLE',ac:'Takımlar, kadrolar, formalar · sadece görüntüleme',ik:kalem,f:()=>{window._dunyaGeri=null;dunyaAc('ligler');}})+kart('yenilikAc',{ad:'GÜNCELLEMELER'})+kart(null,{ad:'VERİ PAKETİ',ac:'Veri Paketi 2.6',ik:paket,f:veriPaketi})+kart('basarimEkran')+kart('zorDegis')+kart('grfDegis')+kart('hafifDegis')+kart("ekran('nasil')")+kart('hakkindaAc')+kart('kayitIndir')+kart('kayitYukle')
+  4:kart(null,{buyuk:1,ad:'FAVORİ OYUNCU',ac:'Ana menüde duracak oyuncuyu seç (her takımdan).',ik:yildiz,f:favSec})+kart(null,{ad:'DÜZENLE',ac:'Takımlar, kadrolar, formalar · sadece görüntüleme',ik:kalem,f:()=>{window._dunyaGeri=null;dunyaAc('ligler');}})+kart('yenilikAc',{ad:'GÜNCELLEMELER'})+kart(null,{ad:'VERİ PAKETİ',ac:'Veri Paketi 2.9',ik:paket,f:veriPaketi})+kart('basarimEkran')+kart('zorDegis')+kart('grfDegis')+kart('hafifDegis')+kart("ekran('nasil')")+kart('hakkindaAc')+kart('kayitIndir')+kart('kayitYukle')
  };
  const {t,p}=favOyuncu();
- M.innerHTML=`<div class="pmUst"><div class="pmLogo">PİKSEL <b>LİG</b> <small>26/27</small></div><div class="pmSur">⚽ Sürüm V10.1.1 · Veri Paketi 2.8</div></div>
+ M.innerHTML=`<div class="pmUst"><div class="pmLogo">PİKSEL <b>LİG</b> <small>26/27</small></div><div class="pmSur">⚽ Sürüm V10.1.1 · Veri Paketi 2.9</div></div>
  <div class="pmTab">${PES_TAB.map((n,i)=>`<button class="${i===window._pesT?'akt':''}" onclick="pesMenu(${i})">${n}</button>`).join('')}</div>
  <div class="pmGov"><div class="pmIz">${G[window._pesT]||G[0]}</div><div class="pmOy" title="Favori oyuncu · EKSTRA › FAVORİ OYUNCU"><div class="pmFig">${favSVG(t,p)}</div><div class="pmAd">${chip(t)} ${p.ad}</div></div></div>
  <div class="pmAc" id="pmAc"></div>
