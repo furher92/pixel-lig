@@ -1,5 +1,21 @@
 # Sürüm notları
 
+## V10.1.1 — 26 Kasım 2026
+- 🎲 Kura + eleme/play-off turları (kura çekilmeden eşleşme görünmez)
+- ❄️ Doğu Kupaları yeni katılım kuralı: grup + çift maçlı eleme + play-off, alt kupaya düşme; puan durumu lejantı güncellendi
+- 🧑‍💼 Teknik direktör adları kulübün ülkesine uygun
+- 🤖 Rakip baskısı: en yakın iki oyuncu mesafeli baskı + pas yollarını kapatma (yapışmaz)
+- ⛳ Oyuncu değişikliği kullanıcının duran topunda yapılmaz; AI en fazla kendi duran topu/devre arası
+- ⏱️ Uzatmada verilmiş korner/frikik/penaltı kullanılır, pozisyon bitmeden düdük çalmaz
+- 🎬 Duran top (frikik/korner/taç) gol tekrarları son duran toptan başlar
+- 🏆 Kupa kazanılınca anında vitrin + menajer kupaları + maç geçmişi; süper kupa kayıt hatası düzeltildi
+- 👋 Veda maçı + maç sonu stadyum anonsu ve dönem özeti dev ekranı; sonra yeni kulübe geçiş
+- 📋 Kariyer ana ekranı Takım Bilgisi paneli (FW/MF/DF/GK çubukları + menajer portresi)
+- 🎽 İber Kupası altın yıl yaması, Gal Kupası altın kalkan yaması
+- 📺 Yerel kupa ve süper kupa maçlarına kupa renkli skorbord
+
+# Sürüm notları
+
 ## V10.1 (puan durumu) — 19 Kasım 2026
 - Panel düzeninde puan durumu, geçmiş sezon tabloları, Doğu kupalarında 3.'nün alt kupaya düşmesi
 
