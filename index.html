@@ -802,7 +802,7 @@ function ofsHat(k){const sag=k===0;const xs=G.P.filter(p=>p.k!==k&&!(p.disari>0)
 function ofsKaydet(p){G.ofs=null;const r=G.restart;if(r&&['TAÇ','KORNER','AUT','baslama','SANTRA','PENALTI'].includes(r.tip))return;
  const k=p.k,sag=k===0,hat=ofsHat(k),bx=G.top.x;const S=new Set(),M={};
  G.P.forEach(q=>{if(q.k!==k||q===p)return;const x=q.x;if(sag?(x>W/2&&x>hat+2&&x>bx+2):(x<W/2&&x<hat-2&&x<bx-2)){S.add(q.id);M[q.id]=Math.abs(x-(sag?Math.max(hat,bx):Math.min(hat,bx)));}});
- if(S.size)G.ofs={k,S,M,t:150};
+ if(S.size)G.ofs={k,S,M,t:600};
  {const xs={};G.P.forEach(q=>{if(q.k===k)xs[q.id]=q.x;});G.ofsSnap={k,hat,xs,kayN:G.kayN||0,S:new Set(S),kare:G.kare};}}
 function ofsaytVer(p){if(G.seri){G.ofs=null;return;}yorum('Yan hakem bayrağı kaldırdı: ofsayt',1);istSay('ofs',p.k);const t=G.top;sesDuduk(1);G.ofs=null;t.sahip=null;t.vx=t.vy=t.vz=0;G.bayrak={t:170,k:p.k};
  G.faz='dur';G.fazT=95;G.banner='OFSAYT!';G.alt=(p.ad?p.ad+' · ':'')+G.T[p.k].t.kod;G.kuy=[];G.ofsSay=(G.ofsSay||0)+1;
