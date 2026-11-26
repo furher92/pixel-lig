@@ -1,5 +1,8 @@
 # Sürüm notları
 
+## V10.1.1 (düzeltme) — 26 Kasım 2026
+- ❄️ Doğu kupalarında tek sayılı gruplarda takımın kendisiyle eşleşip maçın otomatik oynanması hatası giderildi; kendi maçını kendin oynuyorsun
+
 ## V10.1.1 (ek paket) — 26 Kasım 2026
 - 👕 Maç içi HD forma: oyuncu sprite'ında arma + kol bandı (yüksek grafik)
 - ⚽ Ada/Anadolu sahalarında taç ve aut'ta dubadaki yedek toptan hızlı başlatma + top toplayıcılar
