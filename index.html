@@ -2820,7 +2820,7 @@ function ligLej(lig){const dg=['RUS','KKTC'].includes(ULK(lig));const KD=KADEMEL
  if(ti>0)return `<div class="lej"><span class="yuk">■</span> Üst lige yükselme <span class="dus">■</span> Küme düşme hattı</div>`;
  if(dg){const R=ULK(lig)==='RUS';return `<div class="lej"><span class="ucl">■</span> Kutup Yıldızı Kupası grubu (${R?'1-2':'1'}) · eleme turu (${R?'3-5':'2-3'}) <span class="uel">■</span> Kuzey Rüzgârı Kupası (${R?'6-9':'4-6'}) · kupa şampiyonu play-off <span class="ecl">■</span> Ayaz Kupası (${R?'10-13':'7-9'}) <span class="dus">■</span> Küme düşme hattı</div>`;}
  if(lig==='MEX')return `<div class="lej"><span class="ucl">■</span> Kuzey-Orta Şampiyonlar Kupası (Azteka Ligi'nin en güçlü kulüpleri) <span class="dus">■</span> Küme düşme hattı · Avrupa kupalarına katılmaz</div>`;
- if(lig==='ISR')return `<div class="lej">🚫 Menorah Ligi Avrupa kupalarından men edildi <span class="dus">■</span> Küme düşme hattı</div>`;
+ if(lig==='ISR')return `<div class="lej"><span class="ucl">■</span> Şampiyon: Menorah Süper Kupası <span class="uel">■</span> 2.: Süper Kupa yedeği · 🏆 Menorah Kupası (tüm takımlar) · 🚫 Avrupa kupalarından men <span class="dus">■</span> Küme düşme hattı</div>`;
  if(['USA','USAB'].includes(lig))return `<div class="lej"><span class="ucl">■</span> Kuzey-Orta Şampiyonlar Kupası (konferans 1-3. + yerel kupa şampiyonu) · Avrupa kupalarına katılmaz</div>`;
  if(['KSA','JPN','KOR','UAE','QAT','IRN','CHN','AUS','THA','IRQ','KUW','BHR','JOR','OMA','LBN','SYR','UZB','TKM','TJK','TPE','MAS','VIE','IDN','SGP','CAM','PHI','MYA','BRU','IND','BAN','BHU'].includes(ULK(lig)))return `<div class="lej"><span class="ucl">■</span> Asya Elit Ligi (1-3. + yerel kupa şampiyonu) · <span class="uel">■</span> Asya Ligi 2 (4.) · Avrupa kupalarına katılmaz</div>`;
  if(ULK(lig)==='HKG')return `<div class="lej"><span class="ucl">■</span> Asya Ligi 2 grup aşaması (lig şampiyonu) · Liman Kupası şampiyonu da Asya Ligi 2'ye katılır · Liman ligi Avrupa kupalarına katılmaz</div>`;
@@ -4944,7 +4944,7 @@ LIG_ON.ISR='Menorah';YEREL_AD.ISR='Menorah Kupası';
 LIG_GECMIS.ISR=[['2024/25','TES'],['2025/26','HBS']];MUZE_V.ISR={'TES':[26],'HBS':[6],'KUD':[6]};LIG_GECMIS.ISR2=[];MUZE_V.ISR2={};
 YEREL_K.ISR={'TES':25,'HBS':4,'KUD':8};YEREL_GEC.ISR=[['2024/25','HBS'],['2025/26','TES']];
 SUPER_K.ISR={};SUPER_GEC.ISR=[];SK26.ISR=[['ISR','HBS'],['ISR','TES']];
-BAYRAK_SVG.ISR2=BAYRAK_SVG.ISR;})();}catch(e){console.warn('ISR',e);}
+BAYRAK_SVG.ISR="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2030%2020'%3E%3Crect%20width='30'%20height='20'%20fill='%23fff'/%3E%3Crect%20y='2.5'%20width='30'%20height='2.5'%20fill='%230038b8'/%3E%3Crect%20y='15'%20width='30'%20height='2.5'%20fill='%230038b8'/%3E%3Cpath%20d='M15%206.6l3%205.1h-6zM15%2013.4l-3-5.1h6z'%20fill='none'%20stroke='%230038b8'%20stroke-width='.8'/%3E%3C/svg%3E";BAYRAK_SVG.ISR2=BAYRAK_SVG.ISR;AVR.ISR=[1,1,0,0];AVR.MEX=[4,0,0,0];})();}catch(e){console.warn('ISR',e);}
 try{(()=>{
 ISIM.MEX=ISIM.LAT||ISIM.DIG;ISIM.MEX2=ISIM.MEX;
 BAYRAK_SVG.MEX="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2030%2020'%3E%3Crect%20width='10'%20height='20'%20fill='%23006847'/%3E%3Crect%20x='10'%20width='10'%20height='20'%20fill='%23fff'/%3E%3Crect%20x='20'%20width='10'%20height='20'%20fill='%23ce1126'/%3E%3Ccircle%20cx='15'%20cy='10'%20r='2.6'%20fill='%238a5a2b'/%3E%3Cpath%20d='M12.5%2012q2.5%202%205%200'%20stroke='%230a7a3e'%20stroke-width='.8'%20fill='none'/%3E%3C/svg%3E";BAYRAK_SVG.MEX2=BAYRAK_SVG.MEX;
