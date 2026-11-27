@@ -878,7 +878,7 @@ function kayitKes(K){K=kayitKes0(K);if(!K||K.length<12)return K;
  let L=K.slice(kes);if(L.length<16)L=K.slice(Math.max(0,K.length-40));return L.length>75?L.slice(-75):L;}
 function kayitKes0(K){if(!K||K.length<4)return K;const sic=i=>{const a=K[i-1].t,b=K[i].t;return Math.hypot(a[0]-b[0],a[1]-b[1])>30;};let son=K.length;for(let i=K.length-1;i>=Math.max(1,K.length-6);i--)if(sic(i))son=i;let kes=0;for(let i=1;i<son;i++)if(sic(i))kes=i;return son-kes>=6?K.slice(kes,son):K.slice(0,son);}
 function ofsHat(k){const sag=k===0;const xs=G.P.filter(p=>p.k!==k&&!(p.disari>0)&&!p.sedye).map(p=>p.x).sort((a,b)=>sag?b-a:a-b);return xs[1]!=null?xs[1]:(sag?MR:ML);}
-function ofsKaydet(p){G.ofs=null;const r=G.restart;if(r&&['TAÇ','KORNER','AUT','baslama','SANTRA','PENALTI'].includes(r.tip))return;
+function ofsKaydet(p){try{const ps=G.ofsSnap;if(!G.seri&&ps&&ps.k===p.k&&ps.S&&ps.S.has(p.id)&&G.kare-ps.kare<900)G.ofsAtak={k:p.k,kare:G.kare};}catch(e){}G.ofs=null;const r=G.restart;if(r&&['TAÇ','KORNER','AUT','baslama','SANTRA','PENALTI'].includes(r.tip))return;
  const k=p.k,sag=k===0,hat=ofsHat(k),bx=G.top.x;const S=new Set(),M={};
  G.P.forEach(q=>{if(q.k!==k||q===p)return;const x=q.x;if(sag?(x>W/2&&x>hat+2&&x>bx+2):(x<W/2&&x<hat-2&&x<bx-2)){S.add(q.id);M[q.id]=Math.abs(x-(sag?Math.max(hat,bx):Math.min(hat,bx)));}});
  if(S.size)G.ofs={k,S,M,t:600};
