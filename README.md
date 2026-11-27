@@ -9,7 +9,7 @@
 
 ## Özellikler
 - **11'e 11 maç motoru:** faul, frikik ve baraj, penaltı, kart, VAR, hakem, uzatmalar, yazı tura, devrede taraf değişimi
-- **78 lig, 46 ülke, 1.210 takım:** 2026/27 sezonu — Avrupa, Asya ve Amerika ligleri, 154 milli takım, 45 yerel kupa, 39 süper kupa (takım ve oyuncu adları kurgusal, lisanssız) · Veri Paketi 2.9
+- **86 lig, 50 ülke, 1.312 takım:** 2026/27 sezonu — Avrupa, Asya ve Amerika ligleri, 154 milli takım, 49 yerel kupa, 40 süper kupa (takım ve oyuncu adları kurgusal, lisanssız) · Veri Paketi 2.9
 - **Menajer kariyeri:** menajer oluştur, transfer ve kiralık, yönetim güveni, yerel kupa, süper kupa (TFF 4'lü final dahil), Şampiyonlar / Avrupa / Konferans Ligi (ön elemeler dahil), Asya kulüp kupaları, Kuzey-Orta Şampiyonlar Kupası, Avrupa Süper Kupası, milli takım teklifleri (UEFA, Asya, Güney Amerika) ve EURO / Dünya Kupası / Asya Kupası / Copa América
 - **Oyuncu kariyeri:** 17 yaşında başla, sadece kendi oyuncunu yönet, gelişim, transfer teklifleri, milli takım çağrısı, ödüller (gol kralı, Altın Top)
 - **Avrupa kupaları modu:** gerçek 26/27 kura ve fikstür
