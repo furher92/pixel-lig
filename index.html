@@ -458,13 +458,18 @@ function bayrakImg(ul,h){h=h||10;const u=BAYRAK_SVG[ul];return u?`<img src="${u}
 function ligEtiket(id){if(id==='DIG')return '🌍 DİĞER';const k=KADEME(id),g=String(id).replace(/^[A-Z]+[0-9]*/,'');return bayrakImg(ULK(id))+(k>1?` ${k}${g}`:'');}
 // ---- Teknik direktör koltukları: galibiyet alamayan hocalar kovulur
 let HOCA_OZ={};
+function hocaYeniIs(s,ad,eskiT){s.bosHoca=s.bosHoca||[];if(Math.random()<.45){s.bosHoca.push({ad,eski:eskiT.ad,sz:s.sezon});if(s.bosHoca.length>40)s.bosHoca.shift();return;}
+ const G=[['ENG','ESP','ITA','GER','FRA'],['POR','NED','BEL','TR','SCO','UKR','AUT','CZE','NOR','DEN','GRE','POL','SUI','CRO','SRB','SWE','HUN','RUS','USA','MEX','KSA','JPN','KOR'],['CYP','ISR','ROU','SVN','SVK','BIH','BUL','AZE','KAZ','FIN','UAE','QAT','IRN','CHN','AUS','THA','KKTC','HKG'],['ALB','GEO','ARM','LVA','LTU','AND','GIB','SMR','IRQ','KUW','BHR','JOR','OMA','LBN','SYR','UZB','TKM','TJK','TPE','MAS','VIE','IDN','SGP','CAM','PHI','MYA','BRU','IND','BAN','BHU']];
+ const r=Math.random();if(r<.2){const ml=MILLI.filter(m=>YONETILIR(m)&&!(s.milli&&s.milli.n===m.n));const m=ml[(Math.random()*ml.length)|0];if(m){s.milliHoca=s.milliHoca||{};const es=s.milliHoca[m.kod];s.milliHoca[m.kod]=ad;s.haber.push(`🌍 ${ad} (eski ${eskiT.ad} hocası) ${m.ad} Milli Takımı'nın başına geçti${es?` — ${es} görevden alındı`:''}.`);}return;}
+ const g=G[(Math.random()*G.length)|0];const ad2=ALL.filter(t=>t.i!==s.ti&&t.i!==eskiT.i&&g.includes(ULK(t.lig))&&LEAGUES.some(l=>l.id===t.lig));const t=ad2[(Math.random()*ad2.length)|0];if(!t)return;
+ const es=hocaAdi(t);s.hocaOz=s.hocaOz||{};s.hocaOz[t.kod]=ad;HOCA_OZ=s.hocaOz;s.haber.push(`📰 ${ad} (eski ${eskiT.ad} hocası) ${t.ad} (${ULKE_AD[ULK(t.lig)]||ULK(t.lig)}) ile anlaştı${es&&es!==ad?` — ${es} görevden ayrıldı`:''}.`);if(es&&es!==ad){s.bosHoca=s.bosHoca||[];s.bosHoca.push({ad:es,eski:t.ad,sz:s.sezon});if(s.bosHoca.length>40)s.bosHoca.shift();}}
 function hocaKoltuk(s){const L=LEAGUES.find(l=>l.id===s.lig);if(!L||!s.form)return;s.hocaOz=s.hocaOz||{};s.hocaKov=s.hocaKov||{};s.koltuk=s.koltuk||{};
  L.t.forEach(t=>{if(t.i===s.ti)return;const F=(s.form[t.i]||[]).slice(-5);if(F.length<3)return;const g=F.filter(x=>x.r==='G').length,m=F.filter(x=>x.r==='M').length,son3M=F.slice(-3).every(x=>x.r==='M');
   if(s.hocaKov[t.kod]!=null&&s.hafta-s.hocaKov[t.kod]<6)return;
   const ad=hocaAdi(t);
   if(g===0&&(m>=3||son3M)){const sans=((m>=4?.38:.2)+(KADEME(t.lig)===1&&t.rt>=78?.12:0))*(ULK(t.lig)==='TR'?1:.6);
-   if(Math.random()<sans){s.hocaEski=s.hocaEski||{};const eski=(s.hocaEski[t.kod]=s.hocaEski[t.kod]||[]);eski.push(ad);const soy=x=>x.split(' ').slice(1).join(' ');let yeni='',z=1;const kul=new Set(ALL.map(x=>hocaAdi(x)));do{yeni=hocaUret(t,100+z*7919+s.sezon*31+s.hafta);z++;}while((kul.has(yeni)||eski.includes(yeni)||soy(yeni)===soy(ad))&&z<60);
-    s.hocaOz[t.kod]=yeni;HOCA_OZ=s.hocaOz;s.hocaKov[t.kod]=s.hafta;delete s.koltuk[t.kod];s.haber.push(`❌ ${t.ad}, teknik direktör ${ad} ile yollarını ayırdı (son ${F.length} maçta galibiyet yok). Yeni hoca: ${yeni}.`);return;}
+   if(Math.random()<sans){s.hocaEski=s.hocaEski||{};const eski=(s.hocaEski[t.kod]=s.hocaEski[t.kod]||[]);eski.push(ad);const soy=x=>x.split(' ').slice(1).join(' ');let yeni='',z=1;const kul=new Set(ALL.map(x=>hocaAdi(x)));do{yeni=hocaUret(t,100+z*7919+s.sezon*31+s.hafta);z++;}while((kul.has(yeni)||eski.includes(yeni)||soy(yeni)===soy(ad))&&z<60);try{const B=(s.bosHoca||[]).filter(x=>x.ad!==ad&&!eski.includes(x.ad));if(B.length&&Math.random()<.5){const x=B[(Math.random()*B.length)|0];yeni=x.ad;s.bosHoca=s.bosHoca.filter(y=>y!==x);}}catch(e){}
+    s.hocaOz[t.kod]=yeni;HOCA_OZ=s.hocaOz;s.hocaKov[t.kod]=s.hafta;delete s.koltuk[t.kod];s.haber.push(`❌ ${t.ad}, teknik direktör ${ad} ile yollarını ayırdı (son ${F.length} maçta galibiyet yok). Yeni hoca: ${yeni}.`);try{hocaYeniIs(s,ad,t);}catch(e){}return;}
    if(!s.koltuk[t.kod]){s.koltuk[t.kod]=1;s.haber.push(`🪑 Koltuk sallanıyor: ${t.ad} — ${ad} (son ${F.length} maçta galibiyet yok)`);}}
   else if(g>0&&s.koltuk[t.kod])delete s.koltuk[t.kod];});}
 // ---- Alt ligler (26/27 profesyonel kademeler): lig kimliği 'TR3A' → ülke 'TR', kademe 3
