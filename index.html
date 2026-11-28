@@ -714,7 +714,7 @@ function yerdeKontrol(){if(G.faz!=='oyun'||G.seri||G.restart||G.saglik)return fa
  G.yerKal=null;const k2=t.sahip?t.sahip.k:(t.son==null?0:t.son);t.sahip=null;t.vx=t.vy=t.vz=0;sesDuduk(1);
  G.faz='dur';G.fazT=60;G.banner='OYUN DURDU';G.alt='Hakem, yerde kalan '+(p.ad||'oyuncu')+' için oyunu durdurdu';G.kuy=[];hakemIsaret('yon',0);
  G.restart={tip:'HAKEM TOPU',k:p.k,fp:1,x:clamp(t.x,ML+20,MR-20),y:clamp(t.y,MT+12,MB-12)};
- if(Math.random()<.15)sakatlikBasla(p);else{G.kuy.push({b:'OYUNCU KALKTI',t:90,f:()=>{p.yer=0;G.alt=(p.ad||'Oyuncu')+' ayağa kalktı, oyun hakem topuyla başlayacak';}});}
+ if(Math.random()<.35)sakatlikBasla(p);else{G.kuy.push({b:'OYUNCU KALKTI',t:90,f:()=>{p.yer=0;G.alt=(p.ad||'Oyuncu')+' ayağa kalktı, oyun hakem topuyla başlayacak';}});}
  return true;}
 // ===== patch79: maç içi tablet (yardımcı antrenör analiz / Cıvıl) =====
 function tabletCiz(){if(!G||G.human<0||G.faz!=='oyun'&&G.faz!=='dur')return;const dk=Math.floor(G.kare/G.top_kare*90),pen=[32,74];const i=pen.findIndex(m=>dk>=m&&dk<m+2);if(i<0||G.sos){G.tab=null;return;}
@@ -2202,7 +2202,7 @@ function varKacanPen(p,sh){const t=G.top,fk=sh.k;t.sahip=null;t.vx=t.vy=t.vz=0;s
  G.kuy.push({b:'KARAR DEĞİŞTİ: PENALTI!',t:100,f:()=>{varKarar();istSay('faul',p.k);G.penFaul=(G.varKayit||[]).slice(-36);G.alt='Kaçan penaltı VAR ile verildi';if(!(p.sari>=1))sariVer(p);sesKalabalik(.4,2);G.restart={tip:'PENALTI',k:fk,x:fk?ML+55:MR-55,y:H/2};}});}
 function faulVer(p,sh,arkadan){if(G.seri){p.kay=0;p.kayK=false;return;}const dp=G._dp!=null?G._dp:4;G._dp=null;const fx=sh.x,fy=sh.y,kayK0=!!p.kayK;{const gx2=p.k?MR:ML,kutu2=Math.abs(sh.x-gx2)<80&&Math.abs(sh.y-H/2)<70,hucum=Math.abs(sh.x-gx2)<W*.4;const ark=G.P.some(q=>q.k===sh.k&&q!==sh&&Math.hypot(q.x-sh.x,q.y-sh.y)<45);if(!kutu2&&hucum&&ark&&!(p.kayK&&arkadan)&&!(p.kayK&&p.kay>0)&&Math.hypot(sh.vx||0,sh.vy||0)>.4){sesDuduk(1);hakemIsaret('avantaj',sh.k?-1:1);G.degB={t:110,txt:'AVANTAJ · '+G.T[sh.k].t.kod};G.avant={k:p.k,fk:sh.k,kare:G.kare,x:fx,y:fy,ad:p.ad,p,kart:(p.kayK&&arkadan)||(p.kayK&&Math.hypot(sh.vx||0,sh.vy||0)>1.3)||((p.fSay||0)+1>=3&&!(p.sari>=1))?'S':null};p.fSay=(p.fSay||0)+1;G.faulN=(G.faulN||0)+1;istSay('faul',p.k);sh.sers=5;p.kay=0;p.kayK=false;p.kayB=60;return;}}
  G.faulN=(G.faulN||0)+1;yorum(rs(['Faul! Hakem oyunu durdurdu','Sert müdahale, düdük geldi']));istSay('faul',p.k);G.varKayit=(G.kay||[]).slice(-90);
- const t=G.top;sesDuduk(1);t.sahip=null;t.vx=t.vy=t.vz=0;yereDus(sh,(sh.vx||0)*.9+(p.dx||0)*1.2,(sh.vy||0)*.9+(p.dy||0)*1.2,arkadan?150:100);const sakVar=!G.seri&&Math.random()<(p.kayK&&arkadan?.07:p.kayK?.02:.006);p.kay=0;p.kayB=60;
+ const t=G.top;sesDuduk(1);t.sahip=null;t.vx=t.vy=t.vz=0;yereDus(sh,(sh.vx||0)*.9+(p.dx||0)*1.2,(sh.vy||0)*.9+(p.dy||0)*1.2,arkadan?150:100);const _hzS=Math.min(1.6,.6+Math.hypot(p.vx||0,p.vy||0)*.35);const sakVar=!G.seri&&Math.random()<(p.kayK&&arkadan?.16:p.kayK?.06:arkadan?.035:.015)*_hzS;p.kay=0;p.kayB=60;
  const gx=p.k?MR:ML,kutu=Math.abs(fx-gx)<=82&&Math.abs(fy-H/2)<=72,fk=sh.k;
  let kart=null;{p.fSay=(p.fSay||0)+1;const gk0=fk?ML:MR,sonAdam=!G.P.some(q=>q.k===p.k&&q!==p&&q.rol!=='GK'&&Math.abs(q.x-gk0)<Math.abs(fx-gk0)),net=Math.abs(fx-gk0)<160&&Math.abs(fy-H/2)<90;
   if(p.kayK&&arkadan)kart=(sonAdam&&net)?'K':'S';else if(sonAdam&&net&&!kutu)kart='K';else if(p.kayK&&(kutu||sonAdam))kart='S';else if(p.fSay>=3&&!(p.sari>=1))kart='S';else if(p.fSay>=4)kart='S';
@@ -2210,9 +2210,9 @@ function faulVer(p,sh,arkadan){if(G.seri){p.kay=0;p.kayK=false;return;}const dp=
   if(!kart&&!kutu){const hz=Math.hypot(sh.vx||0,sh.vy||0),ileri=(fk?-1:1)*(sh.vx||0),onde=G.P.filter(q=>q.k===p.k&&q.rol!=='GK'&&!(q.disari>0)&&(fk?q.x<fx:q.x>fx)).length;if(hz>1.1&&ileri>.6&&onde<=3&&Math.abs(fx-gk0)<W*.62){kart='S';G._taktikF=1;}}
   if(kart==='S'&&p.sari>=1&&!(p.kayK&&arkadan)&&p.fSay<4)kart=null;
   // VAR: hakem sarı gösterdi ama arkadan, çok yakın kayarak müdahale = ciddi faul → direkt kırmızı incelemesi
-  if(kart==='S'&&p.kayK&&arkadan&&dp<=3&&!(p.sari>=1))kart='KV';
+  if(kart==='S'&&p.kayK&&arkadan&&dp<=4.5&&!(p.sari>=1))kart='KV';
   // IFAB VAR: aşırı güçle (hızlı, çok yakın) kayarak müdahale = ciddi faul → direkt kırmızı incelemesi
-  if(kart==='S'&&p.kayK&&!arkadan&&dp<=2.2&&Math.hypot(p.vx||0,p.vy||0)>2.2&&!(p.sari>=1))kart='KV';
+  if(kart==='S'&&p.kayK&&!arkadan&&dp<=3&&Math.hypot(p.vx||0,p.vy||0)>1.7&&!(p.sari>=1))kart='KV';
   // 2026/27 protokolü: açıkça hatalı ikinci sarı incelenir (temas çok hafifse iptal)
   if(kart==='S'&&p.sari>=1)kart=dp>5.5&&!p.kayK?'S2I':'S2';}
  const kavgaVar=kart==='K';p.kayK=false;
